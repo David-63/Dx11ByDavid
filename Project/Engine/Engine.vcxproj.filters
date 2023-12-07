@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{ee53d1cb-041c-41c8-a0fb-ef34c54066a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="default">
+      <UniqueIdentifier>{156f67f2-a25d-42be-a740-1957dbb505b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="default\리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source\00 header">
+      <UniqueIdentifier>{822b555d-6dac-419c-805a-065956f1e889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\00 header\Module">
+      <UniqueIdentifier>{27ac3984-65b2-4bf7-aafb-7da84c6da7a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\01 Engine">
+      <UniqueIdentifier>{9972b610-bbaf-4784-b604-a9b8794dfe36}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="global.h">
+      <Filter>Source\00 header</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMath.h">
+      <Filter>Source\00 header\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="CSingleton.h">
+      <Filter>Source\00 header\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>default</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>default</Filter>
+    </ClInclude>
+    <ClInclude Include="define.h">
+      <Filter>Source\00 header</Filter>
+    </ClInclude>
+    <ClInclude Include="struct.h">
+      <Filter>Source\00 header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Engine.cpp">
+      <Filter>default</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>default</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl">
+      <Filter>Source\00 header\Module</Filter>
+    </None>
+  </ItemGroup>
+</Project>
