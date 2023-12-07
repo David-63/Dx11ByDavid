@@ -20,6 +20,12 @@
     <Filter Include="Source\01 Engine">
       <UniqueIdentifier>{9972b610-bbaf-4784-b604-a9b8794dfe36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\01 Engine\Window Container">
+      <UniqueIdentifier>{edb03ab7-d8d5-4ffd-8f52-8b2a2afc787e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\01 Engine\Input">
+      <UniqueIdentifier>{0fbbf21c-6e2c-4ccb-82d2-3ffae065ffc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -43,6 +49,30 @@
     <ClInclude Include="struct.h">
       <Filter>Source\00 header</Filter>
     </ClInclude>
+    <ClInclude Include="CEngine.h">
+      <Filter>Source\01 Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CWindowContainer.h">
+      <Filter>Source\01 Engine\Window Container</Filter>
+    </ClInclude>
+    <ClInclude Include="CInput.h">
+      <Filter>Source\01 Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="CKeyboardClass.h">
+      <Filter>Source\01 Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="CKeyboardEvent.h">
+      <Filter>Source\01 Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="CMouseClass.h">
+      <Filter>Source\01 Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="CMouseEvent.h">
+      <Filter>Source\01 Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderWindow.h">
+      <Filter>Source\01 Engine\Window Container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -50,6 +80,30 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>default</Filter>
+    </ClCompile>
+    <ClCompile Include="CEngine.cpp">
+      <Filter>Source\01 Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CWindowContainer.cpp">
+      <Filter>Source\01 Engine\Window Container</Filter>
+    </ClCompile>
+    <ClCompile Include="CInput.cpp">
+      <Filter>Source\01 Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="CKeyboardClass.cpp">
+      <Filter>Source\01 Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="CKeyboardEvent.cpp">
+      <Filter>Source\01 Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="CMouseClass.cpp">
+      <Filter>Source\01 Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="CMouseEvent.cpp">
+      <Filter>Source\01 Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderWindow.cpp">
+      <Filter>Source\01 Engine\Window Container</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

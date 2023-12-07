@@ -10,4 +10,18 @@
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "framework.h"
 
+#include <Engine/global.h>
+#include <Engine/CEngine.h>
+
+
+// Engine lib
+#ifdef _DEBUG
+#pragma comment(lib, "Engine/Engine_d")
+#else
+#pragma comment(lib, "Engine/Engine")
+#endif // _DEBUG
+
+// Script lib
+
+
 #endif //PCH_H

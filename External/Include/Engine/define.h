@@ -17,6 +17,14 @@
 
 #define SINGLE(type) private: type(); ~type(); friend class CSingleton<type>;
 
+enum class INPUT_TYPE
+{
+	Press,
+	Hold,
+	Release,
+	Invalid,
+};
+
 enum class COMPONENT_TYPE
 {
 	// update
