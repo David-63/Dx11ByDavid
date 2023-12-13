@@ -9,7 +9,7 @@ private:
 	std::queue<unsigned char> char_buffer;
 
 public:
-	void Initialize();	// 루프 돌면서 키 버퍼 확인
+	void init();	// 루프 돌면서 키 버퍼 확인
 
 public:
 	bool KeyBufferIsEmpty();

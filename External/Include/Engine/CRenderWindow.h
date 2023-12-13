@@ -5,9 +5,10 @@ class CWindowContainer;
 class CRenderWindow
 {
 public:
-	bool Initialize(CWindowContainer* _pWindowContainer, HINSTANCE _hInstance, std::wstring _windowTitle, std::wstring _windowClass, UINT _width, UINT _height);
+	bool init(CWindowContainer* _pWindowContainer, HINSTANCE _hInstance, std::wstring _windowTitle, std::wstring _windowClass, UINT _width, UINT _height);
 	bool ProcessMessages();
 	HWND GetHWND() const;
+	Vec2 GetResolution() const { return Vec2(m_width, m_height); }
 	~CRenderWindow();
 
 private:

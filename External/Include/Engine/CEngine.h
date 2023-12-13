@@ -1,23 +1,23 @@
 #pragma once
-#include "CWindowContainer.h"
 
-class CEngine : CWindowContainer, public CSingleton<CEngine>
+class CEngine : public CSingleton<CEngine>
 {
+	SINGLE(CEngine)
 private:
-	HWND m_hWnd = nullptr;
-	Vec2 m_vResolution;
+	HWND	m_hWnd = nullptr;
+	Vec2	m_vResolution;
 
 public:
-	Vec2 GetWindowResolution() const { return m_vResolution; }
-	HWND GetHWnd() const { return m_hWnd; }
+	HWND GetMainWnd() { return m_hWnd; }
+	Vec2 GetWindowResolution() { return m_vResolution; }
 
 public:
-	int init(HINSTANCE _hInstance, wstring _windowTitle, wstring _windowClass, UINT _width, UINT _height);
-	bool ProcessMessages();
+	int init(HWND _hWnd, UINT _iWidth, UINT _iHeight);
 	void progress();
 
 private:
 	void tick();
 	void render();
+
 };
 

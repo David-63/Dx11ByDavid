@@ -8,10 +8,7 @@ struct tVertex
 	Vec4 vColor;
 	Vec2 vUV;
 };
-
 typedef tVertex Vtx;
-
-
 
 
 // Event
@@ -35,11 +32,13 @@ struct tDebugShapeInfo
 	float		fCurTime;
 };
 
+
 struct tLightColor
 {
 	Vec4 vDiffuse;	// 빛의 색상
 	Vec4 vAmbient;	// 주변 광(환경 광)
 };
+
 
 // LightInfo
 struct tLightInfo
@@ -62,6 +61,7 @@ struct tTile
 	Vec2 vLeftTop;
 	Vec2 vSlice;
 };
+
 
 // Animator2D
 struct tAnim2DFrm
@@ -94,6 +94,7 @@ struct tParticle
 	int     Active;			// 파티클 활성화 여부
 	int     pad;
 };
+
 
 struct tRWParticleBuffer
 {
@@ -156,7 +157,6 @@ struct tParticleModule
 };
 
 
-
 // ===================
 // 상수버퍼 대응 구조체
 // ===================
@@ -169,7 +169,6 @@ struct tTransform
 	Matrix matWV;
 	Matrix matWVP;
 };
-
 extern tTransform g_transform;
 
 
@@ -196,8 +195,4 @@ struct tGlobal
 	UINT  Light3DCount;
 	int	  globalpadding[2];
 };
-
-extern tGlobal GlobalData;
-
-
-
+extern tGlobal g_globalData;

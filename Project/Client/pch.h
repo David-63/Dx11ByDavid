@@ -22,6 +22,10 @@
 #endif // _DEBUG
 
 // Script lib
-
+#ifdef _DEBUG
+#pragma comment(lib, "Script//Script_d")
+#else
+#pragma comment(lib, "Script//Script")
+#endif
 
 #endif //PCH_H

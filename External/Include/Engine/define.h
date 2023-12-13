@@ -1,29 +1,21 @@
 #pragma once
 
-
 #define DEVICE  CDevice::GetInst()->GetDevice()
 #define CONTEXT CDevice::GetInst()->GetDeviceContext()
+
+#define SINGLE(type) private: type(); ~type(); friend class CSingleton<type>;
 
 #define CLONE(type) public: virtual type* Clone() { return new type(*this); }
 #define CLONE_DISABLE(type) public: virtual type* Clone() { return nullptr; assert(nullptr); }
 
-#define KEY_TAP(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::TAP		
+#define KEY_PRESS(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::PRESS
+#define KEY_HOLD(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::HOLD
 #define KEY_RELEASE(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::RELEASE
-#define KEY_PRESSED(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::PRESSED
 
-#define DT CTimeMgr::GetInst()->GetDeltaTime()
+
+#define DT static_cast<float>(CTimeMgr::GetInst()->GetDeltaTime())
 
 #define MAX_LAYER 32
-
-#define SINGLE(type) private: type(); ~type(); friend class CSingleton<type>;
-
-enum class INPUT_TYPE
-{
-	Press,
-	Hold,
-	Release,
-	Invalid,
-};
 
 enum class COMPONENT_TYPE
 {

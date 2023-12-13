@@ -11,6 +11,7 @@ private:
 	INPUT_TYPE m_mBtnState = INPUT_TYPE::Invalid;
 
 	Vec2 m_mousePos;
+	Vec2 m_mouseDir;
 
 public:
 	INPUT_TYPE GetLeftState();
@@ -18,6 +19,7 @@ public:
 	INPUT_TYPE GetMiddleState();
 
 	Vec2 GetPos();
+	Vec2 GetDir();
 
 public:
 	void OnLeftPressed(int x, int y);

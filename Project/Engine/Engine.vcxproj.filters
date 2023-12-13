@@ -20,10 +20,127 @@
     <Filter Include="Source\01 Engine">
       <UniqueIdentifier>{9972b610-bbaf-4784-b604-a9b8794dfe36}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\01 Engine\Window Container">
-      <UniqueIdentifier>{edb03ab7-d8d5-4ffd-8f52-8b2a2afc787e}</UniqueIdentifier>
+    <Filter Include="Source\02 Device">
+      <UniqueIdentifier>{3be6575a-75fb-4225-9de2-2cb66849ffed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\01 Engine\Input">
+    <Filter Include="Source\03 Manager">
+      <UniqueIdentifier>{60d78d57-46b9-466a-833f-31bd14e1dd01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04 Resource">
+      <UniqueIdentifier>{6d463fd1-58b9-4d44-8769-0c8d9c8dfff0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04 Resource\1 Mesh">
+      <UniqueIdentifier>{5472bd26-ea92-41c6-999a-15c455a15bb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03 Manager\01 PathMgr">
+      <UniqueIdentifier>{329f4b79-b820-4327-bced-6ec2baa4f178}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03 Manager\02 TimeMgr">
+      <UniqueIdentifier>{e4b2f06c-6a14-4da7-bc4b-d1943e9451cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04 Resource\3 Shader">
+      <UniqueIdentifier>{1befa923-879d-465b-b246-9f70944424ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04 Resource\3 Shader\GraphicShader">
+      <UniqueIdentifier>{1b0cc9b1-4e67-4b4d-bd1e-366a85ee7903}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04 Resource\3 Shader\ComputeShader">
+      <UniqueIdentifier>{7c63b3d1-8f6e-4273-adef-23ea96928cb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04 Resource\2 Texture">
+      <UniqueIdentifier>{b92e8980-731e-4d96-94b5-8159f9e26ea3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04 Resource\4 Material">
+      <UniqueIdentifier>{d001a25d-6801-4733-bf20-e7bab23e53b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03 Manager\03 ResMgr">
+      <UniqueIdentifier>{5c330094-4e1f-442c-926a-5ab5c441d132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\02 Device\ConstantBuffer">
+      <UniqueIdentifier>{13fe694d-b5fd-4a6e-a485-a97d0d90b9ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\02 Device\StructuredBuffer">
+      <UniqueIdentifier>{2b7732b2-9045-48fb-85ba-1181c1ffe19d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\05 Level">
+      <UniqueIdentifier>{354c71cd-e533-466a-95eb-60015c1cdd4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06 Component">
+      <UniqueIdentifier>{a957f4f3-98eb-41cf-9b96-6b0a735ee5fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03 Manager\04 LevelMgr">
+      <UniqueIdentifier>{f0f01858-7609-4a1c-bc86-3f103f53e0c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03 Manager\05 RenderMgr">
+      <UniqueIdentifier>{e15241a8-576e-4651-916e-a95abfa26c88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03 Manager\06 EventMgr">
+      <UniqueIdentifier>{ca037f7e-71c9-4375-a83d-60cdf68961e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03 Manager\07 CollisionMgr">
+      <UniqueIdentifier>{77112207-cfaf-446f-9d06-f1728de41bc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03 Manager\08 FontMgr">
+      <UniqueIdentifier>{72451a48-41c1-491f-942e-1e136099e725}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06 Component\1 Transform">
+      <UniqueIdentifier>{42bf7780-1d03-4499-9b15-0e73fd1be481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06 Component\RenderComp">
+      <UniqueIdentifier>{cb1d17ba-a368-4e57-a98d-9209ef8a06b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06 Component\RenderComp\1 MeshRender">
+      <UniqueIdentifier>{32ac43db-94a8-42f6-b09b-cdf17cda0a22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06 Component\Script">
+      <UniqueIdentifier>{ff8f1b1b-6e0e-4cfd-8054-f36c9e37aaaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06 Component\2 Camera">
+      <UniqueIdentifier>{49e52d59-0cfb-479d-a1bd-4463f2eb5e1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06 Component\3 Collider2D">
+      <UniqueIdentifier>{653d5158-f2f9-4f0f-8efb-d7ce19491d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06 Component\4 Light2D">
+      <UniqueIdentifier>{bf484cf6-d35a-4439-a916-e6d98294ca25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06 Component\5 Animator2D">
+      <UniqueIdentifier>{01c57277-0369-4d4f-8bbc-840f3b5d11f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06 Component\RenderComp\2 ParticleSystem">
+      <UniqueIdentifier>{7b632cc6-8240-4f16-b998-e2acd73cc973}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07 ShaderCode">
+      <UniqueIdentifier>{b40c9a1f-8cbc-4b28-97a3-85af01cd5a51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07 ShaderCode\stdShader">
+      <UniqueIdentifier>{ff6892a8-b831-4dcb-84de-90036865cf94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07 ShaderCode\ComputeShaders">
+      <UniqueIdentifier>{c4a2701d-b9e4-44ef-a58c-ede32ae58de2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07 ShaderCode\default">
+      <UniqueIdentifier>{4633754e-f420-4dbc-b600-ea92957eed76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07 ShaderCode\otherShader">
+      <UniqueIdentifier>{1d5bb318-e4ce-4887-90fc-acf153c380ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06 Component\RenderComp\3 Tilemap">
+      <UniqueIdentifier>{d06f453a-f5d5-46a0-9f8d-b922fb8dc587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04 Resource\5 Sound">
+      <UniqueIdentifier>{2cc8cf76-71fe-4dfd-9b51-4c088202c37c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\04 Resource\6 Prefab">
+      <UniqueIdentifier>{d8d88b3c-9ee8-4cc6-9c36-c4093d923882}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07 ShaderCode\ComputeShaders\ParticleUpdate">
+      <UniqueIdentifier>{73f0743f-7f74-48e0-b66c-45c6a8cc086b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07 ShaderCode\ComputeShaders\SetColor">
+      <UniqueIdentifier>{fa07dedf-810c-4591-b91a-cd65f11715e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\03 Manager\00 KeyMgr">
       <UniqueIdentifier>{0fbbf21c-6e2c-4ccb-82d2-3ffae065ffc3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -49,29 +166,134 @@
     <ClInclude Include="struct.h">
       <Filter>Source\00 header</Filter>
     </ClInclude>
+    <ClInclude Include="CEntity.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ptr.h">
+      <Filter>Source\04 Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CRes.h">
+      <Filter>Source\04 Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CMesh.h">
+      <Filter>Source\04 Resource\1 Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="CShader.h">
+      <Filter>Source\04 Resource\3 Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraphicsShader.h">
+      <Filter>Source\04 Resource\3 Shader\GraphicShader</Filter>
+    </ClInclude>
+    <ClInclude Include="CPathMgr.h">
+      <Filter>Source\03 Manager\01 PathMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeMgr.h">
+      <Filter>Source\03 Manager\02 TimeMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CTexture.h">
+      <Filter>Source\04 Resource\2 Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="CMaterial.h">
+      <Filter>Source\04 Resource\4 Material</Filter>
+    </ClInclude>
+    <ClInclude Include="CDevice.h">
+      <Filter>Source\02 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="CResMgr.h">
+      <Filter>Source\03 Manager\03 ResMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="func.h">
+      <Filter>Source\00 header</Filter>
+    </ClInclude>
+    <ClInclude Include="CConstantBuffer.h">
+      <Filter>Source\02 Device\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameObject.h">
+      <Filter>Source\05 Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CComponent.h">
+      <Filter>Source\06 Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CLayer.h">
+      <Filter>Source\05 Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevel.h">
+      <Filter>Source\05 Level</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelMgr.h">
+      <Filter>Source\03 Manager\04 LevelMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CStructuredBuffer.h">
+      <Filter>Source\02 Device\StructuredBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderMgr.h">
+      <Filter>Source\03 Manager\05 RenderMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CEventMgr.h">
+      <Filter>Source\03 Manager\06 EventMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollisionMgr.h">
+      <Filter>Source\03 Manager\07 CollisionMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="components.h">
+      <Filter>Source\00 header</Filter>
+    </ClInclude>
+    <ClInclude Include="CScript.h">
+      <Filter>Source\06 Component\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderComp.h">
+      <Filter>Source\06 Component\RenderComp</Filter>
+    </ClInclude>
+    <ClInclude Include="CMeshRender.h">
+      <Filter>Source\06 Component\RenderComp\1 MeshRender</Filter>
+    </ClInclude>
+    <ClInclude Include="CTransform.h">
+      <Filter>Source\06 Component\1 Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>Source\06 Component\2 Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollider2D.h">
+      <Filter>Source\06 Component\3 Collider2D</Filter>
+    </ClInclude>
+    <ClInclude Include="CLight2D.h">
+      <Filter>Source\06 Component\4 Light2D</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnim2D.h">
+      <Filter>Source\06 Component\5 Animator2D</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimator2D.h">
+      <Filter>Source\06 Component\5 Animator2D</Filter>
+    </ClInclude>
+    <ClInclude Include="CFontMgr.h">
+      <Filter>Source\03 Manager\08 FontMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CComputeShader.h">
+      <Filter>Source\04 Resource\3 Shader\ComputeShader</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticleSystem.h">
+      <Filter>Source\06 Component\RenderComp\2 ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CParticleUpdateShader.h">
+      <Filter>Source\07 ShaderCode\ComputeShaders\ParticleUpdate</Filter>
+    </ClInclude>
+    <ClInclude Include="CSound.h">
+      <Filter>Source\04 Resource\5 Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="CTilemap.h">
+      <Filter>Source\06 Component\RenderComp\3 Tilemap</Filter>
+    </ClInclude>
+    <ClInclude Include="CSetColorShader.h">
+      <Filter>Source\07 ShaderCode\ComputeShaders\SetColor</Filter>
+    </ClInclude>
+    <ClInclude Include="CPrefab.h">
+      <Filter>Source\04 Resource\6 Prefab</Filter>
+    </ClInclude>
     <ClInclude Include="CEngine.h">
       <Filter>Source\01 Engine</Filter>
     </ClInclude>
-    <ClInclude Include="CWindowContainer.h">
-      <Filter>Source\01 Engine\Window Container</Filter>
-    </ClInclude>
-    <ClInclude Include="CInput.h">
-      <Filter>Source\01 Engine\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="CKeyboardClass.h">
-      <Filter>Source\01 Engine\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="CKeyboardEvent.h">
-      <Filter>Source\01 Engine\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="CMouseClass.h">
-      <Filter>Source\01 Engine\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="CMouseEvent.h">
-      <Filter>Source\01 Engine\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="CRenderWindow.h">
-      <Filter>Source\01 Engine\Window Container</Filter>
+    <ClInclude Include="CKeyMgr.h">
+      <Filter>Source\03 Manager\00 KeyMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -81,34 +303,171 @@
     <ClCompile Include="pch.cpp">
       <Filter>default</Filter>
     </ClCompile>
+    <ClCompile Include="CEntity.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CRes.cpp">
+      <Filter>Source\04 Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CMesh.cpp">
+      <Filter>Source\04 Resource\1 Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="CShader.cpp">
+      <Filter>Source\04 Resource\3 Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="CGraphicsShader.cpp">
+      <Filter>Source\04 Resource\3 Shader\GraphicShader</Filter>
+    </ClCompile>
+    <ClCompile Include="CPathMgr.cpp">
+      <Filter>Source\03 Manager\01 PathMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgr.cpp">
+      <Filter>Source\03 Manager\02 TimeMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CTexture.cpp">
+      <Filter>Source\04 Resource\2 Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="CMaterial.cpp">
+      <Filter>Source\04 Resource\4 Material</Filter>
+    </ClCompile>
+    <ClCompile Include="CDevice.cpp">
+      <Filter>Source\02 Device</Filter>
+    </ClCompile>
+    <ClCompile Include="CResMgr.cpp">
+      <Filter>Source\03 Manager\03 ResMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="func.cpp">
+      <Filter>Source\00 header</Filter>
+    </ClCompile>
+    <ClCompile Include="CConstantBuffer.cpp">
+      <Filter>Source\02 Device\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="extern.cpp">
+      <Filter>Source\00 header</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameObject.cpp">
+      <Filter>Source\05 Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CComponent.cpp">
+      <Filter>Source\06 Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CLayer.cpp">
+      <Filter>Source\05 Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevel.cpp">
+      <Filter>Source\05 Level</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelMgr.cpp">
+      <Filter>Source\03 Manager\04 LevelMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CStructuredBuffer.cpp">
+      <Filter>Source\02 Device\StructuredBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderMgr.cpp">
+      <Filter>Source\03 Manager\05 RenderMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CEventMgr.cpp">
+      <Filter>Source\03 Manager\06 EventMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollisionMgr.cpp">
+      <Filter>Source\03 Manager\07 CollisionMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CScript.cpp">
+      <Filter>Source\06 Component\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderComp.cpp">
+      <Filter>Source\06 Component\RenderComp</Filter>
+    </ClCompile>
+    <ClCompile Include="CMeshRender.cpp">
+      <Filter>Source\06 Component\RenderComp\1 MeshRender</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransform.cpp">
+      <Filter>Source\06 Component\1 Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>Source\06 Component\2 Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollider2D.cpp">
+      <Filter>Source\06 Component\3 Collider2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CLight2D.cpp">
+      <Filter>Source\06 Component\4 Light2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnim2D.cpp">
+      <Filter>Source\06 Component\5 Animator2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimator2D.cpp">
+      <Filter>Source\06 Component\5 Animator2D</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontMgr.cpp">
+      <Filter>Source\03 Manager\08 FontMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CComputeShader.cpp">
+      <Filter>Source\04 Resource\3 Shader\ComputeShader</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleSystem.cpp">
+      <Filter>Source\06 Component\RenderComp\2 ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticleUpdateShader.cpp">
+      <Filter>Source\07 ShaderCode\ComputeShaders\ParticleUpdate</Filter>
+    </ClCompile>
+    <ClCompile Include="CSound.cpp">
+      <Filter>Source\04 Resource\5 Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="CTilemap.cpp">
+      <Filter>Source\06 Component\RenderComp\3 Tilemap</Filter>
+    </ClCompile>
+    <ClCompile Include="CSetColorShader.cpp">
+      <Filter>Source\07 ShaderCode\ComputeShaders\SetColor</Filter>
+    </ClCompile>
+    <ClCompile Include="CPrefab.cpp">
+      <Filter>Source\04 Resource\6 Prefab</Filter>
+    </ClCompile>
     <ClCompile Include="CEngine.cpp">
       <Filter>Source\01 Engine</Filter>
     </ClCompile>
-    <ClCompile Include="CWindowContainer.cpp">
-      <Filter>Source\01 Engine\Window Container</Filter>
-    </ClCompile>
-    <ClCompile Include="CInput.cpp">
-      <Filter>Source\01 Engine\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="CKeyboardClass.cpp">
-      <Filter>Source\01 Engine\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="CKeyboardEvent.cpp">
-      <Filter>Source\01 Engine\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="CMouseClass.cpp">
-      <Filter>Source\01 Engine\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="CMouseEvent.cpp">
-      <Filter>Source\01 Engine\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="CRenderWindow.cpp">
-      <Filter>Source\01 Engine\Window Container</Filter>
+    <ClCompile Include="CKeyMgr.cpp">
+      <Filter>Source\03 Manager\00 KeyMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
       <Filter>Source\00 header\Module</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="particle_update.fx">
+      <Filter>Source\07 ShaderCode\ComputeShaders</Filter>
+    </FxCompile>
+    <FxCompile Include="value.fx">
+      <Filter>Source\07 ShaderCode\default</Filter>
+    </FxCompile>
+    <FxCompile Include="struct.fx">
+      <Filter>Source\07 ShaderCode\default</Filter>
+    </FxCompile>
+    <FxCompile Include="func.fx">
+      <Filter>Source\07 ShaderCode\default</Filter>
+    </FxCompile>
+    <FxCompile Include="debugshape.fx">
+      <Filter>Source\07 ShaderCode\stdShader</Filter>
+    </FxCompile>
+    <FxCompile Include="std2d.fx">
+      <Filter>Source\07 ShaderCode\stdShader</Filter>
+    </FxCompile>
+    <FxCompile Include="std3d.fx">
+      <Filter>Source\07 ShaderCode\stdShader</Filter>
+    </FxCompile>
+    <FxCompile Include="tilemap.fx">
+      <Filter>Source\07 ShaderCode\otherShader</Filter>
+    </FxCompile>
+    <FxCompile Include="particle_render.fx">
+      <Filter>Source\07 ShaderCode\otherShader</Filter>
+    </FxCompile>
+    <FxCompile Include="postprocess.fx">
+      <Filter>Source\07 ShaderCode\otherShader</Filter>
+    </FxCompile>
+    <FxCompile Include="setcolor.fx">
+      <Filter>Source\07 ShaderCode\ComputeShaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
