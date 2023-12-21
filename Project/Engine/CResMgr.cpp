@@ -320,6 +320,115 @@ void CResMgr::CreateDefaultMesh()
 	AddRes<CMesh>(L"CubeMesh", pMesh);
 	vecIdx.clear();
 
+	// ===========
+	// Sphere Mesh
+	// ===========
+	fRadius = 0.5f;
+
+	// Top
+	v.vPos = Vec3(0.f, fRadius, 0.f);
+	v.vUV = Vec2(0.5f, 0.f);
+	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vNormal = v.vPos;
+	v.vNormal.Normalize();
+	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vBinormal = Vec3(0.f, 0.f, -1.f);
+	vecVtx.push_back(v);
+
+	// Body
+	UINT iStackCount = 40; // °¡·Î ºÐÇÒ °³¼ö
+	UINT iSliceCount = 40; // ¼¼·Î ºÐÇÒ °³¼ö
+
+	float fStackAngle = XM_PI / iStackCount;
+	float fSliceAngle = XM_2PI / iSliceCount;
+
+	float fUVXStep = 1.f / (float)iSliceCount;
+	float fUVYStep = 1.f / (float)iStackCount;
+
+	for (UINT i = 1; i < iStackCount; ++i)
+	{
+		float phi = i * fStackAngle;
+
+		for (UINT j = 0; j <= iSliceCount; ++j)
+		{
+			float theta = j * fSliceAngle;
+
+			v.vPos = Vec3(fRadius * sinf(i * fStackAngle) * cosf(j * fSliceAngle)
+				, fRadius * cosf(i * fStackAngle)
+				, fRadius * sinf(i * fStackAngle) * sinf(j * fSliceAngle));
+
+			v.vUV = Vec2(fUVXStep * j, fUVYStep * i);
+			v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+			v.vNormal = v.vPos;
+			v.vNormal.Normalize();
+
+			v.vTangent.x = -fRadius * sinf(phi) * sinf(theta);
+			v.vTangent.y = 0.f;
+			v.vTangent.z = fRadius * sinf(phi) * cosf(theta);
+			v.vTangent.Normalize();
+
+			v.vNormal.Cross(v.vTangent, v.vBinormal);
+			v.vBinormal.Normalize();
+
+			vecVtx.push_back(v);
+		}
+	}
+
+	// Bottom
+	v.vPos = Vec3(0.f, -fRadius, 0.f);
+	v.vUV = Vec2(0.5f, 1.f);
+	v.vColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	v.vNormal = v.vPos;
+	v.vNormal.Normalize();
+
+	v.vTangent = Vec3(1.f, 0.f, 0.f);
+	v.vBinormal = Vec3(0.f, 0.f, -1.f);
+	vecVtx.push_back(v);
+
+	// ÀÎµ¦½º
+	// ºÏ±ØÁ¡
+	for (UINT i = 0; i < iSliceCount; ++i)
+	{
+		vecIdx.push_back(0);
+		vecIdx.push_back(i + 2);
+		vecIdx.push_back(i + 1);
+	}
+
+	// ¸öÅë
+	for (UINT i = 0; i < iStackCount - 2; ++i)
+	{
+		for (UINT j = 0; j < iSliceCount; ++j)
+		{
+			// + 
+			// | \
+			// +--+
+			vecIdx.push_back((iSliceCount + 1) * (i)+(j)+1);
+			vecIdx.push_back((iSliceCount + 1) * (i + 1) + (j + 1) + 1);
+			vecIdx.push_back((iSliceCount + 1) * (i + 1) + (j)+1);
+
+			// +--+
+			//  \ |
+			//    +
+			vecIdx.push_back((iSliceCount + 1) * (i)+(j)+1);
+			vecIdx.push_back((iSliceCount + 1) * (i)+(j + 1) + 1);
+			vecIdx.push_back((iSliceCount + 1) * (i + 1) + (j + 1) + 1);
+		}
+	}
+
+	// ³²±ØÁ¡
+	UINT iBottomIdx = (UINT)vecVtx.size() - 1;
+	for (UINT i = 0; i < iSliceCount; ++i)
+	{
+		vecIdx.push_back(iBottomIdx);
+		vecIdx.push_back(iBottomIdx - (i + 2));
+		vecIdx.push_back(iBottomIdx - (i + 1));
+	}
+
+	pMesh = new CMesh(true);
+	pMesh->Create(vecVtx.data(), (UINT)vecVtx.size(), vecIdx.data(), (UINT)vecIdx.size());
+	AddRes<CMesh>(L"SphereMesh", pMesh);
+	vecVtx.clear();
+	vecIdx.clear();
 }
 
 void CResMgr::CreateDefaultGraphicsShader()
@@ -516,6 +625,8 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASK);
 
 	// Parameter	
+	pShader->AddTexParam(TEX_0, "Output Texture");
+	pShader->AddTexParam(TEX_1, "Normal Texture");
 
 	AddRes(pShader->GetKey(), pShader);
 
