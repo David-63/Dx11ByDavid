@@ -60,6 +60,99 @@ void CalcLight2D(float3 _vWorldPos, float3 _vWorldDir, inout tLightColor _Light)
     }
 }
 
+void CalcLight3D(float3 _vViewPos, float3 _vViewNormal, int _LightIdx, inout tLightColor _Light, inout float _SpecPow)
+{
+    tLightInfo LightInfo = g_Light3DBuffer[_LightIdx];
+    
+    float fLightPow = 0.f;
+    float fSpecPow = 0.f;
+    float fDistPow = 1.f;
+    float3 vViewLightDir = (float3) 0.f;
+    float3 vLightViewPos = (float3) 0.f;
+    // DirLight 인 경우
+    if (0 == LightInfo.LightType)
+    {
+        // ViewSpace 에서의 광원의 방향
+        vViewLightDir = normalize(mul(float4(normalize(LightInfo.vWorldDir.xyz), 0.f), g_matView)).xyz;
+        
+        // ViewSpace 에서의 노말벡터와 광원의 방향을 내적 (램버트 코사인 법칙)    
+        fLightPow = saturate(dot(_vViewNormal, -vViewLightDir));
+        
+        // 반사광
+        float3 vViewReflect = normalize(vViewLightDir + 2.f * (dot(-vViewLightDir, _vViewNormal)) * _vViewNormal);
+        float3 vEye = normalize(_vViewPos);
+        
+        // 반사광의 세기 구하기
+        fSpecPow = saturate(dot(vViewReflect, -vEye));
+        fSpecPow = pow(fSpecPow, 20);
+    }
+    
+    // Point Light 인 경우
+    else if (1 == LightInfo.LightType)
+    {        
+        // ViewSpace 에서의 광원의 위치
+        vLightViewPos = mul(float4(LightInfo.vWorldPos.xyz, 1.f), g_matView).xyz;
+        
+        // 광원으로부터 오는 빛의 방향 구하기
+        vViewLightDir = normalize(_vViewPos - vLightViewPos);
+                
+        // 포인트 라이트로부터 거리체크
+        float fDist = distance(_vViewPos, vLightViewPos);
+        fDistPow = saturate(1.f - (fDist / LightInfo.Radius));
+               
+        
+        // ViewSpace 에서의 노말벡터와 광원의 방향을 내적 (램버트 코사인 법칙)    
+        fLightPow = saturate(dot(_vViewNormal, -vViewLightDir)) * fDistPow;
+        
+        // 반사광
+        float3 vViewReflect = normalize(vViewLightDir + 2.f * (dot(-vViewLightDir, _vViewNormal)) * _vViewNormal);
+        float3 vEye = normalize(_vViewPos);
+        
+        // 반사광의 세기 구하기
+        fSpecPow = saturate(dot(vViewReflect, -vEye));
+        fSpecPow = pow(fSpecPow, 20) * fDistPow;
+    }
+    
+    // Spot Light 인 경우
+    else
+    {
+         // LightDir 과 Angle 값을 활용해서 SpotLight 구현해보기
+        
+        // 빛계산에 필요한 변수 구하기
+        vLightViewPos = mul(float4(LightInfo.vWorldPos.xyz, 1.f), g_matView).xyz; // view 공간에서의 빛 위치
+        vViewLightDir = normalize(mul(float4(LightInfo.vWorldDir.xyz, 0.f), g_matView)).xyz; // view 공간에서의 빛 방향
+        
+        float3 vLightFromPixelDir = normalize(_vViewPos - vLightViewPos); // 픽셀에서 빛으로 향하는 방향
+        float fPixelToLightRadian = acos(dot(vViewLightDir, vLightFromPixelDir)); // 픽셀과 빛 방향 사이의 각도
+        float fLightAngle = radians(LightInfo.Angle) / 2.f; // 빛 각도
+        float fAnglePow = 0.f; // 각도에 따른 빛의 세기 보정값
+        
+        // 포인트 라이트로부터 거리체크
+        float fDist = distance(_vViewPos, vLightViewPos);
+        fDistPow = saturate(cos((fDist / LightInfo.Radius) * (PI / 2.f)));
+        
+        // 스포트라이트 각도 제한하기
+        if (fPixelToLightRadian <= fLightAngle)
+        {
+            fAnglePow = saturate(1.f / fPixelToLightRadian / fLightAngle);
+        }
+        // ViewSpace 에서의 노말벡터와 광원의 방향을 내적 (램버트 코사인 법칙)    
+        fLightPow = saturate(dot(_vViewNormal, -vViewLightDir)) * fDistPow * fAnglePow;
+        
+        // 반사광
+        float3 vViewReflect = normalize(vViewLightDir + 2.f * (dot(-vViewLightDir, _vViewNormal)) * _vViewNormal);
+        float3 vEye = normalize(_vViewPos);
+        
+        // 반사광의 세기 구하기
+        fSpecPow = saturate(dot(vViewReflect, -vEye));
+        fSpecPow = pow(fSpecPow, 20) * fDistPow;
+    }  
+    
+    // 결과 전달하기
+    _Light.vDiffuse += LightInfo.Color.vDiffuse * fLightPow;
+    _Light.vAmbient += LightInfo.Color.vAmbient;
+    _SpecPow += fSpecPow;
+}
 
 // ======
 // Random

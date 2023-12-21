@@ -68,32 +68,64 @@ void CreateTestLevel()
 
 	// 광원 추가
 	{
-		/*CGameObject* pLightObj = new CGameObject;
-		pLightObj->SetName(L"Point Light");
+		CGameObject* pLightObj = new CGameObject;
+		pLightObj->SetName(L"Point Light 1");
 
 		pLightObj->AddComponent(new CTransform);
-		pLightObj->AddComponent(new CLight2D);
-		pLightObj->Transform()->SetRelativeRot(Vec3(0.f, 0.f, XM_PI / 2.f));
-		pLightObj->Light2D()->SetLightType(LIGHT_TYPE::POINT);
-		pLightObj->Light2D()->SetLightDiffuse(Vec3(1.f, 1.f, 1.f));
-		pLightObj->Light2D()->SetRadius(500.f);
+		pLightObj->AddComponent(new CLight3D);
 
-		SpawnGameObject(pLightObj, Vec3(0.f, 0.f, 0.f), L"Default");*/
+		//pLightObj->Transform()->SetRelativeRot(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
+		//pLightObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+		//pLightObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));	
+		//pLightObj->Light3D()->SetLightAmbient(Vec3(0.15f, 0.15f, 0.15f));
+
+		pLightObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
+		pLightObj->Light3D()->SetLightColor(Vec3(1.f, 0.2f, 0.2f));
+		pLightObj->Light3D()->SetLightAmbient(Vec3(0.f, 0.f, 0.f));
+		pLightObj->Light3D()->SetRadius(1000.f);
+
+		SpawnGameObject(pLightObj, Vec3(-500.f, -250.f, 0.f), 0);
+
+
+		pLightObj = new CGameObject;
+		pLightObj->SetName(L"Point Light 2");
+
+		pLightObj->AddComponent(new CTransform);
+		pLightObj->AddComponent(new CLight3D);
+
+		pLightObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
+		pLightObj->Light3D()->SetLightColor(Vec3(0.2f, 0.2f, 1.f));
+		pLightObj->Light3D()->SetLightAmbient(Vec3(0.f, 0.f, 0.f));
+		pLightObj->Light3D()->SetRadius(1000.f);
+
+		SpawnGameObject(pLightObj, Vec3(500.f, -250.f, 0.f), 0);
 	}
 
 
 	// 오브젝트 생성
 	{
-		CGameObject* pParent = new CGameObject;
-		pParent->SetName(L"Player");
-		pParent->AddComponent(new CTransform);
-		pParent->AddComponent(new CMeshRender);
-		pParent->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 200.f));
-		pParent->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
-		pParent->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-		SpawnGameObject(pParent, Vec3(0.f, 0.f, 500.f), L"Player");
-	}
+		CGameObject* pPlayer = new CGameObject;
+		pPlayer->SetName(L"Player");
+		pPlayer->AddComponent(new CTransform);
+		pPlayer->AddComponent(new CMeshRender);
+		pPlayer->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 200.f));
+		pPlayer->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
+		pPlayer->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+		SpawnGameObject(pPlayer, Vec3(0.f, 0.f, 500.f), L"Player");
 
+		CGameObject* pGround = new CGameObject;
+		pGround->SetName(L"Background");
+		pGround->AddComponent(new CTransform);
+		pGround->AddComponent(new CMeshRender);
+
+		pGround->Transform()->SetRelativeScale(Vec3(2000.f, 2000.f, 1.f));
+		pGround->Transform()->SetRelativeRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
+
+		pGround->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));
+		pGround->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+
+		SpawnGameObject(pGround, Vec3(0.f, -500.f, 0.f), L"Background");
+	}
 
 	// 충돌 시킬 레이어 짝 지정
 	CCollisionMgr::GetInst()->LayerCheck(L"Player", L"TestObj");

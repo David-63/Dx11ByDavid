@@ -18,10 +18,10 @@ void CLight3D::finaltick()
 
 void CLight3D::SaveToLevelFile(FILE* _File)
 {
-
+	fwrite(&m_LightInfo, sizeof(tLightInfo), 1, _File);
 }
 
 void CLight3D::LoadFromLevelFile(FILE* _File)
 {
-
+	fread(&m_LightInfo, sizeof(tLightInfo), 1, _File);
 }

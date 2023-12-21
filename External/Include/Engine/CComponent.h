@@ -8,7 +8,6 @@ class CMeshRender;
 
 #define GET_OTHER_COMPONENT(Type) C##Type* Type() {return m_owner->Type();}
 
-
 class CComponent : public CEntity
 {
 private:
@@ -37,6 +36,7 @@ public:
     GET_OTHER_COMPONENT(Light2D);
     GET_OTHER_COMPONENT(Tilemap);
     GET_OTHER_COMPONENT(Animator2D);
+    GET_OTHER_COMPONENT(Light3D);
 
 public:
     CComponent(COMPONENT_TYPE _Type);

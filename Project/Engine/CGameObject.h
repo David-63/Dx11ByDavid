@@ -6,12 +6,13 @@ class CTransform;
 class CCollider2D;
 class CAnimator2D;
 class CLight2D;
+class CLight3D;
 class CCamera;
-class CScript;
 class CRenderComp;
 class CMeshRender;
 class CParticleSystem;
 class CTilemap;
+class CScript;
 
 #define GET_COMPONENT(Type, TYPE) C##Type* Type() const { return (C##Type*)m_arrCom[(UINT)COMPONENT_TYPE::TYPE]; }
 
@@ -55,6 +56,7 @@ public:
     GET_COMPONENT(Light2D, LIGHT2D);
     GET_COMPONENT(Tilemap, TILEMAP);
     GET_COMPONENT(Animator2D, ANIMATOR2D);
+    GET_COMPONENT(Light3D, LIGHT3D);
 
     CRenderComp* GetRenderComponent() const { return m_renderCom; }
 

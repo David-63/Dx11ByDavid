@@ -43,12 +43,12 @@ int ParamUI::Param_Float(const string& _strDesc, float* _pData, bool _bDrag)
     ImGui::Text(_strDesc.c_str());
     ImGui::SameLine(100);
 
-    string strIntName = GetNextName("##Param_Int");
+    string strFloatName = GetNextName("##Param_Float");
     ImGui::SetNextItemWidth(150);
 
     if (_bDrag)
     {
-        if (ImGui::DragFloat(strIntName.c_str(), _pData))
+        if (ImGui::DragFloat(strFloatName.c_str(), _pData))
         {
             return 1;
         }
@@ -56,7 +56,7 @@ int ParamUI::Param_Float(const string& _strDesc, float* _pData, bool _bDrag)
 
     else
     {
-        if (ImGui::InputFloat(strIntName.c_str(), _pData))
+        if (ImGui::InputFloat(strFloatName.c_str(), _pData))
         {
             return 1;
         }

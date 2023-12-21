@@ -140,6 +140,9 @@
     <Filter Include="Source\07 ShaderCode\util">
       <UniqueIdentifier>{4633754e-f420-4dbc-b600-ea92957eed76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\06 Component\6 Light3D">
+      <UniqueIdentifier>{f6d3768d-5225-4da2-91f7-a905696b5757}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -292,6 +295,9 @@
     <ClInclude Include="CKeyMgr.h">
       <Filter>Source\03 Manager\00 KeyMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CLight3D.h">
+      <Filter>Source\06 Component\6 Light3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -425,6 +431,12 @@
     </ClCompile>
     <ClCompile Include="CKeyMgr.cpp">
       <Filter>Source\03 Manager\00 KeyMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CResMgr_init.cpp">
+      <Filter>Source\03 Manager\03 ResMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CLight3D.cpp">
+      <Filter>Source\06 Component\6 Light3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
