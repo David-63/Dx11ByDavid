@@ -10,3 +10,4 @@
 #include "CMeshRender.h"
 #include "CTilemap.h"
 #include "CParticleSystem.h"
+#include "CSkyBox.h"

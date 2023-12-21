@@ -64,7 +64,20 @@ void CreateTestLevel()
 	}
 
 	
+	{
+		// SkyBox 추가
+		CGameObject* pSkyBox = new CGameObject;
+		pSkyBox->SetName(L"SkyBox");
 
+		pSkyBox->AddComponent(new CTransform);
+		pSkyBox->AddComponent(new CSkyBox);
+
+		pSkyBox->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+		pSkyBox->SkyBox()->SetSkyBoxType(SKYBOX_TYPE::CUBE);
+		pSkyBox->SkyBox()->SetSkyBoxTexture(CResMgr::GetInst()->FindRes<CTexture>(L"texture\\skybox\\SkyWater.dds"));
+
+		SpawnGameObject(pSkyBox, Vec3(0.f, 0.f, 0.f), L"Default");
+	}
 
 	// 광원 추가
 	{

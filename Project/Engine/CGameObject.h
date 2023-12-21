@@ -12,6 +12,7 @@ class CRenderComp;
 class CMeshRender;
 class CParticleSystem;
 class CTilemap;
+class CSkyBox;
 class CScript;
 
 #define GET_COMPONENT(Type, TYPE) C##Type* Type() const { return (C##Type*)m_arrCom[(UINT)COMPONENT_TYPE::TYPE]; }
@@ -57,6 +58,7 @@ public:
     GET_COMPONENT(Tilemap, TILEMAP);
     GET_COMPONENT(Animator2D, ANIMATOR2D);
     GET_COMPONENT(Light3D, LIGHT3D);
+    GET_COMPONENT(SkyBox, SKYBOX);
 
     CRenderComp* GetRenderComponent() const { return m_renderCom; }
 

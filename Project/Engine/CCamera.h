@@ -6,6 +6,7 @@ class CCamera : public CComponent
 private:
     float       m_fAspectRatio = 1.0f;
     float       m_fScale = 1.0f;        // Orthograpic 에서 사용하는 카메라 배율
+    float       m_fFar = 5000.f;
 
     PROJ_TYPE   m_ProjType = PROJ_TYPE::ORTHOGRAPHIC;
 
@@ -31,6 +32,9 @@ public:
 
     void SetScale(float _fScale) { m_fScale = _fScale; }
     float GetScale() { return m_fScale; }
+
+    void SetFar(float _Far) { m_fFar = _Far; }
+    float GetFar() { return m_fFar; }
 
     void SetLayerMask(int _iLayer, bool _Visible);
     void SetLayerMaskAll(bool _Visible);

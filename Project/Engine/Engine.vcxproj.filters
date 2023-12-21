@@ -143,6 +143,9 @@
     <Filter Include="Source\06 Component\6 Light3D">
       <UniqueIdentifier>{f6d3768d-5225-4da2-91f7-a905696b5757}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\06 Component\RenderComp\4 Skybox">
+      <UniqueIdentifier>{9e6ff5d4-7903-4e6a-ba0b-05292c18196c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -298,6 +301,9 @@
     <ClInclude Include="CLight3D.h">
       <Filter>Source\06 Component\6 Light3D</Filter>
     </ClInclude>
+    <ClInclude Include="CSkyBox.h">
+      <Filter>Source\06 Component\RenderComp\4 Skybox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -438,6 +444,9 @@
     <ClCompile Include="CLight3D.cpp">
       <Filter>Source\06 Component\6 Light3D</Filter>
     </ClCompile>
+    <ClCompile Include="CSkyBox.cpp">
+      <Filter>Source\06 Component\RenderComp\4 Skybox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -476,6 +485,9 @@
       <Filter>Source\07 ShaderCode\renderer</Filter>
     </FxCompile>
     <FxCompile Include="std3d.fx">
+      <Filter>Source\07 ShaderCode\renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="skybox.fx">
       <Filter>Source\07 ShaderCode\renderer</Filter>
     </FxCompile>
   </ItemGroup>

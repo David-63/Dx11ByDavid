@@ -98,8 +98,7 @@ void CalcLight3D(float3 _vViewPos, float3 _vViewNormal, int _LightIdx, inout tLi
                 
         // 포인트 라이트로부터 거리체크
         float fDist = distance(_vViewPos, vLightViewPos);
-        fDistPow = saturate(1.f - (fDist / LightInfo.Radius));
-               
+        fDistPow = saturate(cos((fDist / LightInfo.Radius) * (PI / 2.f)));
         
         // ViewSpace 에서의 노말벡터와 광원의 방향을 내적 (램버트 코사인 법칙)    
         fLightPow = saturate(dot(_vViewNormal, -vViewLightDir)) * fDistPow;

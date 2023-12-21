@@ -34,6 +34,7 @@ enum class COMPONENT_TYPE
 	PARTICLESYSTEM, // 입자 렌더링
 	TILEMAP,		// 2차원 타일
 	LANDSCAPE,		// 3차원 지형
+	SKYBOX,			// 3차원 배경
 	DECAL,			// 내부 렌더링
 
 	END,
