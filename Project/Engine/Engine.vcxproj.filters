@@ -113,17 +113,8 @@
     <Filter Include="Source\07 ShaderCode">
       <UniqueIdentifier>{b40c9a1f-8cbc-4b28-97a3-85af01cd5a51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\07 ShaderCode\stdShader">
-      <UniqueIdentifier>{ff6892a8-b831-4dcb-84de-90036865cf94}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\07 ShaderCode\ComputeShaders">
       <UniqueIdentifier>{c4a2701d-b9e4-44ef-a58c-ede32ae58de2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\07 ShaderCode\default">
-      <UniqueIdentifier>{4633754e-f420-4dbc-b600-ea92957eed76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\07 ShaderCode\otherShader">
-      <UniqueIdentifier>{1d5bb318-e4ce-4887-90fc-acf153c380ea}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\06 Component\RenderComp\3 Tilemap">
       <UniqueIdentifier>{d06f453a-f5d5-46a0-9f8d-b922fb8dc587}</UniqueIdentifier>
@@ -142,6 +133,12 @@
     </Filter>
     <Filter Include="Source\03 Manager\00 KeyMgr">
       <UniqueIdentifier>{0fbbf21c-6e2c-4ccb-82d2-3ffae065ffc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07 ShaderCode\renderer">
+      <UniqueIdentifier>{e6c30b92-41c2-444c-a35e-c6a29d4cee3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07 ShaderCode\util">
+      <UniqueIdentifier>{4633754e-f420-4dbc-b600-ea92957eed76}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -440,34 +437,34 @@
       <Filter>Source\07 ShaderCode\ComputeShaders</Filter>
     </FxCompile>
     <FxCompile Include="value.fx">
-      <Filter>Source\07 ShaderCode\default</Filter>
+      <Filter>Source\07 ShaderCode\util</Filter>
     </FxCompile>
     <FxCompile Include="struct.fx">
-      <Filter>Source\07 ShaderCode\default</Filter>
+      <Filter>Source\07 ShaderCode\util</Filter>
     </FxCompile>
     <FxCompile Include="func.fx">
-      <Filter>Source\07 ShaderCode\default</Filter>
-    </FxCompile>
-    <FxCompile Include="debugshape.fx">
-      <Filter>Source\07 ShaderCode\stdShader</Filter>
-    </FxCompile>
-    <FxCompile Include="std2d.fx">
-      <Filter>Source\07 ShaderCode\stdShader</Filter>
-    </FxCompile>
-    <FxCompile Include="std3d.fx">
-      <Filter>Source\07 ShaderCode\stdShader</Filter>
-    </FxCompile>
-    <FxCompile Include="tilemap.fx">
-      <Filter>Source\07 ShaderCode\otherShader</Filter>
-    </FxCompile>
-    <FxCompile Include="particle_render.fx">
-      <Filter>Source\07 ShaderCode\otherShader</Filter>
-    </FxCompile>
-    <FxCompile Include="postprocess.fx">
-      <Filter>Source\07 ShaderCode\otherShader</Filter>
+      <Filter>Source\07 ShaderCode\util</Filter>
     </FxCompile>
     <FxCompile Include="setcolor.fx">
       <Filter>Source\07 ShaderCode\ComputeShaders</Filter>
+    </FxCompile>
+    <FxCompile Include="particle_render.fx">
+      <Filter>Source\07 ShaderCode\renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="postprocess.fx">
+      <Filter>Source\07 ShaderCode\renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="tilemap.fx">
+      <Filter>Source\07 ShaderCode\renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="debugshape.fx">
+      <Filter>Source\07 ShaderCode\renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="std2d.fx">
+      <Filter>Source\07 ShaderCode\renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="std3d.fx">
+      <Filter>Source\07 ShaderCode\renderer</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
