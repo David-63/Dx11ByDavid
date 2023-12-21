@@ -4,9 +4,9 @@
 class CTransform : public CComponent
 {
 private:
-    Vec3    m_vRelativePos = Vec3::Zero;
-    Vec3    m_vRelativeScale = Vec3::One;
-    Vec3    m_vRelativeRot = Vec3::Zero;
+    Vec3    m_vRelativePos = Vec3(0, 0, 0);
+    Vec3    m_vRelativeScale = Vec3(1.f, 1.f, 1.f);
+    Vec3    m_vRelativeRot = Vec3(0, 0, 0);
 
     bool    m_isAbsolute = false;    // 상대 이동, 크기를 절대값으로 지정    
 

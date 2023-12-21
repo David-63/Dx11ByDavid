@@ -43,9 +43,9 @@ class CKeyMgr : public CSingleton<CKeyMgr>
 	SINGLE(CKeyMgr);
 private:
 	vector<tKeyInfo>	m_vecKey;
-	Vec2				m_vMousePos = Vec2::Zero;
-	Vec2				m_vPrevMousePos = Vec2::Zero;
-	Vec2				m_vMouseDir = Vec2::Zero;
+	Vec2				m_vMousePos = Vec2(0, 0);
+	Vec2				m_vPrevMousePos = Vec2(0, 0);
+	Vec2				m_vMouseDir = Vec2(0, 0);
 
 public:
 	void init();
