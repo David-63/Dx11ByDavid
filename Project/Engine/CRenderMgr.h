@@ -6,6 +6,7 @@
 class CCamera;
 class CLight2D;
 class CStructuredBuffer;
+class CMRT;
 
 class CRenderMgr : public CSingleton<CRenderMgr>
 {
@@ -22,8 +23,9 @@ private:
     CStructuredBuffer*          m_light2DBuffer = nullptr;
     CStructuredBuffer*          m_light3DBuffer = nullptr;
 
+    CMRT*                       m_MRT[(UINT)MRT_TYPE::END];
     Ptr<CTexture>               m_RTCopyTex;
-    void (CRenderMgr::* RENDER_FUNC)(void) = nullptr;
+    void (CRenderMgr::*         RENDER_FUNC)(void) = nullptr;
 
 
 public:
@@ -50,6 +52,7 @@ public:
     }
 
     void CopyRenderTarget();
+    void CreateMRT();
 
 private:
     void UpdateData();

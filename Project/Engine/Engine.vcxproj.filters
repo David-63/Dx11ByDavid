@@ -146,6 +146,9 @@
     <Filter Include="Source\06 Component\RenderComp\4 Skybox">
       <UniqueIdentifier>{9e6ff5d4-7903-4e6a-ba0b-05292c18196c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\03 Manager\05 RenderMgr\MRT">
+      <UniqueIdentifier>{79d5edae-d920-43f5-abd2-4c235ba66b64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -304,6 +307,9 @@
     <ClInclude Include="CSkyBox.h">
       <Filter>Source\06 Component\RenderComp\4 Skybox</Filter>
     </ClInclude>
+    <ClInclude Include="CMRT.h">
+      <Filter>Source\03 Manager\05 RenderMgr\MRT</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -446,6 +452,12 @@
     </ClCompile>
     <ClCompile Include="CSkyBox.cpp">
       <Filter>Source\06 Component\RenderComp\4 Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="CMRT.cpp">
+      <Filter>Source\03 Manager\05 RenderMgr\MRT</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderMgr_init.cpp">
+      <Filter>Source\03 Manager\05 RenderMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -46,6 +46,14 @@ enum class COMPONENT_TYPE
 extern const char* COMPONENT_TYPE_STR[(UINT)COMPONENT_TYPE::END];
 extern const wchar_t* COMPONENT_TYPE_WSTR[(UINT)COMPONENT_TYPE::END];
 
+enum class MRT_TYPE
+{
+	SWAPCHAIN,
+	DEFERRED,
+	LIGHT,
+	END,
+};
+
 // resource type
 enum class RES_TYPE
 {
@@ -189,6 +197,7 @@ enum class SHADER_DOMAIN
 {
 	DOMAIN_OPAQUE,		// 불투명 오브젝트
 	DOMAIN_MASK,		// 불투명, 완전 투명
+	DOMAIN_DECAL,
 	DOMAIN_TRANSPARENT,	// 반투명
 	DOMAIN_POSTPROCESS, // 후 처리
 	DOMAIN_UI,

@@ -9,6 +9,7 @@
 #include "CLight2D.h"
 
 #include "CResMgr.h"
+#include "CMRT.h"
 
 CRenderMgr::CRenderMgr()
 {
@@ -29,27 +30,20 @@ CRenderMgr::~CRenderMgr()
         delete m_light2DBuffer;
     if (nullptr != m_light3DBuffer)
         delete m_light3DBuffer;
+    DeleteArray(m_MRT);
 }
 
 
-void CRenderMgr::init()
-{
-    // Light2DBuffer 구조화 버퍼 생성
-    m_light2DBuffer = new CStructuredBuffer;
-    m_light2DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
-    // Light3DBuffer 구조화 버퍼 생성
-    m_light3DBuffer = new CStructuredBuffer;
-    m_light3DBuffer->Create(sizeof(tLightInfo), 10, SB_TYPE::READ_ONLY, true);
-}
 
 void CRenderMgr::render()
 {
     // 렌더링 시작
-    float arrColor[4] = { 0.30f, 0.450f, 0.20f, 1.0f };
-    CDevice::GetInst()->ClearTarget(arrColor);
+    //float arrColor[4] = { 0.30f, 0.450f, 0.20f, 1.0f };
+    
+    m_MRT[(UINT)MRT_TYPE::SWAPCHAIN]->ClearTarget();
 
     // 출력 타겟 지정    
-    CDevice::GetInst()->OMSet();
+    m_MRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
 
     // 광원 및 전역 데이터 업데이트 및 바인딩
     UpdateData();
