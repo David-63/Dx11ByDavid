@@ -10,13 +10,9 @@ private:
 	ComPtr<ID3D11DeviceContext>		m_context;		// GPU 제어, 렌더링, 동작 수행
 	ComPtr<IDXGISwapChain>			m_swapChain;
 
-	// Sampler
 	ComPtr<ID3D11SamplerState>		m_Sampler[3];
-	// RasterizerState
 	ComPtr<ID3D11RasterizerState>	m_RSState[(UINT)RS_TYPE::END];
-	// DepthStencilState
 	ComPtr<ID3D11DepthStencilState>	m_DSState[(UINT)DS_TYPE::END];
-	// BlendState
 	ComPtr<ID3D11BlendState>		m_BSState[(UINT)BS_TYPE::END];
 
 	// 렌더타겟 해상도

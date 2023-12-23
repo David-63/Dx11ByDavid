@@ -11,7 +11,6 @@ void CResMgr::CreateDefaultMesh()
 	vector<UINT> vecIdx;
 	Vtx v;
 
-
 	Ptr<CMesh> pMesh = nullptr;
 
 	// ==============
@@ -623,11 +622,47 @@ void CResMgr::CreateDefaultGraphicsShader()
 
 	AddRes(pShader->GetKey(), pShader);
 
+	// ============================
+	// Std3DShader_Deferred
+	// RS_TYPE : CULL_BACK;
+	// DS_TYPE : LESS_EQUAL
+	// BS_TYPE : DEFAULT
+	// Domain : DEFERRED
+	// ============================
+	pShader = new CGraphicsShader;
+	pShader->SetKey(L"Std3D_DeferredShader");
+	pShader->CreateVertexShader(L"shader/std3d_deferred.fx", "VS_Std3D_Deferred");
+	pShader->CreatePixelShader(L"shader/std3d_deferred.fx", "PS_Std3D_Deferred");
+
+	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetDSType(DS_TYPE::LESS_EQUAL);
+	pShader->SetBSType(BS_TYPE::DEFAULT);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+	// Parameter
+	pShader->AddTexParam(TEX_0, "Output Texture");
+	pShader->AddScalarParam(FLOAT_0, "Spec Coeffient");
+	AddRes(pShader->GetKey(), pShader);
+
+	// ============================
+	// DirectionalLightShader
+	// RS_TYPE : CULL_BACK;
+	// DS_TYPE : NO_TEST_NO_WRITE
+	// BS_TYPE : ONE_ONE
+	// Domain : LIGHT
+	// ============================
+	pShader = new CGraphicsShader;
+	pShader->SetKey(L"DirectionalLightShader");
+	pShader->CreateVertexShader(L"shader/light.fx", "VS_DirectionalLightShader");
+	pShader->CreatePixelShader(L"shader/light.fx", "PS_DirectionalLightShader");
+
+	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::ONE_ONE);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+	
+	AddRes(pShader->GetKey(), pShader);
 }
-
-
-#include "CSetColorShader.h"
-#include "CParticleUpdateShader.h"
 
 void CResMgr::CreateDefaultComputeShader()
 {
@@ -709,4 +744,14 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"SkyBoxShader"));
 	AddRes(L"SkyBoxMtrl", pMtrl);
+
+	// Std3DMtrl_Deferred
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"Std3D_DeferredShader"));
+	AddRes(L"Std3D_DeferredMtrl", pMtrl);
+
+	// DirectionalLightMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"DirectionalLightShader"));
+	AddRes(L"DirectionalLightMtrl", pMtrl);
 }

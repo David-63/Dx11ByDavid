@@ -5,6 +5,7 @@
 
 class CCamera;
 class CLight2D;
+class CLight3D;
 class CStructuredBuffer;
 class CMRT;
 
@@ -17,8 +18,10 @@ private:
 
     vector<tDebugShapeInfo>     m_vecShapeInfo;
 
-    vector<tLightInfo>          m_vecLight2D;
-    vector<tLightInfo>          m_vecLight3D;
+    vector<CLight2D*>           m_vecLight2D;
+    vector<tLightInfo>          m_vecLight2DInfo;
+    vector<CLight3D*>           m_vecLight3D;
+    vector<tLightInfo>          m_vecLight3DInfo;
 
     CStructuredBuffer*          m_light2DBuffer = nullptr;
     CStructuredBuffer*          m_light3DBuffer = nullptr;
@@ -36,12 +39,25 @@ public:
     int RegisterCamera(CCamera* _Cam, int _idx);
     void RegisterEditorCamera(CCamera* _Cam) { m_editorCam = _Cam; }
     void SetRenderFunc(bool _IsPlay);
-    void RegisterLight2D(const tLightInfo& _Light2D) { m_vecLight2D.push_back(_Light2D); }
-    void RegisterLight3D(const tLightInfo& _Light3D) { m_vecLight3D.push_back(_Light3D); }
+    UINT RegisterLight2D(CLight2D* _light2D, const tLightInfo& _info)
+    {
+        m_vecLight2D.push_back(_light2D);
+        m_vecLight2DInfo.push_back(_info);
+        return m_vecLight2D.size() - 1;
+    }
+    UINT RegisterLight3D(CLight3D* _light3D, const tLightInfo& _info)
+    {
+        m_vecLight3D.push_back(_light3D);
+        m_vecLight3DInfo.push_back(_info);
+        return m_vecLight3D.size() - 1;
+    }
     void ClearCamera() { m_vecCam.clear(); }
 
     void AddDebugShapeInfo(const tDebugShapeInfo& _info) { m_vecShapeInfo.push_back(_info); }
     vector<tDebugShapeInfo>& GetDebugShapeInfo() { return m_vecShapeInfo; }
+
+    const vector<CLight2D*>& GetLight2D() { return m_vecLight2D; }
+    const vector<CLight3D*>& GetLight3D() { return m_vecLight3D; }
 
     CCamera* GetMainCam()
     {
@@ -52,12 +68,18 @@ public:
     }
 
     void CopyRenderTarget();
-    void CreateMRT();
+
+    CMRT* GetMRT(MRT_TYPE _type) { return m_MRT[(UINT)_type]; }
+
 
 private:
     void UpdateData();
     void render_play();
     void render_editor();
-    void Clear();
+    void clear();
+
+
+    void createMRT();
+    void clearMRT();
 };
 

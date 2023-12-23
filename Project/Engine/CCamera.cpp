@@ -13,6 +13,9 @@
 #include "CMaterial.h"
 #include "CGraphicsShader.h"
 
+#include "CRenderMgr.h"
+#include "CMRT.h"
+#include "CLight3D.h"
 
 CCamera::CCamera() : CComponent(COMPONENT_TYPE::CAMERA)
 {
@@ -148,6 +151,12 @@ void CCamera::SortObject()
 				SHADER_DOMAIN eDomain = pRenderCom->GetMaterial()->GetShader()->GetDomain();
 				switch (eDomain)
 				{
+				case SHADER_DOMAIN::DOMAIN_DEFERRED:
+					m_vecDeferred.push_back(vecObject[j]);
+					break;
+				case SHADER_DOMAIN::DOMAIN_DEFERRED_DECAL:
+					m_vecDeferredDecal.push_back(vecObject[j]);
+					break;
 				case SHADER_DOMAIN::DOMAIN_OPAQUE:
 					m_vecOpaque.push_back(vecObject[j]);
 					break;
@@ -174,12 +183,27 @@ void CCamera::SortObject()
 
 void CCamera::render()
 {
-	// 행렬 업데이트
+	// 행렬 정보 업데이트
 	g_transform.matView = m_matView;
 	g_transform.matViewInv = m_matViewInv;
 	g_transform.matProj = m_matProj;
 	g_transform.matProjInv = m_matProjInv;
-	// 쉐이더 도메인에 따라서 순차적으로 그리기
+
+	// Deferred MRT로 변경
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet(true);
+	render_deferred();
+
+	// Light MRT로 변경 | render_Light3D
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
+	const vector<CLight3D*>& vecLight3D = CRenderMgr::GetInst()->GetLight3D();
+	for (size_t idx = 0; idx < vecLight3D.size(); idx++)
+	{
+		vecLight3D[idx]->render();
+	}
+
+	// Swapchain MRT로 변경
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+	
 	render_opaque();
 	render_mask();
 	render_decal();
@@ -195,12 +219,27 @@ void CCamera::render()
 
 void CCamera::clear()
 {
+	m_vecDeferred.clear();
+	m_vecDeferredDecal.clear();
+
 	m_vecOpaque.clear();
 	m_vecMask.clear();
 	m_vecDecal.clear();
 	m_vecTransparent.clear();
 	m_vecPost.clear();
 	m_vecUI.clear();
+}
+
+void CCamera::render_deferred()
+{
+	for (size_t idx = 0; idx < m_vecDeferred.size(); idx++)
+	{
+		m_vecDeferred[idx]->render();
+	}
+	for (size_t idx = 0; idx < m_vecDeferredDecal.size(); idx++)
+	{
+		m_vecDeferredDecal[idx]->render();
+	}
 }
 
 void CCamera::render_opaque()

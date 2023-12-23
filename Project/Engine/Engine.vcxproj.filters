@@ -502,5 +502,14 @@
     <FxCompile Include="skybox.fx">
       <Filter>Source\07 ShaderCode\renderer</Filter>
     </FxCompile>
+    <FxCompile Include="std3d_deferred.fx">
+      <Filter>Source\07 ShaderCode\renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="decal.fx">
+      <Filter>Source\07 ShaderCode\renderer</Filter>
+    </FxCompile>
+    <FxCompile Include="light.fx">
+      <Filter>Source\07 ShaderCode\renderer</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -19,6 +19,8 @@ private:
 
     int         m_iCamIdx = -1;          // 카메라 우선순위
 
+    vector<CGameObject*>    m_vecDeferred;
+    vector<CGameObject*>    m_vecDeferredDecal;
 
     vector<CGameObject*>    m_vecOpaque;
     vector<CGameObject*>    m_vecMask;
@@ -58,6 +60,8 @@ public:
 
 private:
     void clear();
+
+    void render_deferred();
     void render_opaque();
     void render_mask();
     void render_decal();

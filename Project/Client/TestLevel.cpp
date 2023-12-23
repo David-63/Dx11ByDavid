@@ -82,20 +82,15 @@ void CreateTestLevel()
 	// 광원 추가
 	{
 		CGameObject* pLightObj = new CGameObject;
-		pLightObj->SetName(L"Point Light 1");
+		pLightObj->SetName(L"Directional Light");
 
 		pLightObj->AddComponent(new CTransform);
 		pLightObj->AddComponent(new CLight3D);
 
-		//pLightObj->Transform()->SetRelativeRot(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
-		//pLightObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
-		//pLightObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));	
-		//pLightObj->Light3D()->SetLightAmbient(Vec3(0.15f, 0.15f, 0.15f));
-
-		pLightObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
-		pLightObj->Light3D()->SetLightColor(Vec3(1.f, 0.2f, 0.2f));
-		pLightObj->Light3D()->SetLightAmbient(Vec3(0.f, 0.f, 0.f));
-		pLightObj->Light3D()->SetRadius(1000.f);
+		pLightObj->Transform()->SetRelativeRot(Vec3(XM_PIDIV4, XM_PIDIV4, 0.f));
+		pLightObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
+		pLightObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));	
+		pLightObj->Light3D()->SetLightAmbient(Vec3(0.15f, 0.15f, 0.15f));
 
 		SpawnGameObject(pLightObj, Vec3(-500.f, -250.f, 0.f), 0);
 
@@ -117,15 +112,21 @@ void CreateTestLevel()
 
 	// 오브젝트 생성
 	{
+		// 메인 오므젝트
 		CGameObject* pPlayer = new CGameObject;
 		pPlayer->SetName(L"Player");
 		pPlayer->AddComponent(new CTransform);
 		pPlayer->AddComponent(new CMeshRender);
 		pPlayer->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 200.f));
 		pPlayer->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
-		pPlayer->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+		pPlayer->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3D_DeferredMtrl"));
+		pPlayer->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01.tga"));
+		pPlayer->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01_N.tga"));
+
 		SpawnGameObject(pPlayer, Vec3(0.f, 0.f, 500.f), L"Player");
 
+
+		// 배경
 		CGameObject* pGround = new CGameObject;
 		pGround->SetName(L"Background");
 		pGround->AddComponent(new CTransform);

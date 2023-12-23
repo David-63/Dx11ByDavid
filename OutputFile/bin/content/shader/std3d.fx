@@ -30,10 +30,10 @@ struct VS_OUT
 // Std3DShader
 //
 // Param
-#define SPEC_COEFF g_float_0 // 반사 계수
+#define SPEC_COEFF saturate(g_float_0) // 반사 계수
 
 VS_OUT VS_Std3D(VS_IN _in)
-{
+{    
     VS_OUT output = (VS_OUT) 0.f;
         
     // 로컬에서의 Normal 방향을 월드로 이동    
@@ -81,7 +81,7 @@ float4 PS_Std3D(VS_OUT _in) : SV_Target
     tLightColor lightcolor = (tLightColor) 0.f;
     float fSpecPow = 0.f;
     
-    for (int i = 0; i < g_Light3DCount; ++i)
+    for (uint i = 0; i < g_Light3DCount; ++i)
     {
         CalcLight3D(_in.vViewPos, vViewNormal, i, lightcolor, fSpecPow);
     }

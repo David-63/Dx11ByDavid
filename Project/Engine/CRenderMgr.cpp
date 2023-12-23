@@ -36,53 +36,36 @@ CRenderMgr::~CRenderMgr()
 
 
 void CRenderMgr::render()
-{
-    // 렌더링 시작
-    //float arrColor[4] = { 0.30f, 0.450f, 0.20f, 1.0f };
-    
-    m_MRT[(UINT)MRT_TYPE::SWAPCHAIN]->ClearTarget();
+{    UpdateData();
 
-    // 출력 타겟 지정    
     m_MRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
-
-    // 광원 및 전역 데이터 업데이트 및 바인딩
-    UpdateData();
-
-    // 렌더 함수 호출
     (this->*RENDER_FUNC)();
 
-    // 광원 해제
-    Clear();
+    clear();
 }
 
 
 void CRenderMgr::render_play()
 {
-    // 카메라 기준 렌더링
-    for (size_t i = 0; i < m_vecCam.size(); ++i)
+    clearMRT();
+    m_MRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
+
+    for (size_t idx = 0; idx < m_vecCam.size(); ++idx)
     {
-        if (nullptr == m_vecCam[i])
+        if (nullptr == m_vecCam[idx])
             continue;
 
-        // 물체 분류작업
-        // - 해당 카메라가 볼 수 있는 물체(레이어 분류)
-        // - 재질에 따른 분류 (재질->쉐이더) 쉐이더 도메인
-        //   쉐이더 도메인에 따라서 렌더링 순서분류
-        m_vecCam[i]->SortObject();
-
-
-        m_vecCam[i]->render();
+        m_vecCam[idx]->SortObject();
+        m_vecCam[idx]->render();
     }
 }
 
 void CRenderMgr::render_editor()
 {
-    // 물체 분류작업
-    // - 해당 카메라가 볼 수 있는 물체(레이어 분류)
-    // - 재질에 따른 분류 (재질->쉐이더) 쉐이더 도메인
-    //   쉐이더 도메인에 따라서 렌더링 순서분류
-    m_editorCam->SortObject();
+    clearMRT();
+    m_MRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
 
+    m_editorCam->SortObject();
     m_editorCam->render();
 }
 
@@ -119,23 +102,23 @@ void CRenderMgr::UpdateData()
     g_globalData.Light3DCount = static_cast<UINT>(m_vecLight3D.size());
 
     // 구조화버퍼의 크기가 모자라면 더 크게 새로 만든다.
-    if (m_light2DBuffer->GetElementCount() < m_vecLight2D.size())
+    if (m_light2DBuffer->GetElementCount() < m_vecLight2DInfo.size())
     {
-        m_light2DBuffer->Create(sizeof(tLightInfo), static_cast<UINT>(m_vecLight2D.size()), SB_TYPE::READ_ONLY, true);
+        m_light2DBuffer->Create(sizeof(tLightInfo), static_cast<UINT>(m_vecLight2DInfo.size()), SB_TYPE::READ_ONLY, true);
     }
 
     // 구조화버퍼로 광원 데이터를 옮긴다.
-    m_light2DBuffer->SetData(m_vecLight2D.data(), sizeof(tLightInfo) * static_cast<UINT>(m_vecLight2D.size()));
+    m_light2DBuffer->SetData(m_vecLight2DInfo.data(), sizeof(tLightInfo) * static_cast<UINT>(m_vecLight2DInfo.size()));
     m_light2DBuffer->UpdateData(12, PIPELINE_STAGE::PS_PIXEL);
 
     // 구조화버퍼의 크기가 모자라면 더 크게 새로 만든다.
-    if (m_light3DBuffer->GetElementCount() < m_vecLight3D.size())
+    if (m_light3DBuffer->GetElementCount() < m_vecLight3DInfo.size())
     {
-        m_light3DBuffer->Create(sizeof(tLightInfo), static_cast<UINT>(m_vecLight3D.size()), SB_TYPE::READ_ONLY, true);
+        m_light3DBuffer->Create(sizeof(tLightInfo), static_cast<UINT>(m_vecLight3DInfo.size()), SB_TYPE::READ_ONLY, true);
     }
 
     // 구조화버퍼로 광원 데이터를 옮긴다.
-    m_light3DBuffer->SetData(m_vecLight3D.data(), sizeof(tLightInfo) * static_cast<UINT>(m_vecLight3D.size()));
+    m_light3DBuffer->SetData(m_vecLight3DInfo.data(), sizeof(tLightInfo) * static_cast<UINT>(m_vecLight3DInfo.size()));
     m_light3DBuffer->UpdateData(13, PIPELINE_STAGE::PS_PIXEL);
 
 
@@ -147,8 +130,10 @@ void CRenderMgr::UpdateData()
 }
 
 
-void CRenderMgr::Clear()
+void CRenderMgr::clear()
 {
     m_vecLight2D.clear();
+    m_vecLight2DInfo.clear();
     m_vecLight3D.clear();
+    m_vecLight3DInfo.clear();
 }

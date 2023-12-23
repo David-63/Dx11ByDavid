@@ -21,8 +21,8 @@ void CCameraMoveScript::Camera2DMove()
 	Vec3 vPos = Transform()->GetRelativePos();
 
 	float fSpeed = m_fCamSpeed;
-	if (KEY_HOLD(KEY::LSHIFT))
-		fSpeed *= 5.f;
+	//if (KEY_HOLD(KEY::LSHIFT))
+	//	fSpeed *= 1.7f;
 
 	if (KEY_HOLD(KEY::W))
 	{
