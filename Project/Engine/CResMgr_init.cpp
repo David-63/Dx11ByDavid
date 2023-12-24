@@ -662,6 +662,29 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
 	
 	AddRes(pShader->GetKey(), pShader);
+
+	// ================================
+	// MergeShader
+	//
+	// MRT		: Swapchain
+	// Domaim	: DOMAIN_LIGHT
+	// Mesh		: RectMesh
+	// RS_TYPE	: CULL_BACK
+	// DS_TYPE	: NO_TEST_NO_WRITE
+	// BS_TYPE	: DEFAULT
+	// ================================
+	pShader = new CGraphicsShader();
+	pShader->SetKey(L"MergeShader");
+
+	pShader->CreateVertexShader(L"shader/light.fx", "VS_MergeShader");
+	pShader->CreatePixelShader(L"shader/light.fx", "PS_MergeShader");
+	
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::DEFAULT);
+
+	AddRes(pShader->GetKey(), pShader);
 }
 
 void CResMgr::CreateDefaultComputeShader()
@@ -754,4 +777,9 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"DirectionalLightShader"));
 	AddRes(L"DirectionalLightMtrl", pMtrl);
+
+	// MergeMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"MergeShader"));
+	AddRes(L"MergeMtrl", pMtrl);
 }

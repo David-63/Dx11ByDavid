@@ -15,6 +15,7 @@ private:
 
     Matrix  m_matWorldScale;    // 월드 크기 행렬
     Matrix  m_matWorld; // 크기, 회전, 이동 정보를 합쳐놓음
+    Matrix  m_matWorldInv;
 
 
 public:

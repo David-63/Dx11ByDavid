@@ -81,7 +81,43 @@ PS_OUT PS_DirectionalLightShader(VS_OUT _in)
     return output;
 }
 
+// =============================================
+// MergeShader
+// MRT      | Swapchain
+// Domain   | DOMAIN_LIGHT
+// Mesh     | RectMesh
+// RS_TYPE  | CULL_BACK
+// DS_TYPE  | NO_TEST_NO_WRITE
+// BS_TYPE  | DEFAULT
 
+// Parameter
+#define ColorTargetTex      g_tex_0
+#define DiffuseTargetTex    g_tex_1
+#define SpeculerTargetTex   g_tex_2
+// =============================================
+VS_OUT VS_MergeShader(VS_IN _in)
+{
+    VS_OUT output = (VS_OUT) 0.f;
+    
+    output.vPosition = float4(_in.vPos * 2.f, 1.f);
+    
+    return output;
+}
 
+float4 PS_MergeShader(VS_OUT _in) : SV_Target
+{
+    float4 vOutColor = float4(0.f, 0.f, 0.f, 1.f);
+    
+    float2 vScreenUV = _in.vPosition.xy / g_Resolution.xy;
+    
+    float4 vColor = ColorTargetTex.Sample(g_sam_0, vScreenUV);
+    float4 vDiffuse = DiffuseTargetTex.Sample(g_sam_0, vScreenUV);
+    float4 vSpeculer = SpeculerTargetTex.Sample(g_sam_0, vScreenUV);
+    
+    vOutColor.xyz = vColor.xyz * vDiffuse.xyz + (vSpeculer.xyz * vColor.a);
+    vOutColor.a = 1.f;
+    
+    return vOutColor;
+}
 
 #endif

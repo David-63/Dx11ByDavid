@@ -27,7 +27,7 @@ struct VS_OUT
 
 struct PS_OUT
 {
-    float4 vDiffuse : SV_Target0;
+    float4 vColor : SV_Target0;
     float4 vNormal : SV_Target1;
     float4 vPosition : SV_Target2;
     float4 vEmissive : SV_Target3;
@@ -36,13 +36,15 @@ struct PS_OUT
 
 // ======================
 // Std3D_DeferredShader
-//
+// MRT      | Deferred
+// Domain   | DOMAIN_DEFERRED
+// RS_TYPE  | CULL_BACK
+// DS_TYPE  | LESS
+// BS_TYPE  | DEFAULT
+
 // Param
-
-
-
 #define SPEC_COEFF g_float_0 // 반사 계수
-
+//
 VS_OUT VS_Std3D_Deferred(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0.f;
@@ -65,14 +67,14 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
 {
     PS_OUT output = (PS_OUT) 0.f;
     
-    output.vDiffuse = float4(1.f, 0.f, 1.f, 1.f);
+    output.vColor = float4(1.f, 0.f, 1.f, 1.f);
     float3 vViewNormal = _in.vViewNormal;
     
     // OutputTex
     if (g_btex_0)
     {
-        output.vDiffuse = g_tex_0.Sample(g_sam_0, _in.vUV);
-        output.vDiffuse.a = 1.f;
+        output.vColor = g_tex_0.Sample(g_sam_0, _in.vUV);
+        output.vColor.a = 1.f;
     }
     // NormalTex
     if (g_btex_1)
@@ -96,7 +98,7 @@ PS_OUT PS_Std3D_Deferred(VS_OUT _in) : SV_Target
     output.vPosition = float4(_in.vViewPos, 1.f);
     output.vEmissive = float4(0.1f, 0.1f, 0.1f, 1.f);
     output.vData = float4(0.f, 0.f, 0.f, 1.f);
-
+    output.vColor.a = saturate(SPEC_COEFF);
     return output;
 }
 

@@ -4,18 +4,21 @@
 #include "CDevice.h"
 #include "CRenderMgr.h"
 #include "CTransform.h"
+#include "CLight3D.h"
+#include "CRenderComp.h"
 
 #include "CLevelMgr.h"
 #include "CLevel.h"
 #include "CLayer.h"
 #include "CGameObject.h"
-#include "CRenderComp.h"
-#include "CMaterial.h"
-#include "CGraphicsShader.h"
 
 #include "CRenderMgr.h"
+#include "CResMgr.h"
 #include "CMRT.h"
-#include "CLight3D.h"
+#include "CGraphicsShader.h"
+#include "CMaterial.h"
+
+
 
 CCamera::CCamera() : CComponent(COMPONENT_TYPE::CAMERA)
 {
@@ -203,7 +206,20 @@ void CCamera::render()
 
 	// Swapchain MRT·Î º¯°æ
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
+	static Ptr<CMesh> pMergeMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
+	static Ptr<CMaterial> pMergeMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"MergeMtrl");
+	static bool bSet = false;
+	if (!bSet)
+	{
+		bSet = true;
+		pMergeMtrl->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"ColorTargetTex"));
+		pMergeMtrl->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseTargetTex"));
+		pMergeMtrl->SetTexParam(TEX_2, CResMgr::GetInst()->FindRes<CTexture>(L"SpecularTargetTex"));
+	}
 	
+	pMergeMtrl->UpdateData();
+	pMergeMesh->render();
+
 	render_opaque();
 	render_mask();
 	render_decal();
