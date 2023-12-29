@@ -1,21 +1,27 @@
 #pragma once
 
+
 #define DEVICE  CDevice::GetInst()->GetDevice()
 #define CONTEXT CDevice::GetInst()->GetDeviceContext()
-
-#define SINGLE(type) private: type(); ~type(); friend class CSingleton<type>;
 
 #define CLONE(type) public: virtual type* Clone() { return new type(*this); }
 #define CLONE_DISABLE(type) public: virtual type* Clone() { return nullptr; assert(nullptr); }
 
-#define KEY_PRESS(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::PRESS
-#define KEY_HOLD(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::HOLD
+#define KEY_TAP(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::TAP		
 #define KEY_RELEASE(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::RELEASE
+#define KEY_PRESSED(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::PRESSED
 
-
-#define DT static_cast<float>(CTimeMgr::GetInst()->GetDeltaTime())
+#define DT CTimeMgr::GetInst()->GetDeltaTime()
 
 #define MAX_LAYER 32
+
+#define SINGLE(type) private: type(); ~type(); friend class CSingleton<type>;
+
+
+
+
+
+
 
 enum class COMPONENT_TYPE
 {
@@ -34,8 +40,9 @@ enum class COMPONENT_TYPE
 	PARTICLESYSTEM, // 입자 렌더링
 	TILEMAP,		// 2차원 타일
 	LANDSCAPE,		// 3차원 지형
-	SKYBOX,			// 3차원 배경
+	SKYBOX,			// SkyBox
 	DECAL,			// 내부 렌더링
+	
 
 	END,
 
@@ -46,15 +53,7 @@ enum class COMPONENT_TYPE
 extern const char* COMPONENT_TYPE_STR[(UINT)COMPONENT_TYPE::END];
 extern const wchar_t* COMPONENT_TYPE_WSTR[(UINT)COMPONENT_TYPE::END];
 
-enum class MRT_TYPE
-{
-	SWAPCHAIN,
-	DEFERRED,
-	LIGHT,
-	END,
-};
 
-// resource type
 enum class RES_TYPE
 {
 	MESHDATA,
@@ -76,7 +75,7 @@ extern const wchar_t* RES_TYPE_WSTR[(UINT)RES_TYPE::END];
 
 
 
-// constant buffer type
+
 enum class CB_TYPE
 {
 	TRANSFORM,	// b0
@@ -111,10 +110,9 @@ enum SCALAR_PARAM
 	MAT_0,
 	MAT_1,
 	MAT_2,
-	MAT_3,
+	MAT_3,	
 };
 
-// texture param
 enum TEX_PARAM
 {
 	TEX_0,
@@ -141,12 +139,11 @@ enum PIPELINE_STAGE
 	PS_HULL = 0x02,
 	PS_DOMAIN = 0x04,
 	PS_GEOMETRY = 0x08,
-	PS_PIXEL = 0x10,
+	PS_PIXEL = 0x10,	
 
-	PS_ALL = PS_VERTEX | PS_HULL | PS_DOMAIN | PS_GEOMETRY | PS_PIXEL,
+	PS_ALL = PS_VERTEX | PS_HULL | PS_DOMAIN | PS_GEOMETRY | PS_PIXEL,	
 };
 
-// rasterizer state type
 enum class RS_TYPE
 {
 	CULL_BACK,
@@ -156,7 +153,6 @@ enum class RS_TYPE
 	END,
 };
 
-// depth stencil state type
 enum class DS_TYPE
 {
 	LESS,
@@ -168,25 +164,29 @@ enum class DS_TYPE
 	END,
 };
 
-// blend state type
+
 enum class BS_TYPE
 {
 	DEFAULT,		// No Blending
 	MASK,			// Alpha Coverage
 	ALPHA_BLEND,	// Alpha 계수 
 	ONE_ONE,		// 1:1 혼합
+
+	DEFEREED_DECAL_BLEND, // 0 타겟은 AlphaBlend, 1 타겟은 ONE-ONE Blend
 	END,
 };
 
-// vector direction type
+
+
+
+
 enum class DIR_TYPE
 {
 	RIGHT,
 	UP,
-	FRONT,
+	FRONT,	
 };
 
-// projection type
 enum class PROJ_TYPE
 {
 	ORTHOGRAPHIC,
@@ -196,18 +196,17 @@ enum class PROJ_TYPE
 enum class SHADER_DOMAIN
 {
 	DOMAIN_DEFERRED,		// 지연 렌더링 오브젝트
-	DOMAIN_DEFERRED_DECAL,	// 광원이 적용되는 데칼
+	DOMAIN_DEFERRED_DECAL,	// Deferred Decal(광원 적용 가능한 Decal)
 
-	DOMAIN_OPAQUE,		// 불투명 오브젝트
-	DOMAIN_MASK,		// 불투명, 완전 투명
-	DOMAIN_DECAL,		// 데칼 오브젝트
-	DOMAIN_TRANSPARENT,	// 반투명
-	DOMAIN_POSTPROCESS, // 후 처리
+	DOMAIN_OPAQUE,			// 불투명 오브젝트
+	DOMAIN_MASK,			// 불투명, 완전 투명
+	DOMAIN_DECAL,			// 데칼 오브젝트
+	DOMAIN_TRANSPARENT,		// 반투명
+	DOMAIN_POSTPROCESS,		// 후 처리
 	DOMAIN_UI,
 
-	DOMAIN_LIGHT,
-
-	DOMAIN_UNDEFINED,	// 미정
+	DOMAIN_LIGHT,			// 광원 타입 
+	DOMAIN_UNDEFINED,		// 미정
 };
 
 
@@ -220,10 +219,10 @@ enum class EVENT_TYPE
 
 	DELETE_RESOURCE,	// wParam : RES_TYPE, lParam : Resource Adress
 
-	LEVEL_CHANGE,
+	LEVEL_CHANGE,	
 };
 
-// mesh type?
+
 enum class SHAPE_TYPE
 {
 	RECT,
@@ -255,7 +254,6 @@ enum class LEVEL_STATE
 	STOP,
 };
 
-// structured buffer type
 enum class SB_TYPE
 {
 	READ_ONLY,
@@ -273,6 +271,21 @@ enum class PARTICLE_MODULE
 	NOISE_FORCE,
 	RENDER,
 	DUMMY_3,
+
+	END,
+};
+
+enum class MRT_TYPE
+{
+	SWAPCHAIN,
+
+	DEFERRED,
+
+	DEFERRED_DECAL,
+
+	LIGHT,
+
+	SHADOWMAP,
 
 	END,
 };

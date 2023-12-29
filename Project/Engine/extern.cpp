@@ -2,7 +2,7 @@
 #include "global.h"
 
 tTransform g_transform = {};
-tGlobal g_globalData = {};
+tGlobal GlobalData = {};
 
 
 

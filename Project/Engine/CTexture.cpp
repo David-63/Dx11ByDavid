@@ -3,12 +3,20 @@
 
 #include "CDevice.h"
 
-CTexture::CTexture(bool _bEngine) : CRes(RES_TYPE::TEXTURE, _bEngine) { }
-CTexture::~CTexture() { }
+CTexture::CTexture(bool _bEngine)
+	: CRes(RES_TYPE::TEXTURE, _bEngine)
+	, m_Desc{}
+{
+}
+
+CTexture::~CTexture()
+{
+}
+
 
 void CTexture::UpdateData(int _iRegisterNum, int _PipelineStage)
 {
-	m_recentNum = _iRegisterNum;
+	m_iRecentNum = _iRegisterNum;
 
 	if (PIPELINE_STAGE::PS_VERTEX & _PipelineStage)
 	{
@@ -38,27 +46,27 @@ void CTexture::UpdateData(int _iRegisterNum, int _PipelineStage)
 
 void CTexture::UpdateData_CS(int _iRegisterNum, bool _bShaderRes)
 {
-	m_recentNum = _iRegisterNum;
+	m_iRecentNum = _iRegisterNum;
 
 	if (_bShaderRes)
 	{
-		CONTEXT->CSSetShaderResources(m_recentNum, 1, m_SRV.GetAddressOf());
+		CONTEXT->CSSetShaderResources(m_iRecentNum, 1, m_SRV.GetAddressOf());
 	}
 	else
 	{
 		UINT i = -1;
-		CONTEXT->CSSetUnorderedAccessViews(m_recentNum, 1, m_UAV.GetAddressOf(), &i);
+		CONTEXT->CSSetUnorderedAccessViews(m_iRecentNum, 1, m_UAV.GetAddressOf(), &i);
 	}
 }
 
 void CTexture::Clear()
 {
 	ID3D11ShaderResourceView* pSRV = nullptr;
-	CONTEXT->VSSetShaderResources(m_recentNum, 1, &pSRV);
-	CONTEXT->HSSetShaderResources(m_recentNum, 1, &pSRV);
-	CONTEXT->DSSetShaderResources(m_recentNum, 1, &pSRV);
-	CONTEXT->GSSetShaderResources(m_recentNum, 1, &pSRV);
-	CONTEXT->PSSetShaderResources(m_recentNum, 1, &pSRV);
+	CONTEXT->VSSetShaderResources(m_iRecentNum, 1, &pSRV);
+	CONTEXT->HSSetShaderResources(m_iRecentNum, 1, &pSRV);
+	CONTEXT->DSSetShaderResources(m_iRecentNum, 1, &pSRV);
+	CONTEXT->GSSetShaderResources(m_iRecentNum, 1, &pSRV);
+	CONTEXT->PSSetShaderResources(m_iRecentNum, 1, &pSRV);
 }
 
 void CTexture::Clear(int _iRegisterNum)
@@ -76,13 +84,13 @@ void CTexture::Clear_CS(bool _bShaderRes)
 	if (_bShaderRes)
 	{
 		ID3D11ShaderResourceView* pSRV = nullptr;
-		CONTEXT->CSSetShaderResources(m_recentNum, 1, &pSRV);
+		CONTEXT->CSSetShaderResources(m_iRecentNum, 1, &pSRV);
 	}
 	else
 	{
 		ID3D11UnorderedAccessView* pUAV = nullptr;
 		UINT i = -1;
-		CONTEXT->CSSetUnorderedAccessViews(m_recentNum, 1, &pUAV, &i);
+		CONTEXT->CSSetUnorderedAccessViews(m_iRecentNum, 1, &pUAV, &i);
 	}
 }
 
@@ -115,7 +123,7 @@ int CTexture::Load(const wstring& _strFilePath)
 		// png, jpg, jpeg, bmp
 		hr = LoadFromWICFile(_strFilePath.c_str(), WIC_FLAGS::WIC_FLAGS_NONE, nullptr, m_Image);
 	}
-
+	
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr, L"리소스 로딩 실패", L"텍스쳐 로딩 실패", MB_OK);
@@ -134,8 +142,8 @@ int CTexture::Load(const wstring& _strFilePath)
 		return E_FAIL;
 	}
 
-	m_SRV->GetResource((ID3D11Resource**)m_tex2D.GetAddressOf());
-	m_tex2D->GetDesc(&m_desc);
+	m_SRV->GetResource((ID3D11Resource**)m_Tex2D.GetAddressOf());
+	m_Tex2D->GetDesc(&m_Desc);
 
 	return S_OK;
 }
@@ -144,60 +152,60 @@ int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat
 	, UINT _BindFlag, D3D11_USAGE _Usage)
 {
 	// ID3D11Texture2D 생성
-	m_desc.Format = _pixelformat;
+	m_Desc.Format = _pixelformat;
 
 	// 반드시 렌더타겟과 같은 해상도로 설정해야 함
-	m_desc.Width = _Width;
-	m_desc.Height = _Height;
-	m_desc.ArraySize = 1;
+	m_Desc.Width = _Width;
+	m_Desc.Height = _Height;
+	m_Desc.ArraySize = 1;
 
-	m_desc.BindFlags = _BindFlag;
-	m_desc.Usage = _Usage;
+	m_Desc.BindFlags = _BindFlag;
+	m_Desc.Usage = _Usage;
 
 	if (D3D11_USAGE::D3D11_USAGE_DYNAMIC == _Usage)
-		m_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	else if (D3D11_USAGE::D3D11_USAGE_STAGING == _Usage)
-		m_desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		m_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	else if(D3D11_USAGE::D3D11_USAGE_STAGING == _Usage)
+		m_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 
-	m_desc.MipLevels = 1;    // 원본만 생성
-	m_desc.SampleDesc.Count = 1;
-	m_desc.SampleDesc.Quality = 0;
+	m_Desc.MipLevels = 1;    // 원본만 생성
+	m_Desc.SampleDesc.Count = 1;
+	m_Desc.SampleDesc.Quality = 0;
 
 
-	if (FAILED(DEVICE->CreateTexture2D(&m_desc, nullptr, m_tex2D.GetAddressOf())))
+	if (FAILED(DEVICE->CreateTexture2D(&m_Desc, nullptr, m_Tex2D.GetAddressOf())))
 	{
 		return E_FAIL;
 	}
 
 	// 바인드 플래그에 맞는 View 를 생성해준다.
-	if (m_desc.BindFlags & D3D11_BIND_DEPTH_STENCIL)
+	if (m_Desc.BindFlags & D3D11_BIND_DEPTH_STENCIL)
 	{
-		if (FAILED(DEVICE->CreateDepthStencilView(m_tex2D.Get(), nullptr, m_DSV.GetAddressOf())))
+		if (FAILED(DEVICE->CreateDepthStencilView(m_Tex2D.Get(), nullptr, m_DSV.GetAddressOf())))
 		{
 			return E_FAIL;
 		}
 	}
 	else
 	{
-		if (m_desc.BindFlags & D3D11_BIND_RENDER_TARGET)
+		if (m_Desc.BindFlags & D3D11_BIND_RENDER_TARGET)
 		{
-			if (FAILED(DEVICE->CreateRenderTargetView(m_tex2D.Get(), nullptr, m_RTV.GetAddressOf())))
+			if (FAILED(DEVICE->CreateRenderTargetView(m_Tex2D.Get(), nullptr, m_RTV.GetAddressOf())))
 			{
 				return E_FAIL;
 			}
 		}
 
-		if (m_desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
+		if (m_Desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
 		{
-			if (FAILED(DEVICE->CreateShaderResourceView(m_tex2D.Get(), nullptr, m_SRV.GetAddressOf())))
+			if (FAILED(DEVICE->CreateShaderResourceView(m_Tex2D.Get(), nullptr, m_SRV.GetAddressOf())))
 			{
 				return E_FAIL;
 			}
 		}
 
-		if (m_desc.BindFlags & D3D11_BIND_UNORDERED_ACCESS)
+		if (m_Desc.BindFlags & D3D11_BIND_UNORDERED_ACCESS)
 		{
-			if (FAILED(DEVICE->CreateUnorderedAccessView(m_tex2D.Get(), nullptr, m_UAV.GetAddressOf())))
+			if (FAILED(DEVICE->CreateUnorderedAccessView(m_Tex2D.Get(), nullptr, m_UAV.GetAddressOf())))
 			{
 				return E_FAIL;
 			}
@@ -210,39 +218,39 @@ int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _pixelformat
 
 int CTexture::Create(ComPtr<ID3D11Texture2D> _tex2D)
 {
-	m_tex2D = _tex2D;
+	m_Tex2D = _tex2D;
 
-	m_tex2D->GetDesc(&m_desc);
+	m_Tex2D->GetDesc(&m_Desc);
 
 	// 바인드 플래그에 맞는 View 를 생성해준다.
-	if (m_desc.BindFlags & D3D11_BIND_DEPTH_STENCIL)
+	if (m_Desc.BindFlags & D3D11_BIND_DEPTH_STENCIL)
 	{
-		if (FAILED(DEVICE->CreateDepthStencilView(m_tex2D.Get(), nullptr, m_DSV.GetAddressOf())))
+		if (FAILED(DEVICE->CreateDepthStencilView(m_Tex2D.Get(), nullptr, m_DSV.GetAddressOf())))
 		{
 			return E_FAIL;
 		}
 	}
 	else
 	{
-		if (m_desc.BindFlags & D3D11_BIND_RENDER_TARGET)
+		if (m_Desc.BindFlags & D3D11_BIND_RENDER_TARGET)
 		{
-			if (FAILED(DEVICE->CreateRenderTargetView(m_tex2D.Get(), nullptr, m_RTV.GetAddressOf())))
+			if (FAILED(DEVICE->CreateRenderTargetView(m_Tex2D.Get(), nullptr, m_RTV.GetAddressOf())))
 			{
 				return E_FAIL;
 			}
 		}
 
-		if (m_desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
+		if (m_Desc.BindFlags & D3D11_BIND_SHADER_RESOURCE)
 		{
-			if (FAILED(DEVICE->CreateShaderResourceView(m_tex2D.Get(), nullptr, m_SRV.GetAddressOf())))
+			if (FAILED(DEVICE->CreateShaderResourceView(m_Tex2D.Get(), nullptr, m_SRV.GetAddressOf())))
 			{
 				return E_FAIL;
 			}
 		}
 
-		if (m_desc.BindFlags & D3D11_BIND_UNORDERED_ACCESS)
+		if (m_Desc.BindFlags & D3D11_BIND_UNORDERED_ACCESS)
 		{
-			if (FAILED(DEVICE->CreateUnorderedAccessView(m_tex2D.Get(), nullptr, m_UAV.GetAddressOf())))
+			if (FAILED(DEVICE->CreateUnorderedAccessView(m_Tex2D.Get(), nullptr, m_UAV.GetAddressOf())))
 			{
 				return E_FAIL;
 			}

@@ -1,16 +1,24 @@
 #include "pch.h"
-#include "TilemapUI.h"
+#include "TileMapUI.h"
 
-TilemapUI::TilemapUI() : CompUI("##Tilemap", COMPONENT_TYPE::TILEMAP)
+
+TileMapUI::TileMapUI()
+    : ComponentUI("##TileMap", COMPONENT_TYPE::TILEMAP)
 {
-	SetName("Tilemap");
+    SetName("TileMap");
 }
-TilemapUI::~TilemapUI() { }
 
-int TilemapUI::render_update()
+TileMapUI::~TileMapUI()
 {
-	if (FALSE == CompUI::render_update())
-		return FALSE;
+}
 
-	return TRUE;
+int TileMapUI::render_update()
+{
+    if (FALSE == ComponentUI::render_update())
+        return FALSE;
+
+
+
+
+    return TRUE;
 }

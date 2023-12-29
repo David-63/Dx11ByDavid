@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{6ca7dc3f-f62b-48a3-a922-19b252a3ad52}</ProjectGuid>
+    <ProjectGuid>{96a12f2b-f2e6-4aaa-8eb7-5f163384da7b}</ProjectGuid>
     <RootNamespace>Client</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -88,8 +88,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -104,8 +102,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -122,10 +118,9 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinFilesInUnityFile>10</MinFilesInUnityFile>
       <MaxFilesInUnityFile>20</MaxFilesInUnityFile>
       <UnityFilesDirectory>$(ProjectDir)</UnityFilesDirectory>
-      <MinFilesInUnityFile>10</MinFilesInUnityFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,7 +137,6 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
       <MinFilesInUnityFile>10</MinFilesInUnityFile>
       <MaxFilesInUnityFile>20</MaxFilesInUnityFile>
       <UnityFilesDirectory>$(ProjectDir)</UnityFilesDirectory>
@@ -157,12 +151,12 @@
   <ItemGroup>
     <ClInclude Include="Animator2DUI.h" />
     <ClInclude Include="CameraUI.h" />
-    <ClInclude Include="CEditorMgr.h" />
+    <ClInclude Include="CEditorObjMgr.h" />
     <ClInclude Include="CGameObjectEx.h" />
     <ClInclude Include="CLevelSaveLoad.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Collider2DUI.h" />
-    <ClInclude Include="CompUI.h" />
+    <ClInclude Include="ComponentUI.h" />
     <ClInclude Include="ComputeShaderUI.h" />
     <ClInclude Include="ContentUI.h" />
     <ClInclude Include="framework.h" />
@@ -173,9 +167,6 @@
     <ClInclude Include="ImGui\imgui_impl_dx11.h" />
     <ClInclude Include="ImGui\imgui_impl_win32.h" />
     <ClInclude Include="ImGui\imgui_internal.h" />
-    <ClInclude Include="ImGui\imstb_rectpack.h" />
-    <ClInclude Include="ImGui\imstb_textedit.h" />
-    <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="InspectorUI.h" />
     <ClInclude Include="Light2DUI.h" />
     <ClInclude Include="ListUI.h" />
@@ -186,7 +177,6 @@
     <ClInclude Include="MeshUI.h" />
     <ClInclude Include="OutlinerUI.h" />
     <ClInclude Include="ParamUI.h" />
-    <ClInclude Include="ParticleSystemUI.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PrefabUI.h" />
     <ClInclude Include="Resource.h" />
@@ -196,7 +186,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TextureUI.h" />
-    <ClInclude Include="TilemapUI.h" />
+    <ClInclude Include="TileMapUI.h" />
     <ClInclude Include="TransformUI.h" />
     <ClInclude Include="TreeUI.h" />
     <ClInclude Include="UI.h" />
@@ -204,11 +194,11 @@
   <ItemGroup>
     <ClCompile Include="Animator2DUI.cpp" />
     <ClCompile Include="CameraUI.cpp" />
-    <ClCompile Include="CEditorMgr.cpp" />
+    <ClCompile Include="CEditorObjMgr.cpp" />
     <ClCompile Include="CGameObjectEx.cpp" />
     <ClCompile Include="CLevelSaveLoad.cpp" />
     <ClCompile Include="Collider2DUI.cpp" />
-    <ClCompile Include="CompUI.cpp" />
+    <ClCompile Include="ComponentUI.cpp" />
     <ClCompile Include="ComputeShaderUI.cpp" />
     <ClCompile Include="ContentUI.cpp" />
     <ClCompile Include="GraphicsShaderUI.cpp" />
@@ -231,11 +221,8 @@
     <ClCompile Include="MeshUI.cpp" />
     <ClCompile Include="OutlinerUI.cpp" />
     <ClCompile Include="ParamUI.cpp" />
-    <ClCompile Include="ParticleSystemUI.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PrefabUI.cpp" />
@@ -244,7 +231,7 @@
     <ClCompile Include="SoundUI.cpp" />
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TextureUI.cpp" />
-    <ClCompile Include="TilemapUI.cpp" />
+    <ClCompile Include="TileMapUI.cpp" />
     <ClCompile Include="TransformUI.cpp" />
     <ClCompile Include="TreeUI.cpp" />
     <ClCompile Include="UI.cpp" />

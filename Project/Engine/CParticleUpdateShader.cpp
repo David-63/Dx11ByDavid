@@ -4,12 +4,19 @@
 #include "CStructuredBuffer.h"
 
 CParticleUpdateShader::CParticleUpdateShader(UINT _iGroupPerThreadX, UINT _iGroupPerThreadY, UINT _iGroupPerThreadZ)
+	: m_ParticleBuffer(nullptr)
+	, m_ModuleData(nullptr)
+	, m_RWBuffer(nullptr)
 {
 	m_iGroupPerThreadX = _iGroupPerThreadX;
 	m_iGroupPerThreadY = _iGroupPerThreadY;
 	m_iGroupPerThreadZ = _iGroupPerThreadZ;
 }
-CParticleUpdateShader::~CParticleUpdateShader() { }
+
+CParticleUpdateShader::~CParticleUpdateShader()
+{
+
+}
 
 void CParticleUpdateShader::SetParticleBuffer(CStructuredBuffer* _Buffer)
 {

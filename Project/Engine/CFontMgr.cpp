@@ -1,9 +1,14 @@
 #include "pch.h"
 #include "CFontMgr.h"
-
 #include "CDevice.h"
 
-CFontMgr::CFontMgr() { }
+
+CFontMgr::CFontMgr()
+	: m_pFW1Factory(nullptr)
+	, m_pFontWrapper(nullptr)
+{
+}
+
 CFontMgr::~CFontMgr()
 {
 	if (nullptr != m_pFW1Factory)

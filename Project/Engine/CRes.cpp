@@ -1,24 +1,31 @@
 #include "pch.h"
 #include "CRes.h"
 
-CRes::CRes(RES_TYPE _type, bool _isEngine)
-	: m_resType(_type), m_isEngine(_isEngine)
-{ }
+CRes::CRes(RES_TYPE _type, bool _bEngine)
+	: m_Type(_type)
+	, m_iRefCount(0)
+	, m_bEngine(_bEngine)
+{
+}
+
 CRes::CRes(const CRes& _Other)
 	: CEntity(_Other)
-	, m_resType(_Other.m_resType)	
-	, m_key(_Other.m_key)
-	, m_relativePath(_Other.m_relativePath)
-{ }
-CRes::~CRes()
-{ }
+	, m_Type(_Other.m_Type)
+	, m_iRefCount(0)
+	, m_strKey(_Other.m_strKey)
+	, m_strRelativePath(_Other.m_strRelativePath)
+{
+}
 
+CRes::~CRes()
+{
+}
 
 void CRes::Release()
 {
-	--m_refCount;
+	--m_iRefCount;
 
-	if (0 == m_refCount)
+	if (0 == m_iRefCount)
 	{
 		delete this;
 	}

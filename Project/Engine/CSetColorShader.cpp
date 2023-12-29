@@ -9,7 +9,10 @@ CSetColorShader::CSetColorShader(UINT _iGroupPerThreadX, UINT _iGroupPerThreadY,
 	m_iGroupPerThreadY = _iGroupPerThreadY;
 	m_iGroupPerThreadZ = _iGroupPerThreadZ;
 }
-CSetColorShader::~CSetColorShader() { }
+
+CSetColorShader::~CSetColorShader()
+{
+}
 
 void CSetColorShader::SetTargetTexture(Ptr<CTexture> _Tex)
 {
@@ -27,8 +30,8 @@ void CSetColorShader::UpdateData()
 	m_OutTex->UpdateData_CS(0, false);
 
 	// 그룹 개수 계산
-	m_iGroupX = (static_cast<UINT>(m_OutTex->Width()) / m_iGroupPerThreadX) + 1;
-	m_iGroupY = (static_cast<UINT>(m_OutTex->Height()) / m_iGroupPerThreadY) + 1;
+	m_iGroupX = (m_OutTex->Width() / m_iGroupPerThreadX) + 1;
+	m_iGroupY = (m_OutTex->Height() / m_iGroupPerThreadY) + 1;
 	m_iGroupZ = 1;
 }
 

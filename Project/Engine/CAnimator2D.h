@@ -5,12 +5,14 @@
 #include "CTexture.h"
 
 class CAnim2D;
-class CAnimator2D : public CComponent
+
+class CAnimator2D :
+    public CComponent
 {
 private:
-    map<wstring, CAnim2D*>  m_mapAnim;              // Animation 목록
-    CAnim2D*                m_pCurAnim = nullptr;   // 현재 재생중인 Animation
-    bool                    m_isRepeat = false;     // 반복
+    map<wstring, CAnim2D*>  m_mapAnim;  // Animation 목록
+    CAnim2D*                m_pCurAnim; // 현재 재생중인 Animation
+    bool                    m_bRepeat;  // 반복
 
 
 public:

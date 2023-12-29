@@ -1,21 +1,30 @@
 #include "pch.h"
 #include "CTransform.h"
 
-
 #include "CDevice.h"
-#include "CConstantBuffer.h"
+#include "CConstBuffer.h"
 
-CTransform::CTransform() : CComponent(COMPONENT_TYPE::TRANSFORM)
+CTransform::CTransform()
+	: CComponent(COMPONENT_TYPE::TRANSFORM)
+	, m_vRelativeScale(Vec3(1.f, 1.f, 1.f))
+	, m_bAbsolute(false)	
+	, m_vRelativeDir{
+		  Vec3(1.f, 0.f, 0.f)
+		, Vec3(0.f, 1.f, 0.f)
+		, Vec3(0.f, 0.f, 1.f)}	
 {
 	SetName(L"Transform");
 }
-CTransform::~CTransform() { }
+
+CTransform::~CTransform()
+{
+}
 
 void CTransform::finaltick()
 {
 	m_matWorldScale = XMMatrixIdentity();
 	m_matWorldScale = XMMatrixScaling(m_vRelativeScale.x, m_vRelativeScale.y, m_vRelativeScale.z);
-
+	
 	Matrix matRot = XMMatrixIdentity();
 	matRot = XMMatrixRotationX(m_vRelativeRot.x);
 	matRot *= XMMatrixRotationY(m_vRelativeRot.y);
@@ -23,7 +32,7 @@ void CTransform::finaltick()
 
 	Matrix matTranslation = XMMatrixTranslation(m_vRelativePos.x, m_vRelativePos.y, m_vRelativePos.z);
 
-
+	
 	m_matWorld = m_matWorldScale * matRot * matTranslation;
 
 	Vec3 vDefaultDir[3] = {
@@ -37,11 +46,11 @@ void CTransform::finaltick()
 		m_vWorldDir[i] = m_vRelativeDir[i] = XMVector3TransformNormal(vDefaultDir[i], matRot);
 	}
 
-	// 부모 오브젝트 확인
+	// 상속구조에 맞춰서 크기와 위치를 세팅함 ( 회전 X )
 	CGameObject* pParent = GetOwner()->GetParent();
 	if (pParent)
 	{
-		if (m_isAbsolute)
+		if (m_bAbsolute)
 		{
 			Matrix matParentWorld = pParent->Transform()->m_matWorld;
 			Matrix matParentScale = pParent->Transform()->m_matWorldScale;
@@ -55,21 +64,22 @@ void CTransform::finaltick()
 			m_matWorldScale = pParent->Transform()->m_matWorldScale;
 			m_matWorld *= pParent->Transform()->m_matWorld;
 		}
-
-
+		
+		// 3방향 벡터 업데이트
 		for (int i = 0; i < 3; ++i)
 		{
 			m_vWorldDir[i] = XMVector3TransformNormal(vDefaultDir[i], m_matWorld);
 			m_vWorldDir[i].Normalize();
 		}
 	}
+
 	m_matWorldInv = XMMatrixInverse(nullptr, m_matWorld);
 }
 
 void CTransform::UpdateData()
 {
 	// 위치값을 상수버퍼에 전달 및 바인딩		
-	CConstantBuffer* pTransformBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::TRANSFORM);
+	CConstBuffer* pTransformBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::TRANSFORM);
 
 	g_transform.matWorld = m_matWorld;
 	g_transform.matWorldInv = m_matWorldInv;
@@ -83,16 +93,16 @@ void CTransform::UpdateData()
 
 void CTransform::SaveToLevelFile(FILE* _File)
 {
-	fwrite(&m_vRelativePos, sizeof(Vec3), 1, _File);
+	fwrite(&m_vRelativePos	, sizeof(Vec3), 1, _File);
 	fwrite(&m_vRelativeScale, sizeof(Vec3), 1, _File);
-	fwrite(&m_vRelativeRot, sizeof(Vec3), 1, _File);
-	fwrite(&m_isAbsolute, sizeof(bool), 1, _File);
+	fwrite(&m_vRelativeRot	, sizeof(Vec3), 1, _File);
+	fwrite(&m_bAbsolute, sizeof(bool), 1, _File);
 }
 
 void CTransform::LoadFromLevelFile(FILE* _FILE)
-{
+{	
 	fread(&m_vRelativePos, sizeof(Vec3), 1, _FILE);
 	fread(&m_vRelativeScale, sizeof(Vec3), 1, _FILE);
 	fread(&m_vRelativeRot, sizeof(Vec3), 1, _FILE);
-	fread(&m_isAbsolute, sizeof(bool), 1, _FILE);
+	fread(&m_bAbsolute, sizeof(bool), 1, _FILE);
 }

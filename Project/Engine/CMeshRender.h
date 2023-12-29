@@ -1,7 +1,9 @@
 #pragma once
-#include "CRenderComp.h"
+#include "CRenderComponent.h"
 
-class CMeshRender : public CRenderComp
+
+class CMeshRender :
+    public CRenderComponent
 {
 public:
     virtual void finaltick() override;

@@ -4,11 +4,20 @@
 #include "CScript.h"
 #include "components.h"
 
-CCollider2D::CCollider2D() : CComponent(COMPONENT_TYPE::COLLIDER2D)
+
+CCollider2D::CCollider2D()
+	: CComponent(COMPONENT_TYPE::COLLIDER2D)
+	, m_Shape(COLLIDER2D_TYPE::RECT)
+	, m_bAbsolute(false)
+	, m_iCollisionCount(0)
 {
 	SetName(L"Collider2D");
 }
-CCollider2D::~CCollider2D() { }
+
+CCollider2D::~CCollider2D()
+{
+}
+
 
 void CCollider2D::finaltick()
 {
@@ -20,7 +29,7 @@ void CCollider2D::finaltick()
 
 	const Matrix& matWorld = Transform()->GetWorldMat();
 
-	if (m_isAbsolute)
+	if (m_bAbsolute)
 	{
 		Matrix matParentScaleInv = XMMatrixInverse(nullptr, Transform()->GetWorldScaleMat());
 		m_matCollider2D = m_matCollider2D * matParentScaleInv * matWorld;
@@ -30,16 +39,16 @@ void CCollider2D::finaltick()
 		// 충돌체 월드 * 오브젝트 월드
 		m_matCollider2D *= matWorld;
 	}
-
+	
 	// DebugShape 요청
 	Vec4 vColor = Vec4(0.f, 1.f, 0.f, 1.f);
 	if (0 < m_iCollisionCount)
 		vColor = Vec4(1.f, 0.f, 0.f, 1.f);
 
 	if (COLLIDER2D_TYPE::CIRCLE == m_Shape)
-		DrawDebugCircle(m_matCollider2D, vColor, 0.f);
-	else
-		DrawDebugRect(m_matCollider2D, vColor, 0.f);
+		DrawDebugCircle(m_matCollider2D, vColor, 0.f);	
+	else	
+		DrawDebugRect(m_matCollider2D, vColor, 0.f);	
 }
 
 
@@ -82,7 +91,7 @@ void CCollider2D::SaveToLevelFile(FILE* _File)
 {
 	fwrite(&m_vOffsetPos, sizeof(Vec3), 1, _File);
 	fwrite(&m_vOffsetScale, sizeof(Vec3), 1, _File);
-	fwrite(&m_isAbsolute, sizeof(bool), 1, _File);
+	fwrite(&m_bAbsolute, sizeof(bool), 1, _File);
 	fwrite(&m_Shape, sizeof(UINT), 1, _File);
 }
 
@@ -90,6 +99,6 @@ void CCollider2D::LoadFromLevelFile(FILE* _File)
 {
 	fread(&m_vOffsetPos, sizeof(Vec3), 1, _File);
 	fread(&m_vOffsetScale, sizeof(Vec3), 1, _File);
-	fread(&m_isAbsolute, sizeof(bool), 1, _File);
+	fread(&m_bAbsolute, sizeof(bool), 1, _File);
 	fread(&m_Shape, sizeof(UINT), 1, _File);
 }

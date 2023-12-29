@@ -1,11 +1,15 @@
 #include "pch.h"
 #include "SoundUI.h"
 
-SoundUI::SoundUI() : ResUI(RES_TYPE::SOUND)
+SoundUI::SoundUI()
+    : ResUI(RES_TYPE::SOUND)
 {
     SetName("Sound");
 }
-SoundUI::~SoundUI() { }
+
+SoundUI::~SoundUI()
+{
+}
 
 int SoundUI::render_update()
 {

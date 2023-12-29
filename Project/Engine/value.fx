@@ -7,8 +7,10 @@ cbuffer TRANSFORM : register(b0)
 {
     row_major matrix g_matWorld;
     row_major matrix g_matWorldInv;
+    
     row_major matrix g_matView;
     row_major matrix g_matViewInv;
+    
     row_major matrix g_matProj;
     row_major matrix g_matProjInv;
     
@@ -16,7 +18,6 @@ cbuffer TRANSFORM : register(b0)
     row_major matrix g_matWVP;
 };
 
-// mat param
 cbuffer MATERIAL : register(b1)
 {
     int g_int_0;
@@ -51,9 +52,9 @@ cbuffer MATERIAL : register(b1)
     int g_btex_4;
     int g_btex_5;
     int g_btex_6;
-    int g_btex_7;
+    int g_btex_7;    
     int g_btexcube_0;
-    int g_btexcube_1;
+    int g_btexcube_1;    
     int g_btexarr_0;
     int g_btexarr_1;
 };
@@ -61,11 +62,11 @@ cbuffer MATERIAL : register(b1)
 cbuffer GLOBAL : register(b2)
 {
     float2 g_Resolution;
-    float g_DT;
-    float g_AccTime;
-    uint g_Light2DCount;
-    uint g_Light3DCount;
-    int2 g_globalpadding;
+    float  g_DT;
+    float  g_AccTime;
+    uint   g_Light2DCount;
+    uint   g_Light3DCount;
+    int2   g_globalpadding;
 }
 
 Texture2D g_tex_0 : register(t0);
@@ -86,10 +87,12 @@ Texture2DArray g_arrtex_1 : register(t11);
 StructuredBuffer<tLightInfo> g_Light2DBuffer : register(t12);
 StructuredBuffer<tLightInfo> g_Light3DBuffer : register(t13);
 
-// sampler
+
 SamplerState g_sam_0 : register(s0);
 SamplerState g_sam_1 : register(s1);
-SamplerState g_sam_2 : register(s2);
+
+
 
 #define PI 3.1415926535f
+
 #endif

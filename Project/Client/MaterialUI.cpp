@@ -8,18 +8,22 @@
 #include <Engine\CResMgr.h>
 #include <Engine\CMaterial.h>
 
-MaterialUI::MaterialUI() : ResUI(RES_TYPE::MATERIAL)
+MaterialUI::MaterialUI()
+    : ResUI(RES_TYPE::MATERIAL)
 {
     SetName("Material");
 }
-MaterialUI::~MaterialUI() { }
+
+MaterialUI::~MaterialUI()
+{
+}
 
 int MaterialUI::render_update()
 {
     ResUI::render_update();
 
     // Material 이름
-    ImGui::Text("Material");
+    ImGui::Text("Material"); 
     ImGui::SameLine();
 
     Ptr<CMaterial> pMtrl = (CMaterial*)GetTargetRes().Get();
@@ -51,7 +55,7 @@ int MaterialUI::render_update()
         {
             TreeNode* pNode = (TreeNode*)pPayLoad->Data;
             CRes* pRes = (CRes*)pNode->GetData();
-            if (RES_TYPE::GRAPHICS_SHADER == pRes->GetResType())
+            if (RES_TYPE::GRAPHICS_SHADER == pRes->GetType())
             {
                 ((CMaterial*)GetTargetRes().Get())->SetShader((CGraphicsShader*)pRes);
             }
@@ -80,7 +84,7 @@ int MaterialUI::render_update()
 
     ImGui::NewLine();
     ImGui::Text("Parameter");
-
+    
 
     // Shader 에서 요구하는 ScalarParameter 를 UI 에 노출
     if (nullptr == pShader)
@@ -92,7 +96,7 @@ int MaterialUI::render_update()
     {
         switch (vecScalarParam[i].eParam)
         {
-            // Shader Parameter 가 Int 타입인 경우
+        // Shader Parameter 가 Int 타입인 경우
         case INT_0:
         case INT_1:
         case INT_2:
@@ -107,7 +111,7 @@ int MaterialUI::render_update()
                 pMtrl->SetScalarParam(vecScalarParam[i].eParam, &data);
             }
         }
-        break;
+            break;
         case FLOAT_0:
         case FLOAT_1:
         case FLOAT_2:
@@ -122,7 +126,7 @@ int MaterialUI::render_update()
                 pMtrl->SetScalarParam(vecScalarParam[i].eParam, &data);
             }
         }
-        break;
+            break;
         case VEC2_0:
         case VEC2_1:
         case VEC2_2:
@@ -137,7 +141,7 @@ int MaterialUI::render_update()
                 pMtrl->SetScalarParam(vecScalarParam[i].eParam, &data);
             }
         }
-        break;
+            break;
         case VEC4_0:
         case VEC4_1:
         case VEC4_2:
@@ -152,13 +156,13 @@ int MaterialUI::render_update()
                 pMtrl->SetScalarParam(vecScalarParam[i].eParam, &data);
             }
         }
-        break;
+            break;
         case MAT_0:
         case MAT_1:
         case MAT_2:
         case MAT_3:
             break;
-        }
+        }        
     }
 
     // Shader 에서 요구하는 Texture Parameter 를 UI 에 노출

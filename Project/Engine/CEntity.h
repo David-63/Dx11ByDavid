@@ -3,16 +3,16 @@
 class CEntity
 {
 private:
-	static UINT g_nextID;
+	static UINT g_iNextID;
 
 private:
-	wstring		m_name;
-	const UINT  m_ID;
+	wstring		m_strName;
+	const UINT  m_iID;
 
 public:
-	void SetName(const wstring& _strName) { m_name = _strName; }
-	const wstring& GetName() { return m_name; }
-	UINT GetID() { return m_ID; }
+	void SetName(const wstring& _strName) {  m_strName = _strName; }
+	const wstring& GetName() { return m_strName; }
+	UINT GetID() { return m_iID; }
 
 public:
 	virtual CEntity* Clone() = 0;

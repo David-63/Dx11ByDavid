@@ -12,6 +12,7 @@
 #include "CGameObject.h"
 #include "components.h"
 
+
 enum class SCRIPT_PARAM
 {
     INT,
@@ -23,26 +24,27 @@ enum class SCRIPT_PARAM
 struct tScriptParam
 {
     SCRIPT_PARAM    eParam;
-    void*           pData;
+    void*           pData;    
     string          strDesc;
 };
 
 class CCollider2D;
 
-class CScript : public CComponent
+class CScript :
+    public CComponent
 {
-private:
-    UINT                    m_scriptType;
+private:  
+    UINT                    m_iScriptType;
     vector<tScriptParam>    m_vecParam;
 
 
 public:
     void Destroy() { DestroyObject(GetOwner()); }
     void SetLifeSpan(float _Time) { GetOwner()->SetLifeSpan(_Time); }
-    UINT GetScriptType() { return m_scriptType; }
+    UINT GetScriptType() { return m_iScriptType; }
     const vector<tScriptParam>& GetScritpParam() { return m_vecParam; }
 
-public:
+public:   
     virtual void finaltick() final {};
     virtual void BeginOverlap(CCollider2D* _Other) {}
     virtual void OnOverlap(CCollider2D* _Other) {}

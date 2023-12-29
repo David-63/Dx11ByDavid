@@ -4,8 +4,8 @@
 #include "ptr.h"
 #include "CTexture.h"
 
-
-class CSetColorShader : public CComputeShader
+class CSetColorShader :
+    public CComputeShader
 {
 private:
     Ptr<CTexture>   m_OutTex;

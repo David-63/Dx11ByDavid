@@ -1,11 +1,15 @@
 #include "pch.h"
 #include "ComputeShaderUI.h"
 
-ComputeShaderUI::ComputeShaderUI() : ResUI(RES_TYPE::COMPUTE_SHADER)
+ComputeShaderUI::ComputeShaderUI()
+    : ResUI(RES_TYPE::COMPUTE_SHADER)
 {
     SetName("ComputeShader");
 }
-ComputeShaderUI::~ComputeShaderUI() { }
+
+ComputeShaderUI::~ComputeShaderUI()
+{
+}
 
 int ComputeShaderUI::render_update()
 {

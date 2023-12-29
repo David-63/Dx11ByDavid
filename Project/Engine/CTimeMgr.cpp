@@ -1,69 +1,71 @@
 #include "pch.h"
 #include "CTimeMgr.h"
 
-CTimeMgr::CTimeMgr() { }
+#include "CEngine.h"
+#include "CFontMgr.h"
+
+
+CTimeMgr::CTimeMgr()
+	: m_llPrevCount{}
+	, m_llCurCount{}
+	, m_llFrequency{}
+	, m_iCallCount(0)
+	, m_fDeltaTime(0.f)
+	, m_fTime(0.f)
+{
+
+}
+
 CTimeMgr::~CTimeMgr()
 {
-    start = std::chrono::high_resolution_clock::now();
-    stop = std::chrono::high_resolution_clock::now();
+
 }
+
+
 
 void CTimeMgr::init()
 {
-    start = std::chrono::high_resolution_clock::now();
-    stop = std::chrono::high_resolution_clock::now();
+	// 1초당 카운팅 증가량
+	QueryPerformanceFrequency(&m_llFrequency);
+		
+	QueryPerformanceCounter(&m_llCurCount);
+	QueryPerformanceCounter(&m_llPrevCount);
 }
 
 void CTimeMgr::tick()
-{
-    m_deltaTime = (float)this->GetMilisecondsElapsed();
-    g_globalData.tDT = static_cast<float>(m_deltaTime);
-    g_globalData.tAccTime += static_cast<float>(m_deltaTime);
-    m_deltaTimeScaled = m_deltaTime * m_timeScale;
+{	
+	QueryPerformanceCounter(&m_llCurCount);
 
-    this->Restart();
+	// tick 간격 시간
+	m_fDeltaTime = (float)(m_llCurCount.QuadPart - m_llPrevCount.QuadPart) / (float)m_llFrequency.QuadPart;
+
+	// 누적 시간
+	m_fTime += m_fDeltaTime;
+
+	// 함수 호출 횟수
+	++m_iCallCount;
+		
+	// 이전 카운트 값을 현재 카운트로 갱신
+	m_llPrevCount = m_llCurCount;		
+
+	// GlobalData 갱신
+	GlobalData.tDT = m_fDeltaTime;
+	GlobalData.tAccTime += m_fDeltaTime;
 }
 
-void CTimeMgr::Restart()
+void CTimeMgr::render()
 {
-    m_isRunning = true;
-    start = std::chrono::high_resolution_clock::now();
-}
+	// 1초에 한번
+	static wchar_t szBuff[256] = {};
 
-bool CTimeMgr::Stop()
-{
-    if (!m_isRunning)
-        return false;
-    else
-    {
-        stop = std::chrono::high_resolution_clock::now();
-        m_isRunning = false;
-        return true;
-    }
-}
+	if (1.f <= m_fTime)
+	{		
+		swprintf_s(szBuff, L"FPS : %d, DT : %f", m_iCallCount, m_fDeltaTime);
+		//SetWindowText(CEngine::GetInst()->GetMainWnd(), szBuff);	
 
-bool CTimeMgr::Start()
-{
-    if (m_isRunning)
-        return false;
-    else
-    {
-        start = std::chrono::high_resolution_clock::now();
-        m_isRunning = true;
-        return true;
-    }
-}
+		m_fTime = 0.f;
+		m_iCallCount = 0;
+	}
 
-double CTimeMgr::GetMilisecondsElapsed()
-{
-    if (m_isRunning)
-    {
-        auto elapsed = std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start);
-        return elapsed.count();
-    }
-    else
-    {
-        auto elapsed = std::chrono::duration<double, std::milli>(stop - start);
-        return elapsed.count();
-    }
+	CFontMgr::GetInst()->DrawFont(szBuff, 10, 20, 16, FONT_RGBA(255, 0, 0, 255));
 }

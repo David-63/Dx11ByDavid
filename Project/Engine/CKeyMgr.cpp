@@ -3,23 +3,76 @@
 
 #include "CEngine.h"
 
-int g_arrVK[(UINT)KEY::END] =
+int g_arrVK[(UINT)KEY::END]
+=
 {
-	 VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT,
-	 VK_SPACE, VK_RETURN, VK_ESCAPE, VK_LMENU, VK_LCONTROL, VK_LSHIFT, VK_TAB,
-	 VK_LBUTTON, VK_RBUTTON,
+	 VK_UP, 
+	 VK_DOWN,
+	 VK_LEFT,
+	 VK_RIGHT,
 
-	 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
-	 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
-	 'Z', 'X', 'C', 'V', 'B', 'N', 'M',
+	 VK_SPACE,	 
+	 VK_RETURN,
+	 VK_ESCAPE,
+	 VK_LMENU,
+	 VK_LCONTROL,
+	 VK_LSHIFT,
+	 VK_TAB,	 
+	 
+	 VK_LBUTTON,
+	 VK_RBUTTON,
+
+	 'Q',
+	 'W',
+	 'E',
+	 'R',
+
+	 'T',
+	 'Y',
+	 'U',
+	 'I',
+	 'O',
+	 'P',
+
+	 'A',
+	 'S',
+	 'D',
+	 'F',
+
+	 'Z',
+	 'X',
+	 'C',
+	 'V',
+	  
+	 	 
 
 	 '0',
-	 '1', '2', '3',
-	 '4', '5', '6',
-	 '7', '8', '9',
+	 '1',
+	 '2',
+	 '3',
+	 '4',
+	 '5',
+	 '6',
+	 '7',
+	 '8',
+	 '9',
+
 };
-CKeyMgr::CKeyMgr() { }
-CKeyMgr::~CKeyMgr() { }
+
+
+
+
+
+CKeyMgr::CKeyMgr()
+{
+
+}
+
+CKeyMgr::~CKeyMgr()
+{
+
+}
+
 
 void CKeyMgr::init()
 {
@@ -40,13 +93,13 @@ void CKeyMgr::tick()
 				// 이전에는 눌리지 않았다.
 				if (false == m_vecKey[i].bPrev)
 				{
-					m_vecKey[i].state = KEY_STATE::PRESS;
+					m_vecKey[i].state = KEY_STATE::TAP;
 					m_vecKey[i].bPrev = true;
 				}
 				else
 				{
 					// 지금도 눌려있고, 이전 프레임에서도 눌려있었다.
-					m_vecKey[i].state = KEY_STATE::HOLD;
+					m_vecKey[i].state = KEY_STATE::PRESSED;
 				}
 			}
 			else
@@ -68,12 +121,11 @@ void CKeyMgr::tick()
 		m_vPrevMousePos = m_vMousePos;
 
 		POINT ptMousePos = {};
-		GetCursorPos(&ptMousePos);
+		GetCursorPos(&ptMousePos);		
 		ScreenToClient(CEngine::GetInst()->GetMainWnd(), &ptMousePos);
 		m_vMousePos = Vec2((float)ptMousePos.x, (float)ptMousePos.y);
 
 		m_vMouseDir = m_vMousePos - m_vPrevMousePos;
-		m_vMouseDir.Normalize();
 		m_vMouseDir.y *= -1;
 	}
 
@@ -82,7 +134,7 @@ void CKeyMgr::tick()
 	{
 		for (size_t i = 0; i < m_vecKey.size(); ++i)
 		{
-			if (KEY_STATE::PRESS == m_vecKey[i].state || KEY_STATE::HOLD == m_vecKey[i].state)
+			if (KEY_STATE::TAP == m_vecKey[i].state || KEY_STATE::PRESSED == m_vecKey[i].state)
 			{
 				m_vecKey[i].state = KEY_STATE::RELEASE;
 			}
@@ -90,7 +142,7 @@ void CKeyMgr::tick()
 			else if (KEY_STATE::RELEASE == m_vecKey[i].state)
 			{
 				m_vecKey[i].state = KEY_STATE::NONE;
-			}
+			}			 
 		}
-	}
+	}	
 }

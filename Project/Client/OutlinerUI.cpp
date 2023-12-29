@@ -12,9 +12,11 @@
 
 #include "TreeUI.h"
 
-OutlinerUI::OutlinerUI() : UI("##Outliner")
+OutlinerUI::OutlinerUI()
+    : UI("##Outliner")
+	, m_Tree(nullptr)
 {
-	SetName("Outliner");
+    SetName("Outliner");
 
 	// OutlinerUI 안에 자식으로 Tree 를 추가한다.
 	m_Tree = new TreeUI;
@@ -26,9 +28,13 @@ OutlinerUI::OutlinerUI() : UI("##Outliner")
 	m_Tree->AddDynamic_DragDrop(this, (UI_DELEGATE_2)&OutlinerUI::DragDrop);
 	m_Tree->SetDragDropID("GameObject");
 
+
 	AddChildUI(m_Tree);
 }
-OutlinerUI::~OutlinerUI() { }
+
+OutlinerUI::~OutlinerUI()
+{
+}
 
 void OutlinerUI::tick()
 {
@@ -40,14 +46,15 @@ void OutlinerUI::tick()
 		if (0 != m_dwSelectedData)
 		{
 			m_Tree->GetSelectedNode(m_dwSelectedData);
-		}
+		}		
 	}
 }
 
 int OutlinerUI::render_update()
 {
-	return 0;
+    return 0;
 }
+
 
 void OutlinerUI::ResetOutliner()
 {
@@ -66,7 +73,7 @@ void OutlinerUI::ResetOutliner()
 
 		for (size_t i = 0; i < vecParentObj.size(); ++i)
 		{
-			AddGameObject(vecParentObj[i], nullptr);
+			AddGameObject(vecParentObj[i], nullptr);			
 		}
 	}
 }
@@ -86,8 +93,8 @@ void OutlinerUI::AddGameObject(CGameObject* _Obj, TreeNode* _ParentNode)
 {
 	// 오브젝트를 트리에 넣고, 생성된 노드 주소를 받아둔다.
 	TreeNode* pNode = m_Tree->AddItem(string(_Obj->GetName().begin(), _Obj->GetName().end())
-		, (DWORD_PTR)_Obj
-		, _ParentNode);
+									, (DWORD_PTR)_Obj
+									, _ParentNode);
 
 	// 오브젝트의 자식오브젝트 들을 오브젝트 노드를 부모로 해서 그 밑으로 다시 넣어준다.
 	const vector<CGameObject*>& vecChild = _Obj->GetChild();
@@ -107,6 +114,11 @@ CGameObject* OutlinerUI::GetSelectedObject()
 
 	return (CGameObject*)pSelectedNode->GetData();
 }
+
+
+
+
+
 
 void OutlinerUI::DragDrop(DWORD_PTR _DragNode, DWORD_PTR _DropNode)
 {

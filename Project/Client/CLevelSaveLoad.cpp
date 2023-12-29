@@ -11,6 +11,8 @@
 
 #include <Script\CScriptMgr.h>
 
+
+
 int CLevelSaveLoad::SaveLevel(const wstring& _LevelPath, CLevel* _Level)
 {
 	if (_Level->GetState() != LEVEL_STATE::STOP)
@@ -23,7 +25,7 @@ int CLevelSaveLoad::SaveLevel(const wstring& _LevelPath, CLevel* _Level)
 
 	_wfopen_s(&pFile, strPath.c_str(), L"wb");
 
-	if (nullptr == pFile)
+	if (nullptr == pFile)	
 		return E_FAIL;
 
 	// 레벨 이름 저장
@@ -44,7 +46,7 @@ int CLevelSaveLoad::SaveLevel(const wstring& _LevelPath, CLevel* _Level)
 		// 오브젝트 개수 저장
 		size_t objCount = vecParent.size();
 		fwrite(&objCount, sizeof(size_t), 1, pFile);
-
+		
 		// 각 게임오브젝트
 		for (size_t i = 0; i < objCount; ++i)
 		{
@@ -62,10 +64,10 @@ int CLevelSaveLoad::SaveGameObject(CGameObject* _Object, FILE* _File)
 {
 	// 이름
 	SaveWString(_Object->GetName(), _File);
-
+	
 	// 컴포넌트
 	for (UINT i = 0; i <= (UINT)COMPONENT_TYPE::END; ++i)
-	{
+	{		
 		if (i == (UINT)COMPONENT_TYPE::END)
 		{
 			// 컴포넌트 타입 저장
@@ -104,7 +106,7 @@ int CLevelSaveLoad::SaveGameObject(CGameObject* _Object, FILE* _File)
 
 	for (size_t i = 0; i < ChildCount; ++i)
 	{
-		SaveGameObject(vecChild[i], _File);
+		SaveGameObject(vecChild[i], _File);		
 	}
 
 	return 0;
@@ -188,7 +190,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 			Component = new CCollider2D;
 			break;
 		case COMPONENT_TYPE::COLLIDER3D:
-			//Component = new CCollider3D;
+			//Component = new CCollider2D;
 			break;
 		case COMPONENT_TYPE::ANIMATOR2D:
 			Component = new CAnimator2D;
@@ -199,6 +201,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 			Component = new CLight2D;
 			break;
 		case COMPONENT_TYPE::LIGHT3D:
+			Component = new CLight3D;
 			break;
 		case COMPONENT_TYPE::CAMERA:
 			Component = new CCamera;
@@ -210,12 +213,17 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 			Component = new CParticleSystem;
 			break;
 		case COMPONENT_TYPE::TILEMAP:
-			Component = new CTilemap;
+			Component = new CTileMap;
 			break;
-		case COMPONENT_TYPE::LANDSCAPE:
+		case COMPONENT_TYPE::LANDSCAPE:			
 			break;
 		case COMPONENT_TYPE::DECAL:
+			Component = new CDecal;
 			break;
+		case COMPONENT_TYPE::SKYBOX:
+			Component = new CSkyBox;
+			break;
+
 		}
 
 		Component->LoadFromLevelFile(_File);

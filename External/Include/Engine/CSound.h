@@ -11,7 +11,8 @@
 #pragma comment(lib, "FMOD/fmod64_vc.lib")
 #endif
 
-class CSound : public CRes
+class CSound :
+	public CRes
 {
 public:
 	static FMOD::System* g_pFMOD;
@@ -42,7 +43,7 @@ public:
 
 	// 파일로부터 로딩
 	virtual int Load(const wstring& _strFilePath) override;
-
+		
 public:
 	CSound();
 	virtual ~CSound();

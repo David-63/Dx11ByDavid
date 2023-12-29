@@ -11,21 +11,26 @@
 
 
 
-ContentUI::ContentUI() : UI("##Content")
+ContentUI::ContentUI()
+    : UI("##Content")
 {
-	SetName("Content");
+    SetName("Content");
 
-	// ContentUI 안에 자식으로 Tree 를 추가한다.
-	m_Tree = new TreeUI;
-	m_Tree->SetName("ContentTree");
-	m_Tree->SetActive(true);
-	m_Tree->ShowRoot(false);
+    // ContentUI 안에 자식으로 Tree 를 추가한다.
+    m_Tree = new TreeUI;
+    m_Tree->SetName("ContentTree");
+    m_Tree->SetActive(true);
+    m_Tree->ShowRoot(false);
 
 	m_Tree->AddDynamic_Select(this, (UI_DELEGATE_1)&ContentUI::SetTargetToInspector);
 	m_Tree->SetDragDropID("Resource");
-	AddChildUI(m_Tree);
+    AddChildUI(m_Tree);   
 }
-ContentUI::~ContentUI() { }
+
+ContentUI::~ContentUI()
+{
+
+}
 
 void ContentUI::init()
 {
@@ -34,7 +39,7 @@ void ContentUI::init()
 
 void ContentUI::tick()
 {
-	UI::tick();
+    UI::tick();
 
 	if (CResMgr::GetInst()->IsResourceChanged())
 	{
@@ -43,8 +48,8 @@ void ContentUI::tick()
 }
 
 int ContentUI::render_update()
-{
-	return 0;
+{   
+    return 0;
 }
 
 void ContentUI::Reload()
@@ -81,7 +86,7 @@ void ContentUI::Reload()
 			break;
 		case RES_TYPE::SOUND:
 			CResMgr::GetInst()->Load<CSound>(m_vecResPath[i], m_vecResPath[i]);
-			break;
+			break;		
 		}
 	}
 
@@ -107,6 +112,7 @@ void ContentUI::Reload()
 			}
 		}
 	}
+
 	// 트리 갱신
 	ResetContent();
 }
@@ -125,7 +131,7 @@ void ContentUI::ResetContent()
 
 		// m_Tree 에 현재 리소스 목록을 AddItem
 		TreeNode* pCategory = m_Tree->AddItem(ToString((RES_TYPE)i), 0);
-		pCategory->SetCategoryNode(true);
+        pCategory->SetCategoryNode(true);
 
 		for (const auto& pair : mapRes)
 		{
@@ -182,9 +188,9 @@ void ContentUI::FindFileName(const wstring& _FolderPath)
 RES_TYPE ContentUI::GetResTypeByExt(const wstring& _relativepath)
 {
 	wchar_t szExt[50] = {};
-	_wsplitpath_s(_relativepath.c_str(), 0, 0, 0, 0, 0, 0, szExt, 50);
+	_wsplitpath_s(_relativepath.c_str(), 0, 0, 0, 0, 0, 0, szExt, 50);	
 	wstring strExt = szExt;
-
+		
 	if (L".mdat" == strExt)
 		return RES_TYPE::MESHDATA;
 	else if (L".pref" == strExt)

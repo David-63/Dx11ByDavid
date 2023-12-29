@@ -1,14 +1,18 @@
 #pragma once
-#include "CRenderComp.h"
+
+#include "CRenderComponent.h"
+
 enum class SKYBOX_TYPE
 {
     SPHERE,
     CUBE,
 };
-class CSkyBox : public CRenderComp
+
+class CSkyBox :
+    public CRenderComponent
 {
 private:
-    SKYBOX_TYPE     m_Type = SKYBOX_TYPE::SPHERE;
+    SKYBOX_TYPE     m_Type;
     Ptr<CTexture>   m_SkyBoxTex;
 
 

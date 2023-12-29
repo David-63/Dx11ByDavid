@@ -4,14 +4,21 @@
 #include "CTransform.h"
 #include "CAnimator2D.h"
 
-CMeshRender::CMeshRender() : CRenderComp(COMPONENT_TYPE::MESHRENDER)
-{ }
-CMeshRender::~CMeshRender() { }
+CMeshRender::CMeshRender()
+	: CRenderComponent(COMPONENT_TYPE::MESHRENDER)		
+{
+}
 
-void CMeshRender::finaltick() { }
+CMeshRender::~CMeshRender()
+{
+}
+
+void CMeshRender::finaltick()
+{
+}
 
 void CMeshRender::render()
-{
+{	
 	if (nullptr == GetMesh() || nullptr == GetMaterial())
 		return;
 

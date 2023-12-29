@@ -1,16 +1,25 @@
 #include "pch.h"
 #include "CameraUI.h"
 
-CameraUI::CameraUI() : CompUI("##Camera", COMPONENT_TYPE::CAMERA)
+
+CameraUI::CameraUI()
+    : ComponentUI("##Camera", COMPONENT_TYPE::CAMERA)
 {
     SetName("Camera");
 }
-CameraUI::~CameraUI() { }
+
+CameraUI::~CameraUI()
+{
+}
 
 int CameraUI::render_update()
 {
-    if (FALSE == CompUI::render_update())
+    if (FALSE == ComponentUI::render_update())
         return FALSE;
+
+
+
+
 
     return TRUE;
 }

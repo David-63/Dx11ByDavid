@@ -2,16 +2,17 @@
 #include "CRes.h"
 
 #include "ptr.h"
-#include "CTexture.h"
 #include "CGraphicsShader.h"
+#include "CTexture.h"
 
-class CMaterial : public CRes
+class CMaterial :
+    public CRes
 {
 private:
+    Ptr<CGraphicsShader>    m_pShader;
+    tMtrlConst              m_Const;
     Ptr<CTexture>           m_arrTex[TEX_END];
-    Ptr<CGraphicsShader>    m_shader;
-    tMtrlConst              m_const = {};
-
+   
 
 
 public:
@@ -23,8 +24,8 @@ public:
 
 
 
-    void SetShader(Ptr<CGraphicsShader> _Shader) { m_shader = _Shader; }
-    Ptr<CGraphicsShader> GetShader() { return m_shader; }
+    void SetShader(Ptr<CGraphicsShader> _Shader) { m_pShader = _Shader; }
+    Ptr<CGraphicsShader> GetShader() { return m_pShader; }
 
     virtual void UpdateData() override;
 

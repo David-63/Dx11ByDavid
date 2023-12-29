@@ -1,6 +1,5 @@
 #pragma once
 
-
 template <typename T, UINT _Size>
 void DeleteArray(T* (&Arr)[_Size])
 {
@@ -11,6 +10,8 @@ void DeleteArray(T* (&Arr)[_Size])
 	}
 }
 
+
+
 // 오브젝트 생성
 class CGameObject;
 void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, int _LayerIdx);
@@ -20,14 +21,18 @@ void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _L
 void DestroyObject(CGameObject* _DeletObject);
 
 // DrawDebugShape
-void DrawDebugRect(Vec3 _vWorldPos, Vec2 _vWorldScale, Vec4 _vColor, Vec3 _vRotation, float _fTime = 0.f);
-void DrawDebugRect(const Matrix& _matWorld, Vec4 _vColor, float _fTime = 0.f);
+void DrawDebugRect(Vec3 _vWorldPos, Vec2 _vWorldScale, Vec4 _vColor, Vec3 _vRotation, float _fTime = 0.f, bool DepthTest = false);
+void DrawDebugRect(const Matrix& _matWorld, Vec4 _vColor, float _fTime = 0.f, bool DepthTest = false);
 
-void DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor, Vec3 _vRotation, float _fTime = 0.f);
-void DrawDebugCircle(const Matrix& _matWorld, Vec4 _vColor, float _fTime = 0.f);
+void DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor, Vec3 _vRotation, float _fTime = 0.f, bool DepthTest = false);
+void DrawDebugCircle(const Matrix& _matWorld, Vec4 _vColor, float _fTime = 0.f, bool DepthTest = false);
 
-// void DrawDebugSphere();
-// void DrawDebugCube();
+void DrawDebugCube(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor, Vec3 _vRotation, float _fTime = 0.f, bool DepthTest = false);
+void DrawDebugCube(const Matrix& _matWorld, Vec4 _vColor, float _fTime = 0.f, bool DepthTest = false);
+
+void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor, Vec3 _vRotation, float _fTime = 0.f, bool DepthTest = false);
+void DrawDebugSphere(const Matrix& _matWorld, Vec4 _vColor, float _fTime = 0.f, bool DepthTest = false);
+
 
 // GameObject 유효성 체크
 bool IsValidObj(CGameObject*& _Target);
@@ -54,9 +59,9 @@ class CResMgr;
 template<typename T>
 void LoadResRef(Ptr<T>& _Res, FILE* _File)
 {
-	int i = 0;
+	int i = 0;	
 	fread(&i, sizeof(i), 1, _File);
-
+	
 	if (i)
 	{
 		wstring strKey, strRelativePath;
@@ -82,7 +87,7 @@ void Safe_Del_Array(T* (&arr)[Size])
 	{
 		if (nullptr != arr[i])
 			delete arr[i];
-	}
+	}	
 }
 
 template<typename T>

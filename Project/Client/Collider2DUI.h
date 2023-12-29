@@ -1,7 +1,7 @@
 #pragma once
-#include "CompUI.h"
-
-class Collider2DUI : public CompUI
+#include "ComponentUI.h"
+class Collider2DUI :
+    public ComponentUI
 {
 public:
     virtual int render_update() override;

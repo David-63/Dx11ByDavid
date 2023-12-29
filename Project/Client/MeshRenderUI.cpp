@@ -11,7 +11,8 @@
 
 
 
-MeshRenderUI::MeshRenderUI() : CompUI("##MeshRender", COMPONENT_TYPE::MESHRENDER)
+MeshRenderUI::MeshRenderUI()
+	: ComponentUI("##MeshRender", COMPONENT_TYPE::MESHRENDER)	
 {
 	SetName("MeshRender");
 }
@@ -23,16 +24,16 @@ MeshRenderUI::~MeshRenderUI()
 
 int MeshRenderUI::render_update()
 {
-	if (FALSE == CompUI::render_update())
+	if (FALSE == ComponentUI::render_update())
 		return FALSE;
 
 	char szBuff[50] = {};
 
 	Ptr<CMesh> pMesh = GetTarget()->MeshRender()->GetMesh();
 	Ptr<CMaterial> pMtrl = GetTarget()->MeshRender()->GetMaterial();
-
+		
 	ImGui::Text("Mesh    ");
-	ImGui::SameLine();
+	ImGui::SameLine();	
 	GetResKey(pMesh.Get(), szBuff, 50);
 	ImGui::InputText("##MeshName", szBuff, 50, ImGuiInputTextFlags_ReadOnly);
 
@@ -45,7 +46,7 @@ int MeshRenderUI::render_update()
 		{
 			TreeNode* pNode = (TreeNode*)pPayLoad->Data;
 			CRes* pRes = (CRes*)pNode->GetData();
-			if (RES_TYPE::MESH == pRes->GetResType())
+			if (RES_TYPE::MESH == pRes->GetType())
 			{
 				GetTarget()->MeshRender()->SetMesh((CMesh*)pRes);
 			}
@@ -56,7 +57,7 @@ int MeshRenderUI::render_update()
 
 
 	ImGui::SameLine();
-
+	
 
 	if (ImGui::Button("##MeshSelectBtn", ImVec2(18, 18)))
 	{
@@ -72,13 +73,12 @@ int MeshRenderUI::render_update()
 		// 항목 선택시 호출받을 델리게이트 등록
 		pListUI->AddDynamic_Select(this, (UI_DELEGATE_1)&MeshRenderUI::SelectMesh);
 	}
-
+		
 	ImGui::Text("Material");
 	ImGui::SameLine();
 	GetResKey(pMtrl.Get(), szBuff, 50);
 	ImGui::InputText("##MtrlName", szBuff, 50, ImGuiInputTextFlags_ReadOnly);
 
-	// Material 드랍 체크
 	if (ImGui::BeginDragDropTarget())
 	{
 		// 해당 노드에서 마우스 뗀 경우, 지정한 PayLoad 키값이 일치한 경우
@@ -87,7 +87,7 @@ int MeshRenderUI::render_update()
 		{
 			TreeNode* pNode = (TreeNode*)pPayLoad->Data;
 			CRes* pRes = (CRes*)pNode->GetData();
-			if (RES_TYPE::MATERIAL == pRes->GetResType())
+			if (RES_TYPE::MATERIAL == pRes->GetType())
 			{
 				GetTarget()->MeshRender()->SetMaterial((CMaterial*)pRes);
 			}

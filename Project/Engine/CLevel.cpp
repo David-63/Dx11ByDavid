@@ -1,18 +1,19 @@
 #include "pch.h"
 #include "CLevel.h"
 
-
 #include "CLayer.h"
 #include "CGameObject.h"
 
 #include "CRenderMgr.h"
 
 CLevel::CLevel()
+	: m_arrLayer{}
+	, m_State(LEVEL_STATE::STOP)
 {
 	for (UINT i = 0; i < MAX_LAYER; ++i)
 	{
 		m_arrLayer[i] = new CLayer;
-		m_arrLayer[i]->m_layerIdx = i;
+		m_arrLayer[i]->m_iLayerIdx = i;
 	}
 }
 
@@ -72,10 +73,10 @@ void CLevel::AddGameObject(CGameObject* _Object, const wstring& _LayerName, bool
 }
 
 void CLevel::ChangeState(LEVEL_STATE _State)
-{
-	m_lvlState = _State;
+{	
+	m_State = _State;
 
-	if (LEVEL_STATE::PLAY == m_lvlState)
+	if (LEVEL_STATE::PLAY == m_State)
 	{
 		CRenderMgr::GetInst()->SetRenderFunc(true);
 		begin();
@@ -92,7 +93,7 @@ void CLevel::clear()
 	for (int i = 0; i < MAX_LAYER; ++i)
 	{
 		m_arrLayer[i]->m_vecObject.clear();
-	}
+	}	
 }
 
 

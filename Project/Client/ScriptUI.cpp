@@ -1,13 +1,21 @@
 #include "pch.h"
 #include "ScriptUI.h"
 
-
 #include <Script\CScriptMgr.h>
 
 #include "ParamUI.h"
 
-ScriptUI::ScriptUI() : CompUI("##Script", COMPONENT_TYPE::SCRIPT) { }
-ScriptUI::~ScriptUI() { }
+ScriptUI::ScriptUI()
+    : ComponentUI("##Script", COMPONENT_TYPE::SCRIPT)
+	, m_pTargetScript(nullptr)
+{
+
+}
+
+ScriptUI::~ScriptUI()
+{
+
+}
 
 int ScriptUI::render_update()
 {
@@ -30,7 +38,7 @@ int ScriptUI::render_update()
 	const vector<tScriptParam>& vecScriptParam = m_pTargetScript->GetScritpParam();
 	if (vecScriptParam.empty())
 		return 1;
-
+	
 	ImGui::Text("Parameter");
 
 	for (size_t i = 0; i < vecScriptParam.size(); ++i)
@@ -54,7 +62,8 @@ int ScriptUI::render_update()
 		}
 	}
 
-	return 1;
+
+    return 1;
 }
 
 void ScriptUI::SetScript(CScript* _Script)

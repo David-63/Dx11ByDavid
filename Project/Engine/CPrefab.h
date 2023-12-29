@@ -2,10 +2,12 @@
 #include "CRes.h"
 
 class CGameObject;
-class CPrefab : public CRes
+
+class CPrefab :
+    public CRes
 {
 private:
-	CGameObject* m_ProtoObj = nullptr;
+	CGameObject*	m_ProtoObj;
 
 public:
 	CGameObject* Instantiate();
@@ -25,3 +27,4 @@ public:
 	CPrefab();
 	~CPrefab();
 };
+

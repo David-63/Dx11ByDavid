@@ -5,22 +5,31 @@
 #include "CRenderMgr.h"
 #include "CTransform.h"
 #include "CLight3D.h"
-#include "CRenderComp.h"
 
 #include "CLevelMgr.h"
 #include "CLevel.h"
 #include "CLayer.h"
 #include "CGameObject.h"
+#include "CRenderComponent.h"
+#include "CMaterial.h"
+#include "CGraphicsShader.h"
 
 #include "CRenderMgr.h"
-#include "CResMgr.h"
 #include "CMRT.h"
-#include "CGraphicsShader.h"
+
+#include "CResMgr.h"
+#include "CMesh.h"
 #include "CMaterial.h"
 
 
-
-CCamera::CCamera() : CComponent(COMPONENT_TYPE::CAMERA)
+CCamera::CCamera()
+	: CComponent(COMPONENT_TYPE::CAMERA)
+	, m_fAspectRatio(1.f)
+	, m_fScale(1.f)
+	, m_Far(10000.f)
+	, m_ProjType(PROJ_TYPE::ORTHOGRAPHIC)
+	, m_iLayerMask(0)
+	, m_iCamIdx(-1)
 {
 	SetName(L"Camera");
 
@@ -29,10 +38,18 @@ CCamera::CCamera() : CComponent(COMPONENT_TYPE::CAMERA)
 }
 
 CCamera::CCamera(const CCamera& _Other)
-	: CComponent(_Other), m_fAspectRatio(_Other.m_fAspectRatio), m_fScale(_Other.m_fScale)
-	, m_ProjType(_Other.m_ProjType), m_iLayerMask(_Other.m_iLayerMask), m_iCamIdx(-1)
-{ }
-CCamera::~CCamera() { }
+	: CComponent(_Other)
+	, m_fAspectRatio(_Other.m_fAspectRatio)
+	, m_fScale(_Other.m_fScale)
+	, m_ProjType(_Other.m_ProjType)
+	, m_iLayerMask(_Other.m_iLayerMask)
+	, m_iCamIdx(-1)
+{
+}
+
+CCamera::~CCamera()
+{	
+}
 
 void CCamera::begin()
 {
@@ -46,7 +63,7 @@ void CCamera::finaltick()
 {
 	CalcViewMat();
 
-	CalcProjMat();
+	CalcProjMat();	
 }
 
 void CCamera::CalcViewMat()
@@ -72,6 +89,9 @@ void CCamera::CalcViewMat()
 	matViewRot._31 = vR.z;	matViewRot._32 = vU.z;	matViewRot._33 = vF.z;
 
 	m_matView = matViewTrans * matViewRot;
+
+
+	// View 역행렬 구하기
 	m_matViewInv = XMMatrixInverse(nullptr, m_matView);
 }
 
@@ -81,19 +101,21 @@ void CCamera::CalcProjMat()
 	// 투영 행렬 계산
 	// =============
 	m_matProj = XMMatrixIdentity();
-
+	
 	if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
 	{
 		// 직교 투영
 		Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
-		m_matProj = XMMatrixOrthographicLH(vResolution.x * (1.f / m_fScale), vResolution.y * (1.f / m_fScale), 1.f, m_fFar);
+		m_matProj =  XMMatrixOrthographicLH(vResolution.x * (1.f / m_fScale), vResolution.y * (1.f / m_fScale), 1.f, 10000.f);
 	}
 	else
-	{
+	{	
 		// 원근 투영
-		m_matProj = XMMatrixPerspectiveFovLH(XM_PI / 2.f, m_fAspectRatio, 1.f, m_fFar);
+		m_matProj = XMMatrixPerspectiveFovLH(XM_PI / 2.f, m_fAspectRatio, 1.f, m_Far);
 	}
-	m_matViewInv = XMMatrixInverse(nullptr, m_matProj);
+
+	// 투영행렬 역행렬 구하기
+	m_matProjInv = XMMatrixInverse(nullptr, m_matProj);
 }
 
 
@@ -142,10 +164,10 @@ void CCamera::SortObject()
 
 			for (size_t j = 0; j < vecObject.size(); ++j)
 			{
-				CRenderComp* pRenderCom = vecObject[j]->GetRenderComponent();
+				CRenderComponent* pRenderCom = vecObject[j]->GetRenderComponent();
 
 				// 렌더링 기능이 없는 오브젝트는 제외
-				if (nullptr == pRenderCom
+				if (   nullptr == pRenderCom 
 					|| nullptr == pRenderCom->GetMaterial()
 					|| nullptr == pRenderCom->GetMaterial()->GetShader())
 					continue;
@@ -157,9 +179,11 @@ void CCamera::SortObject()
 				case SHADER_DOMAIN::DOMAIN_DEFERRED:
 					m_vecDeferred.push_back(vecObject[j]);
 					break;
+
 				case SHADER_DOMAIN::DOMAIN_DEFERRED_DECAL:
 					m_vecDeferredDecal.push_back(vecObject[j]);
 					break;
+
 				case SHADER_DOMAIN::DOMAIN_OPAQUE:
 					m_vecOpaque.push_back(vecObject[j]);
 					break;
@@ -177,7 +201,7 @@ void CCamera::SortObject()
 					break;
 				case SHADER_DOMAIN::DOMAIN_UI:
 					m_vecUI.push_back(vecObject[j]);
-					break;
+					break;				
 				}
 			}
 		}
@@ -186,42 +210,53 @@ void CCamera::SortObject()
 
 void CCamera::render()
 {
-	// 행렬 정보 업데이트
+	// 행렬 업데이트
 	g_transform.matView = m_matView;
 	g_transform.matViewInv = m_matViewInv;
+
 	g_transform.matProj = m_matProj;
 	g_transform.matProjInv = m_matProjInv;
 
-	// Deferred MRT로 변경
+	// 쉐이더 도메인에 따라서 순차적으로 그리기
+	// Deferred MRT 로 변경
+	// Deferred 물체들을 Deferred MRT 에 그리기
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED)->OMSet(true);
 	render_deferred();
+	
+	// Light MRT 로 변경
+	// 물체들에 적용될 광원을 그리기
+	// Deferred 물체에 광원 적용시키기
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet(false);
 
-	// Light MRT로 변경 | render_Light3D
-	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::LIGHT)->OMSet();
 	const vector<CLight3D*>& vecLight3D = CRenderMgr::GetInst()->GetLight3D();
-	for (size_t idx = 0; idx < vecLight3D.size(); idx++)
+	for (size_t i = 0; i < vecLight3D.size(); ++i)
 	{
-		vecLight3D[idx]->render();
+		vecLight3D[i]->render();
 	}
-
-	// Swapchain MRT로 변경
+	
+	// Deferred MRT 에 그린 물체에 Light MRT 출력한 광원과 합쳐서
+	// 다시 SwapChain 타겟으로 으로 그리기
+	// SwapChain MRT 로 변경
 	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::SWAPCHAIN)->OMSet();
-	static Ptr<CMesh> pMergeMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
-	static Ptr<CMaterial> pMergeMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"MergeMtrl");
+	static Ptr<CMesh> pRectMesh = CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh");
+	static Ptr<CMaterial> pMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"MergeMtrl");
+
 	static bool bSet = false;
 	if (!bSet)
 	{
 		bSet = true;
-		pMergeMtrl->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"ColorTargetTex"));
-		pMergeMtrl->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseTargetTex"));
-		pMergeMtrl->SetTexParam(TEX_2, CResMgr::GetInst()->FindRes<CTexture>(L"SpecularTargetTex"));
+		pMtrl->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"ColorTargetTex"));
+		pMtrl->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseTargetTex"));
+		pMtrl->SetTexParam(TEX_2, CResMgr::GetInst()->FindRes<CTexture>(L"SpecularTargetTex"));
+		pMtrl->SetTexParam(TEX_3, CResMgr::GetInst()->FindRes<CTexture>(L"EmissiveTargetTex"));
 	}
-	
-	pMergeMtrl->UpdateData();
-	pMergeMesh->render();
 
+	pMtrl->UpdateData();
+	pRectMesh->render();
+	
+	// Forward Rendering
 	render_opaque();
-	render_mask();
+	render_mask();				// skybox
 	render_decal();
 	render_transparent();
 
@@ -248,13 +283,16 @@ void CCamera::clear()
 
 void CCamera::render_deferred()
 {
-	for (size_t idx = 0; idx < m_vecDeferred.size(); idx++)
+	for (size_t i = 0; i < m_vecDeferred.size(); ++i)
 	{
-		m_vecDeferred[idx]->render();
+		m_vecDeferred[i]->render();
 	}
-	for (size_t idx = 0; idx < m_vecDeferredDecal.size(); idx++)
+
+	CRenderMgr::GetInst()->GetMRT(MRT_TYPE::DEFERRED_DECAL)->OMSet();
+
+	for (size_t i = 0; i < m_vecDeferredDecal.size(); ++i)
 	{
-		m_vecDeferredDecal[idx]->render();
+		m_vecDeferredDecal[i]->render();
 	}
 }
 

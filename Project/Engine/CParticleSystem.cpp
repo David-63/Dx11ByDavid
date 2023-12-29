@@ -8,10 +8,15 @@
 #include "CTransform.h"
 #include "CTimeMgr.h"
 
-CParticleSystem::CParticleSystem() : CRenderComp(COMPONENT_TYPE::PARTICLESYSTEM)
+CParticleSystem::CParticleSystem()
+	: CRenderComponent(COMPONENT_TYPE::PARTICLESYSTEM)
+	, m_ParticleBuffer(nullptr)
+	, m_RWBuffer(nullptr)
+	, m_ModuleData{}
+	, m_AccTime(0.f)
 {
 	m_ModuleData.iMaxParticleCount = 3000;
-
+	
 	m_ModuleData.ModuleCheck[(UINT)PARTICLE_MODULE::PARTICLE_SPAWN] = true;
 	m_ModuleData.SpawnRate = 50;
 	m_ModuleData.vSpawnColor = Vec3(0.4f, 1.f, 0.4f);
@@ -19,7 +24,7 @@ CParticleSystem::CParticleSystem() : CRenderComp(COMPONENT_TYPE::PARTICLESYSTEM)
 	m_ModuleData.vSpawnScaleMax = Vec3(20.f, 20.f, 1.f);
 
 	m_ModuleData.SpawnShapeType = 0;
-	m_ModuleData.vBoxShapeScale = Vec3(200.f, 200.f, 200.f);
+	m_ModuleData.vBoxShapeScale = Vec3(200.f, 200.f, 200.f);	
 	m_ModuleData.Space = 0; // 시뮬레이션 좌표계
 
 	m_ModuleData.MinLifeTime = 3.f;
@@ -54,7 +59,7 @@ CParticleSystem::CParticleSystem() : CRenderComp(COMPONENT_TYPE::PARTICLESYSTEM)
 	m_ModuleData.vMaxSpeed = 500.f;
 
 
-
+	
 
 	// 입자 메쉬
 	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"PointMesh"));
@@ -108,7 +113,7 @@ void CParticleSystem::finaltick()
 		m_AccTime = fTimePerCount * (fData - floor(fData));
 
 		// 버퍼에 스폰 카운트 전달
-		tRWParticleBuffer rwbuffer = { (int)fData, };
+		tRWParticleBuffer rwbuffer = { (int)fData, };		
 		m_RWBuffer->SetData(&rwbuffer);
 	}
 
@@ -149,15 +154,15 @@ void CParticleSystem::render()
 
 void CParticleSystem::SaveToLevelFile(FILE* _File)
 {
-	CRenderComp::SaveToLevelFile(_File);
-
+	CRenderComponent::SaveToLevelFile(_File);
+	
 	fwrite(&m_ModuleData, sizeof(tParticleModule), 1, _File);
 	SaveResRef(m_UpdateCS.Get(), _File);
 }
 
 void CParticleSystem::LoadFromLevelFile(FILE* _File)
 {
-	CRenderComp::LoadFromLevelFile(_File);
+	CRenderComponent::LoadFromLevelFile(_File);
 
 	fread(&m_ModuleData, sizeof(tParticleModule), 1, _File);
 

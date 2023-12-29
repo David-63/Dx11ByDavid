@@ -1,12 +1,13 @@
 #pragma once
-#include "CompUI.h"
+#include "ComponentUI.h"
 
-#include <Engine/CScript.h>
+#include <Engine\CScript.h>
 
-class ScriptUI : public CompUI
+class ScriptUI :
+    public ComponentUI
 {
 private:
-    CScript*    m_pTargetScript = nullptr;
+    CScript*    m_pTargetScript;
     string      m_strScriptName;
 
 public:

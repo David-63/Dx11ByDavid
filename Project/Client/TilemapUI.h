@@ -1,13 +1,14 @@
 #pragma once
-#include "CompUI.h"
-
-class TilemapUI : public CompUI
+#include "ComponentUI.h"
+class TileMapUI :
+    public ComponentUI
 {
+
 public:
     virtual int render_update() override;
 
 public:
-    TilemapUI();
-    ~TilemapUI();
+    TileMapUI();
+    ~TileMapUI();
 };
 

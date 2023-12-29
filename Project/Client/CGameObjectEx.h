@@ -1,9 +1,16 @@
 #pragma once
-#include <Engine/CGameObject.h>
 
-class CGameObjectEx : public CGameObject
+#include <Engine\CGameObject.h>
+
+
+
+
+class CGameObjectEx :
+    public CGameObject
 {
+private:
+
 public:
-	virtual void finaltick() override;
+    virtual void finaltick() override;
 };
 

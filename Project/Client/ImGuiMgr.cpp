@@ -3,8 +3,8 @@
 
 #include <Engine\CDevice.h>
 #include <Engine\CLevelMgr.h>
-#include <Engine\CPathMgr.h>
 #include <Engine\CKeyMgr.h>
+#include <Engine\CPathMgr.h>
 
 #include <Engine\CGameObject.h>
 
@@ -12,7 +12,13 @@
 #include "ParamUI.h"
 
 
-ImGuiMgr::ImGuiMgr() { }
+ImGuiMgr::ImGuiMgr()
+    : m_hMainHwnd(nullptr)   
+    , m_hObserver(nullptr)
+{
+
+}
+
 ImGuiMgr::~ImGuiMgr()
 {
     // ImGui Release
@@ -69,13 +75,13 @@ void ImGuiMgr::init(HWND _hWnd)
     wstring strContentPath = CPathMgr::GetInst()->GetContentPath();
     m_hObserver = FindFirstChangeNotification(strContentPath.c_str(), true
         , FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME
-        | FILE_ACTION_REMOVED | FILE_ACTION_ADDED);
+        | FILE_ACTION_REMOVED | FILE_ACTION_ADDED);   
 }
 
 void ImGuiMgr::progress()
 {
     begin();
-
+    
     tick();
     finaltick();
 
@@ -101,7 +107,7 @@ void ImGuiMgr::tick()
     for (const auto& pair : m_mapUI)
     {
         pair.second->tick();
-    }
+    }    
 }
 
 void ImGuiMgr::finaltick()
@@ -115,10 +121,10 @@ void ImGuiMgr::finaltick()
         if (pair.second->IsActive())
         {
             pair.second->finaltick();
-        }
+        }        
     }
 
-    if (KEY_PRESS(KEY::ENTER))
+    if (KEY_TAP(KEY::ENTER))
         ImGui::SetWindowFocus(nullptr);
 }
 
@@ -137,6 +143,7 @@ void ImGuiMgr::render()
         ImGui::RenderPlatformWindowsDefault();
     }
 }
+
 
 #include "InspectorUI.h"
 #include "ContentUI.h"
@@ -192,7 +199,7 @@ void ImGuiMgr::ObserveContent()
         ContentUI* UI = (ContentUI*)FindUI("##Content");
         UI->Reload();
 
-        FindNextChangeNotification(m_hObserver);
+        FindNextChangeNotification(m_hObserver);        
     }
 }
 
@@ -201,7 +208,7 @@ UI* ImGuiMgr::FindUI(const string& _UIName)
 {
     map<string, UI*>::iterator iter = m_mapUI.find(_UIName);
 
-    if (iter == m_mapUI.end())
+    if(iter == m_mapUI.end())
         return nullptr;
 
     return iter->second;

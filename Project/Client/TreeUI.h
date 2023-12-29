@@ -8,17 +8,18 @@ class TreeUI;
 class TreeNode
 {
 private:
-    TreeUI*             m_Owner = nullptr;          // 노드를 소유하고 있는 트리
-    TreeNode*           m_ParentNode = nullptr;     // 부모노드
-    vector<TreeNode*>   m_vecChildNode;             // 노드의 자식 노드
+    TreeUI*             m_Owner;        // 노드를 소유하고 있는 트리
+    TreeNode*           m_ParentNode;   // 부모노드
+    vector<TreeNode*>   m_vecChildNode; // 노드의 자식 노드
+        
+    string              m_strName;      // 노드의 출력 이름
+    UINT                m_ID;           // 노드의 고유 ID
 
-    string              m_strName;                  // 노드의 출력 이름
-    UINT                m_ID = 0;                   // 노드의 고유 ID
-    DWORD_PTR           m_Data = 0;                 // 노드에 저장된 데이터
+    DWORD_PTR           m_Data;         // 노드에 저장된 데이터
 
 
-    bool                m_CategoryNode = false;     // 항목 대표 노드
-    bool                m_Highlight = false;        // 노드 하이라이트 처리
+    bool                m_CategoryNode; // 항목 대표 노드
+    bool                m_Hilight;      // 노드 하이라이트 처리
 
 
 public:
@@ -42,29 +43,32 @@ public:
     friend class TreeUI;
 };
 
+
+
 // ======
 // TreeUI
 // ======
-class TreeUI : public UI
+class TreeUI :
+    public UI
 {
 private:
-    TreeNode*       m_RootNode = nullptr; // 트리가 소유하고 있는 노드 중 루트 노드
-    UINT            g_NextId = 0;   // 생성되는 노드뒤에 붙여줄 고유 숫자
-    bool            m_bShowRoot = false;
+    TreeNode*       m_RootNode; // 트리가 소유하고 있는 노드 중 루트 노드
+    UINT            g_NextId;   // 생성되는 노드뒤에 붙여줄 고유 숫자
+    bool            m_bShowRoot;
 
-    TreeNode*       m_SelectedNode = nullptr;
-    TreeNode*       m_LbtDownNode = nullptr;
+    TreeNode*       m_SelectedNode;
+    TreeNode*       m_LbtDownNode;
 
-    TreeNode*       m_DragNode= nullptr;
-    TreeNode*       m_DropNode= nullptr;
+    TreeNode*       m_DragNode;
+    TreeNode*       m_DropNode;
 
-    DWORD_PTR       m_dwPrevSelected = 0;
+    DWORD_PTR       m_dwPrevSelected;
 
-    UI*             m_SelectInst = nullptr;
-    UI_DELEGATE_1   m_SelectFunc = nullptr;
+    UI*             m_SelectInst;
+    UI_DELEGATE_1   m_SelectFunc;
 
-    UI*             m_DragDropInst = nullptr;
-    UI_DELEGATE_2   m_DragDropFunc = nullptr;
+    UI*             m_DragDropInst;
+    UI_DELEGATE_2   m_DragDropFunc;
 
     string          m_strDragDropID;
 
@@ -93,7 +97,7 @@ public:
 
 
 private:
-    void SetSelectedNode(TreeNode* _Node);
+    void SetSelectedNode(TreeNode* _Node);   
     void SetDragNode(TreeNode* _Node);
     void SetDropNode(TreeNode* _Node);
 

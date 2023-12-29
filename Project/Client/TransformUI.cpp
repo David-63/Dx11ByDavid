@@ -1,19 +1,22 @@
 #include "pch.h"
 #include "TransformUI.h"
 
-
 #include <Engine\CGameObject.h>
 #include <Engine\CTransform.h>
 
-TransformUI::TransformUI() : CompUI("##Transform", COMPONENT_TYPE::TRANSFORM)
+TransformUI::TransformUI()
+	: ComponentUI("##Transform", COMPONENT_TYPE::TRANSFORM)	
 {
 	SetName("Transform");
 }
-TransformUI::~TransformUI() { }
+
+TransformUI::~TransformUI()
+{
+}
 
 int TransformUI::render_update()
 {
-	if (FALSE == CompUI::render_update())
+	if (FALSE == ComponentUI::render_update())
 		return FALSE;
 
 	Vec3 vPos = GetTarget()->Transform()->GetRelativePos();

@@ -3,6 +3,8 @@
 class CLevel;
 class CLayer;
 class CGameObject;
+
+
 class CLevelSaveLoad
 {
 public:

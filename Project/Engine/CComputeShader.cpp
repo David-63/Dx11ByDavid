@@ -3,10 +3,20 @@
 
 #include "CPathMgr.h"
 #include "CDevice.h"
-#include "CConstantBuffer.h"
+#include "CConstBuffer.h"
 
-CComputeShader::CComputeShader() : CShader(RES_TYPE::COMPUTE_SHADER) { }
-CComputeShader::~CComputeShader() { }
+
+CComputeShader::CComputeShader()
+	: CShader(RES_TYPE::COMPUTE_SHADER)
+	, m_iGroupX(1)
+	, m_iGroupY(1)	
+	, m_iGroupZ(1)
+{
+}
+
+CComputeShader::~CComputeShader()
+{
+}
 
 void CComputeShader::CreateComputeShader(const wstring& _strFileName, const string& _strFuncName)
 {
@@ -31,7 +41,7 @@ void CComputeShader::Execute()
 {
 	UpdateData();
 
-	static CConstantBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL);
+	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL);
 	pCB->SetData(&m_Const);
 	pCB->UpdateData_CS();
 

@@ -1,8 +1,17 @@
 #include "pch.h"
 #include "ResUI.h"
 
-ResUI::ResUI(RES_TYPE _type) : UI("##ResUI"), m_ResType(_type) { }
-ResUI::~ResUI() { }
+
+ResUI::ResUI(RES_TYPE _type)
+	: UI("##ResUI")	
+	, m_ResType(_type)
+{
+
+}
+
+ResUI::~ResUI()
+{
+}
 
 int ResUI::render_update()
 {

@@ -10,13 +10,15 @@
 #pragma comment(lib, "FontEngine/FW1FontWrapper"))
 #endif
 
+
 #define FONT_RGBA(r, g, b, a) (((((BYTE)a << 24 ) | (BYTE)b << 16) | (BYTE)g << 8) | (BYTE)r)
 
-class CFontMgr : public CSingleton<CFontMgr>
+class CFontMgr
+	: public CSingleton<CFontMgr>
 {
 private:
-	IFW1Factory* m_pFW1Factory = nullptr;
-	IFW1FontWrapper* m_pFontWrapper = nullptr;
+	IFW1Factory* m_pFW1Factory;
+	IFW1FontWrapper* m_pFontWrapper;
 
 public:
 	void init();
@@ -26,4 +28,3 @@ public:
 	CFontMgr();
 	~CFontMgr();
 };
-

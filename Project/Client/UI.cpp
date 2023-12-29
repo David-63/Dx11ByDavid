@@ -2,14 +2,22 @@
 #include "UI.h"
 
 
-UI::UI(const string& _ID) : m_strID(_ID) { }
+UI::UI(const string& _ID)
+	: m_strID(_ID)
+	, m_ParentUI(nullptr)
+	, m_Modal(false)
+	, m_Active(false)
+{
+	
+}
+
 UI::~UI()
 {
 	Safe_Del_Vec(m_vecChildUI);
 }
 
 void UI::finaltick()
-{
+{	
 	if (!m_Active)
 		return;
 

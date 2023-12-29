@@ -1,7 +1,9 @@
 #pragma once
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_dx11.h"
-#include "ImGui/imgui_impl_win32.h"
+#include <Engine\CSingleton.h>
+
+#include "ImGui\imgui.h"
+#include "ImGui\imgui_impl_dx11.h"
+#include "ImGui\imgui_impl_win32.h"
 
 
 // ========
@@ -13,14 +15,15 @@ typedef void (UI::* UI_DELEGATE)(void);
 typedef void (UI::* UI_DELEGATE_1)(DWORD_PTR);
 typedef void (UI::* UI_DELEGATE_2)(DWORD_PTR, DWORD_PTR);
 
-class ImGuiMgr : public CSingleton<ImGuiMgr>
+class ImGuiMgr :
+    public CSingleton<ImGuiMgr>
 {
     SINGLE(ImGuiMgr);
 private:
-    HWND                m_hMainHwnd = nullptr;
+    HWND                m_hMainHwnd;
     map<string, UI*>    m_mapUI;
 
-    HANDLE              m_hObserver = nullptr;
+    HANDLE              m_hObserver;
 
 
 public:

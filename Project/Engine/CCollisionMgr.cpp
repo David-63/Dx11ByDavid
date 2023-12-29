@@ -1,15 +1,23 @@
 #include "pch.h"
 #include "CCollisionMgr.h"
 
-
 #include "CLevelMgr.h"
 #include "CLevel.h"
 #include "CLayer.h"
 #include "CGameObject.h"
 #include "CCollider2D.h"
 
-CCollisionMgr::CCollisionMgr() { }
-CCollisionMgr::~CCollisionMgr() { }
+CCollisionMgr::CCollisionMgr()
+    : m_matrix{}
+{
+
+}
+
+
+CCollisionMgr::~CCollisionMgr()
+{
+
+}
 
 void CCollisionMgr::tick()
 {
@@ -19,7 +27,7 @@ void CCollisionMgr::tick()
 	{
 		for (UINT iCol = iRow; iCol < MAX_LAYER; ++iCol)
 		{
-			if (!(m_layerMat[iRow] & (1 << iCol)))
+			if (!(m_matrix[iRow] & (1 << iCol)))
 				continue;
 
 			// iRow 레이어와 iCol 레이어는 서로 충돌검사를 진행한다.
@@ -39,7 +47,7 @@ void CCollisionMgr::CollisionBtwLayer(CLayer* _Left, CLayer* _Right)
 		{
 			for (size_t j = i + 1; j < vecRight.size(); ++j)
 			{
-				CollisionBtwObject(vecLeft[i], vecRight[j]);
+				CollisionBtwObject(vecLeft[i], vecRight[j]);				
 			}
 		}
 	}
@@ -49,7 +57,7 @@ void CCollisionMgr::CollisionBtwLayer(CLayer* _Left, CLayer* _Right)
 		{
 			for (size_t j = 0; j < vecRight.size(); ++j)
 			{
-				CollisionBtwObject(vecLeft[i], vecRight[j]);
+				CollisionBtwObject(vecLeft[i], vecRight[j]);				
 			}
 		}
 	}
@@ -64,7 +72,7 @@ void CCollisionMgr::CollisionBtwObject(CGameObject* _LeftObject, CGameObject* _R
 	CollisionID id = {};
 	id.LeftID = _LeftObject->Collider2D()->GetID();
 	id.RightID = _RightObject->Collider2D()->GetID();
-
+	
 	// ID 검색
 	map<UINT_PTR, bool>::iterator iter = m_mapColID.find(id.id);
 	if (iter == m_mapColID.end())
@@ -79,7 +87,7 @@ void CCollisionMgr::CollisionBtwObject(CGameObject* _LeftObject, CGameObject* _R
 	{
 		bDead = true;
 	}
-
+	
 	// 두 충돌체가 지금 충돌 중인지 확인
 	if (CollisionBtwCollider(_LeftObject->Collider2D(), _RightObject->Collider2D()))
 	{
@@ -103,7 +111,7 @@ void CCollisionMgr::CollisionBtwObject(CGameObject* _LeftObject, CGameObject* _R
 				_LeftObject->Collider2D()->BeginOverlap(_RightObject->Collider2D());
 				_RightObject->Collider2D()->BeginOverlap(_LeftObject->Collider2D());
 				iter->second = true;
-			}
+			}			
 		}
 	}
 
@@ -140,13 +148,13 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRig
 
 	arrProj[0] = XMVector3TransformCoord(arrLocal[1], _pLeft->GetColliderWorldMat()) - XMVector3TransformCoord(arrLocal[0], _pLeft->GetColliderWorldMat());
 	arrProj[1] = XMVector3TransformCoord(arrLocal[3], _pLeft->GetColliderWorldMat()) - XMVector3TransformCoord(arrLocal[0], _pLeft->GetColliderWorldMat());
-
+	
 	arrProj[2] = XMVector3TransformCoord(arrLocal[1], _pRight->GetColliderWorldMat()) - XMVector3TransformCoord(arrLocal[0], _pRight->GetColliderWorldMat());
 	arrProj[3] = XMVector3TransformCoord(arrLocal[3], _pRight->GetColliderWorldMat()) - XMVector3TransformCoord(arrLocal[0], _pRight->GetColliderWorldMat());
-
+	
 	// 두 충돌체의 중심점을 구함
 	Vec3 vCenter = XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), _pRight->GetColliderWorldMat()) - XMVector3TransformCoord(Vec3(0.f, 0.f, 0.f), _pLeft->GetColliderWorldMat());
-
+	
 
 	// 분리축 테스트
 	for (int i = 0; i < 4; ++i)
@@ -169,7 +177,7 @@ bool CCollisionMgr::CollisionBtwCollider(CCollider2D* _pLeft, CCollider2D* _pRig
 	}
 
 
-	return true;
+    return true;
 }
 
 
@@ -186,7 +194,7 @@ void CCollisionMgr::LayerCheck(UINT _left, UINT _right)
 		iRow = iTemp;
 	}
 
-	m_layerMat[iRow] |= (1 << iCol);
+	m_matrix[iRow] |= (1 << iCol);
 }
 
 void CCollisionMgr::LayerCheck(const wstring& _strLeftLayer, const wstring& _strRightLayer)

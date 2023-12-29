@@ -6,7 +6,10 @@ MeshDataUI::MeshDataUI()
 {
     SetName("MeshData");
 }
-MeshDataUI::~MeshDataUI() { }
+
+MeshDataUI::~MeshDataUI()
+{
+}
 
 
 int MeshDataUI::render_update()

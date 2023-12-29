@@ -7,13 +7,18 @@
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
 
-CLight2D::CLight2D() : CComponent(COMPONENT_TYPE::LIGHT2D) { }
-CLight2D::~CLight2D() { }
+CLight2D::CLight2D()
+	: CComponent(COMPONENT_TYPE::LIGHT2D)
+{
+}
+
+CLight2D::~CLight2D()
+{
+}
 
 void CLight2D::finaltick()
 {
-	// 나중에 지울것 (디버깅용)
-	if (KEY_HOLD(KEY::C))
+	if (KEY_PRESSED(KEY::C))
 	{
 		Vec3 vRot = Transform()->GetRelativeRot();
 		vRot.z += DT * (XM_PI / 2.f);

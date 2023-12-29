@@ -1,20 +1,22 @@
 #pragma once
+
+
 #include "ImGuiMgr.h"
 
 class UI
 {
 private:
-	string			m_strName;			// 타이틀 이름, 
-	string			m_strID;			// ID 이름
+	string			m_strName;		// 타이틀 이름, 
+	string			m_strID;		// ID 이름
 
-	ImVec2			m_vSize;			// UI 크기
-	ImVec2			m_vPopupPos;		// UI 위치
+	ImVec2			m_vSize;		// UI 크기
+	ImVec2			m_vPopupPos;	// UI 위치
 
-	UI*				m_ParentUI = nullptr;			// 부모 UI
-	vector<UI*>		m_vecChildUI;		// 자식 UI 목록
+	UI*				m_ParentUI;		// 부모 UI
+	vector<UI*>		m_vecChildUI;	// 자식 UI 목록
 
-	bool			m_Modal = false;	// 모달 or 모달리스
-	bool			m_Active = false;	// UI 활성화 체크
+	bool			m_Modal;		// 모달 or 모달리스
+	bool			m_Active;		// UI 활성화 체크
 
 public:
 	virtual void init() {}
@@ -22,7 +24,8 @@ public:
 	virtual void finaltick();
 	virtual int render_update() = 0;
 
-public:
+
+public:	
 	void SetActive(bool _Active) { m_Active = _Active; }
 	bool IsActive() { return m_Active; }
 

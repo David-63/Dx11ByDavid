@@ -12,10 +12,10 @@ UINT ParamUI::g_NextId = 0;
 
 
 int ParamUI::Param_Int(const string& _strDesc, int* _pData, bool _bDrag)
-{
+{    
     ImGui::Text(_strDesc.c_str());
     ImGui::SameLine(100);
-
+        
     string strIntName = GetNextName("##Param_Int");
     ImGui::SetNextItemWidth(150);
 
@@ -33,22 +33,22 @@ int ParamUI::Param_Int(const string& _strDesc, int* _pData, bool _bDrag)
         {
             return 1;
         }
-    }
+    }   
 
     return 0;
 }
 
 int ParamUI::Param_Float(const string& _strDesc, float* _pData, bool _bDrag)
-{
+{  
     ImGui::Text(_strDesc.c_str());
     ImGui::SameLine(100);
 
-    string strFloatName = GetNextName("##Param_Float");
+    string strIntName = GetNextName("##Param_Float");
     ImGui::SetNextItemWidth(150);
 
     if (_bDrag)
     {
-        if (ImGui::DragFloat(strFloatName.c_str(), _pData))
+        if (ImGui::DragFloat(strIntName.c_str(), _pData))
         {
             return 1;
         }
@@ -56,7 +56,7 @@ int ParamUI::Param_Float(const string& _strDesc, float* _pData, bool _bDrag)
 
     else
     {
-        if (ImGui::InputFloat(strFloatName.c_str(), _pData))
+        if (ImGui::InputFloat(strIntName.c_str(), _pData))
         {
             return 1;
         }
@@ -66,7 +66,7 @@ int ParamUI::Param_Float(const string& _strDesc, float* _pData, bool _bDrag)
 }
 
 int ParamUI::Param_Vec2(const string& _strDesc, Vec2* _pData, bool _bDrag)
-{
+{   
     ImGui::Text(_strDesc.c_str());
     ImGui::SameLine(100);
 
@@ -105,12 +105,12 @@ int ParamUI::Param_Vec4(const string& _strDesc, Vec4* _pData, bool _bDrag)
 
     string strIntName = GetNextName("##Param_Int");
     ImGui::SetNextItemWidth(200);
-
+   
 
     if (_bDrag)
     {
         if (ImGui::DragFloat4(strIntName.c_str(), *_pData))
-        {
+        {            
             return 1;
         }
     }
@@ -118,7 +118,7 @@ int ParamUI::Param_Vec4(const string& _strDesc, Vec4* _pData, bool _bDrag)
     else
     {
         if (ImGui::InputFloat4(strIntName.c_str(), *_pData))
-        {
+        {           
             return 1;
         }
     }
@@ -128,7 +128,7 @@ int ParamUI::Param_Vec4(const string& _strDesc, Vec4* _pData, bool _bDrag)
 
 int ParamUI::Param_Tex(const string& _strDesc, Ptr<CTexture>& _Tex, UI* _UI, UI_DELEGATE_1 _Func)
 {
-    ImGui::Text(_strDesc.c_str());
+    ImGui::Text(_strDesc.c_str());    
 
     string strIntName = GetNextName("##Param_Tex");
 
@@ -145,7 +145,7 @@ int ParamUI::Param_Tex(const string& _strDesc, Ptr<CTexture>& _Tex, UI* _UI, UI_
     {
         ImGui::Image((ImTextureID)_Tex->GetSRV().Get(), ImVec2(150, 150), uv_min, uv_max, tint_col, border_col);
     }
-
+    
     // 드랍 체크
     if (ImGui::BeginDragDropTarget())
     {
@@ -155,7 +155,7 @@ int ParamUI::Param_Tex(const string& _strDesc, Ptr<CTexture>& _Tex, UI* _UI, UI_
         {
             TreeNode* pNode = (TreeNode*)pPayLoad->Data;
             CRes* pRes = (CRes*)pNode->GetData();
-            if (RES_TYPE::TEXTURE == pRes->GetResType())
+            if (RES_TYPE::TEXTURE == pRes->GetType())
             {
                 _Tex = (CTexture*)pRes;
             }

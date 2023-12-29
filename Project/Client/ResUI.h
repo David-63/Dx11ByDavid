@@ -4,7 +4,8 @@
 #include <Engine\ptr.h>
 #include <Engine\CRes.h>
 
-class ResUI : public UI
+class ResUI :
+    public UI
 {
 private:
     Ptr<CRes>       m_TargetRes;

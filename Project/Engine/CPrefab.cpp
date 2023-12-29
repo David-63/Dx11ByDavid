@@ -3,7 +3,12 @@
 
 #include "CGameObject.h"
 
-CPrefab::CPrefab() : CRes(RES_TYPE::PREFAB) { }
+CPrefab::CPrefab()
+	: CRes(RES_TYPE::PREFAB)
+	, m_ProtoObj(nullptr)
+{
+}
+
 CPrefab::~CPrefab()
 {
 	if (nullptr != m_ProtoObj)
@@ -12,7 +17,7 @@ CPrefab::~CPrefab()
 
 CGameObject* CPrefab::Instantiate()
 {
-	return m_ProtoObj->Clone();
+	return m_ProtoObj->Clone();	
 }
 
 void CPrefab::RegisterProtoObject(CGameObject* _Proto)

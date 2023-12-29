@@ -8,7 +8,9 @@
 #include "CTransform.h"
 
 
-CSkyBox::CSkyBox() : CRenderComp(COMPONENT_TYPE::SKYBOX) 
+CSkyBox::CSkyBox()
+	: CRenderComponent(COMPONENT_TYPE::SKYBOX)
+	, m_Type(SKYBOX_TYPE::SPHERE)
 {
 	SetSkyBoxType(m_Type);
 
@@ -35,7 +37,7 @@ void CSkyBox::SetSkyBoxType(SKYBOX_TYPE _Type)
 
 void CSkyBox::SetSkyBoxTexture(Ptr<CTexture> _Tex)
 {
-	m_SkyBoxTex = _Tex;
+	m_SkyBoxTex = _Tex;	
 }
 
 void CSkyBox::finaltick()
@@ -65,7 +67,7 @@ void CSkyBox::render()
 			GetMaterial()->SetTexParam(TEX_0, m_SkyBoxTex);
 		}
 	}
-
+	
 	GetMaterial()->UpdateData();
 
 	// ·»´õ

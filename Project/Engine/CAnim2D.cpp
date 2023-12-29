@@ -4,12 +4,21 @@
 #include "CTimeMgr.h"
 
 
-CAnim2D::CAnim2D() { }
-CAnim2D::~CAnim2D() { }
+CAnim2D::CAnim2D()
+	: m_pOwner(nullptr)
+	, m_iCurFrm(0)
+	, m_bFinish(false)
+	, m_fTime(0.f)
+{
+}
+
+CAnim2D::~CAnim2D()
+{
+}
 
 void CAnim2D::finaltick()
-{
-	if (m_isFinish)
+{	
+	if (m_bFinish)
 		return;
 
 	m_fTime += DT;
@@ -21,8 +30,8 @@ void CAnim2D::finaltick()
 
 		if (m_vecFrm.size() <= m_iCurFrm)
 		{
-			m_iCurFrm = static_cast<int>(m_vecFrm.size()) - 1;
-			m_isFinish  = true;
+			m_iCurFrm = m_vecFrm.size() - 1;
+			m_bFinish = true;
 		}
 	}
 }
@@ -55,12 +64,12 @@ void CAnim2D::Create(const wstring& _strAnimName, Ptr<CTexture> _AtlasTex
 void CAnim2D::SaveToLevelFile(FILE* _File)
 {
 	SaveWString(GetName(), _File);
-
+	
 	size_t FrameCount = m_vecFrm.size();
 	fwrite(&FrameCount, sizeof(size_t), 1, _File);
 	fwrite(m_vecFrm.data(), sizeof(tAnim2DFrm), FrameCount, _File);
 	fwrite(&m_vBackSize, sizeof(Vec2), 1, _File);
-
+	
 	SaveResRef(m_AtlasTex.Get(), _File);
 }
 
@@ -79,8 +88,8 @@ void CAnim2D::LoadFromLevelFile(FILE* _File)
 		fread(&frm, sizeof(tAnim2DFrm), 1, _File);
 		m_vecFrm.push_back(frm);
 	}
-
+	
 	fread(&m_vBackSize, sizeof(Vec2), 1, _File);
-
+		
 	LoadResRef(m_AtlasTex, _File);
 }

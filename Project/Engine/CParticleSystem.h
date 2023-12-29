@@ -1,22 +1,23 @@
 #pragma once
-#include "CRenderComp.h"
+#include "CRenderComponent.h"
 
 #include "ptr.h"
 #include "CParticleUpdateShader.h"
 
 class CStructuredBuffer;
 
-class CParticleSystem : public CRenderComp
+class CParticleSystem :
+    public CRenderComponent
 {
 private:
-    CStructuredBuffer* m_ParticleBuffer = nullptr;
-    CStructuredBuffer* m_RWBuffer = nullptr;
-    CStructuredBuffer* m_ModuleDataBuffer = nullptr;
-
-    tParticleModule             m_ModuleData = {};
+    CStructuredBuffer*          m_ParticleBuffer;
+    CStructuredBuffer*          m_RWBuffer;
+    CStructuredBuffer*          m_ModuleDataBuffer;
+    
+    tParticleModule             m_ModuleData;
     Ptr<CParticleUpdateShader>  m_UpdateCS;
-
-    float                       m_AccTime = 0.0f;
+   
+    float                       m_AccTime;
 
 public:
     void ActiveModule(PARTICLE_MODULE _ModuleType) { m_ModuleData.ModuleCheck[(UINT)_ModuleType] = true; }

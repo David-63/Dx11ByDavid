@@ -1,46 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="default">
-      <UniqueIdentifier>{8976c20e-e7b3-4daa-a147-7124bb273d65}</UniqueIdentifier>
+    <Filter Include="Script">
+      <UniqueIdentifier>{585f2ba7-813f-4532-9a95-b2967ae06511}</UniqueIdentifier>
     </Filter>
-    <Filter Include="default\리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Scripts">
-      <UniqueIdentifier>{92f2e680-d3e2-43ef-a42d-a25c5224fef7}</UniqueIdentifier>
+    <Filter Include="Default">
+      <UniqueIdentifier>{6546fd48-44d9-4960-9249-56cca8c1ccc0}</UniqueIdentifier>
     </Filter>
     <Filter Include="ScriptMgr">
-      <UniqueIdentifier>{90a10a2d-0839-4090-a902-887cf2b17118}</UniqueIdentifier>
+      <UniqueIdentifier>{78d2676d-e9d6-47ca-8d90-52e8d457d264}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CCameraMoveScript.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CMissileScript.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterScript.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerScript.h">
+      <Filter>Script</Filter>
+    </ClInclude>
     <ClInclude Include="framework.h">
-      <Filter>default</Filter>
+      <Filter>Default</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
-      <Filter>default</Filter>
+      <Filter>Default</Filter>
     </ClInclude>
     <ClInclude Include="CScriptMgr.h">
       <Filter>ScriptMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CCameraMoveScript.h">
-      <Filter>Scripts</Filter>
+    <ClInclude Include="CGravityScript.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CTestScript.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlanetScript.h">
+      <Filter>Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CCameraMoveScript.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CMissileScript.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterScript.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerScript.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>default</Filter>
+      <Filter>Default</Filter>
     </ClCompile>
     <ClCompile Include="Script.cpp">
-      <Filter>default</Filter>
+      <Filter>Default</Filter>
     </ClCompile>
     <ClCompile Include="CScriptMgr.cpp">
       <Filter>ScriptMgr</Filter>
     </ClCompile>
-    <ClCompile Include="CCameraMoveScript.cpp">
-      <Filter>Scripts</Filter>
+    <ClCompile Include="CGravityScript.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CTestScript.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlanetScript.cpp">
+      <Filter>Script</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

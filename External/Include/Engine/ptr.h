@@ -4,7 +4,7 @@ template<typename T>
 class Ptr
 {
 private:
-	T* m_Res;
+	T*		m_Res;
 
 
 public:
@@ -39,7 +39,7 @@ public:
 
 	bool operator == (T* _Other)
 	{
-		return m_Res == _Other;
+		return m_Res == _Other;			
 	}
 
 	bool operator != (T* _Other)
@@ -60,15 +60,21 @@ public:
 
 
 public:
-	Ptr() : m_Res(nullptr) { }
+	Ptr()
+		: m_Res(nullptr)
+	{
 
-	Ptr(T* _Res) : m_Res(_Res)
+	}
+
+	Ptr(T* _Res)
+		: m_Res(_Res)
 	{
 		if (nullptr != m_Res)
 			m_Res->AddRef();
 	}
 
-	Ptr(const Ptr<T>& _Res) : m_Res(_Res.m_Res)
+	Ptr(const Ptr<T>& _Res)
+		: m_Res(_Res.m_Res)
 	{
 		if (nullptr != m_Res)
 			m_Res->AddRef();

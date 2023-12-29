@@ -1,22 +1,29 @@
 #include "pch.h"
 #include "CMaterial.h"
 
-
 #include "CDevice.h"
-#include "CConstantBuffer.h"
+#include "CConstBuffer.h"
 
 #include "CResMgr.h"
 #include "CPathMgr.h"
 
-CMaterial::CMaterial(bool _bEngine) : CRes(RES_TYPE::MATERIAL, _bEngine) { }
-CMaterial::~CMaterial() { }
+CMaterial::CMaterial(bool _bEngine)
+	: CRes(RES_TYPE::MATERIAL, _bEngine)
+	, m_Const{}
+	, m_arrTex{}	
+{	
+}
+
+CMaterial::~CMaterial()
+{
+}
 
 void CMaterial::UpdateData()
 {
-	if (nullptr == m_shader)
+	if (nullptr == m_pShader)
 		return;
 
-	m_shader->UpdateData();
+	m_pShader->UpdateData();
 
 
 	// Texture Update
@@ -24,21 +31,21 @@ void CMaterial::UpdateData()
 	{
 		if (nullptr == m_arrTex[i])
 		{
-			m_const.arrTex[i] = 0;
+			m_Const.arrTex[i] = 0;
 			CTexture::Clear(i);
 			continue;
 		}
 
 		else
 		{
-			m_const.arrTex[i] = 1;
+			m_Const.arrTex[i] = 1;
 			m_arrTex[i]->UpdateData(i, PIPELINE_STAGE::PS_ALL);
 		}
 	}
 
 	// Constant Update
-	CConstantBuffer* pMtrlBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL);
-	pMtrlBuffer->SetData(&m_const);
+	CConstBuffer* pMtrlBuffer = CDevice::GetInst()->GetConstBuffer(CB_TYPE::MATERIAL);
+	pMtrlBuffer->SetData(&m_Const);
 	pMtrlBuffer->UpdateData();
 }
 
@@ -49,36 +56,36 @@ void CMaterial::SetScalarParam(SCALAR_PARAM _Param, const void* _Src)
 	case INT_0:
 	case INT_1:
 	case INT_2:
-	case INT_3:
-		m_const.arrInt[_Param] = *((int*)_Src);
+	case INT_3:		
+		m_Const.arrInt[_Param] = *((int*)_Src);
 		break;
 	case FLOAT_0:
 	case FLOAT_1:
 	case FLOAT_2:
 	case FLOAT_3:
-		m_const.arrFloat[_Param - FLOAT_0] = *((float*)_Src);
+		m_Const.arrFloat[_Param - FLOAT_0] = *((float*)_Src);
 		break;
 
 	case VEC2_0:
 	case VEC2_1:
 	case VEC2_2:
 	case VEC2_3:
-		m_const.arrV2[_Param - VEC2_0] = *((Vec2*)_Src);
+		m_Const.arrV2[_Param - VEC2_0] = *((Vec2*)_Src);
 		break;
 
 	case VEC4_0:
 	case VEC4_1:
 	case VEC4_2:
 	case VEC4_3:
-		m_const.arrV4[_Param - VEC4_0] = *((Vec4*)_Src);
+		m_Const.arrV4[_Param - VEC4_0] = *((Vec4*)_Src);
 		break;
 
 	case MAT_0:
 	case MAT_1:
 	case MAT_2:
 	case MAT_3:
-		m_const.arrMat[_Param - MAT_0] = *((Matrix*)_Src);
-		break;
+		m_Const.arrMat[_Param - MAT_0] = *((Matrix*)_Src);
+		break;	
 	}
 }
 
@@ -94,21 +101,21 @@ void CMaterial::GetScalarParam(SCALAR_PARAM _param, void* _pData)
 	case INT_0:
 	case INT_1:
 	case INT_2:
-	case INT_3:
+	case INT_3:		
 	{
 		int idx = (UINT)_param - (UINT)INT_0;
-		*((int*)_pData) = m_const.arrInt[idx];
+		*((int*)_pData) = m_Const.arrInt[idx];
 	}
-	break;
+		break;
 	case FLOAT_0:
 	case FLOAT_1:
 	case FLOAT_2:
 	case FLOAT_3:
 	{
 		int idx = (UINT)_param - (UINT)FLOAT_0;
-		*((float*)_pData) = m_const.arrFloat[idx];
+		*((float*)_pData) = m_Const.arrFloat[idx];
 	}
-	break;
+		break;
 
 	case VEC2_0:
 	case VEC2_1:
@@ -116,9 +123,9 @@ void CMaterial::GetScalarParam(SCALAR_PARAM _param, void* _pData)
 	case VEC2_3:
 	{
 		int idx = (UINT)_param - (UINT)VEC2_0;
-		*((Vec2*)_pData) = m_const.arrV2[idx];
+		*((Vec2*)_pData) = m_Const.arrV2[idx];
 	}
-	break;
+		break;
 
 	case VEC4_0:
 	case VEC4_1:
@@ -126,9 +133,9 @@ void CMaterial::GetScalarParam(SCALAR_PARAM _param, void* _pData)
 	case VEC4_3:
 	{
 		int idx = (UINT)_param - (UINT)VEC4_0;
-		*((Vec4*)_pData) = m_const.arrV4[idx];
+		*((Vec4*)_pData) = m_Const.arrV4[idx];
 	}
-	break;
+		break;
 
 	case MAT_0:
 	case MAT_1:
@@ -136,9 +143,9 @@ void CMaterial::GetScalarParam(SCALAR_PARAM _param, void* _pData)
 	case MAT_3:
 	{
 		int idx = (UINT)_param - (UINT)MAT_0;
-		*((Matrix*)_pData) = m_const.arrMat[idx];
+		*((Matrix*)_pData) = m_Const.arrMat[idx];
 	}
-	break;
+		break;
 	}
 }
 
@@ -152,28 +159,28 @@ int CMaterial::Save(const wstring& _strRelativePath)
 
 	wstring strFilePath = CPathMgr::GetInst()->GetContentPath();
 	strFilePath += _strRelativePath;
-
+	
 	FILE* pFile = nullptr;
 	_wfopen_s(&pFile, strFilePath.c_str(), L"wb");
 
 	// Entity
 	SaveWString(GetName(), pFile);
-
+	
 	// Res
-	SaveWString(GetKey(), pFile);
-
+	SaveWString(GetKey(), pFile);	
+	
 	// Shader
-	SaveResRef(m_shader.Get(), pFile);
+	SaveResRef(m_pShader.Get(), pFile);
 
 	// Constant
-	fwrite(&m_const, sizeof(tMtrlConst), 1, pFile);
+	fwrite(&m_Const, sizeof(tMtrlConst), 1, pFile);
 
 	// Texture
 	for (UINT i = 0; i < (UINT)TEX_PARAM::TEX_END; ++i)
 	{
 		SaveResRef(m_arrTex[i].Get(), pFile);
 	}
-
+	
 	fclose(pFile);
 
 	return S_OK;
@@ -193,12 +200,12 @@ int CMaterial::Load(const wstring& _strFilePath)
 	// Res
 	wstring strKey;
 	LoadWString(strKey, pFile);
-
+	
 	// Shader
-	LoadResRef(m_shader, pFile);
+	LoadResRef(m_pShader, pFile);
 
 	// Constant
-	fread(&m_const, sizeof(tMtrlConst), 1, pFile);
+	fread(&m_Const, sizeof(tMtrlConst), 1, pFile);
 
 	// Texture
 	for (UINT i = 0; i < (UINT)TEX_PARAM::TEX_END; ++i)

@@ -2,11 +2,13 @@
 #include "UI.h"
 
 class TreeUI;
-class ContentUI : public UI
+
+class ContentUI :
+    public UI
 {
 private:
-    TreeUI*         m_Tree;
-    vector<wstring> m_vecResPath;
+    TreeUI*             m_Tree;
+    vector<wstring>     m_vecResPath;    
 
 public:
     virtual void init() override;

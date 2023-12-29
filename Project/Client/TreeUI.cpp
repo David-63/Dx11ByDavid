@@ -1,10 +1,21 @@
 #include "pch.h"
 #include "TreeUI.h"
 
+
+
 // ========
 // TreeNode
 // ========
-TreeNode::TreeNode() { }
+TreeNode::TreeNode()
+    : m_Owner(nullptr)
+    , m_ParentNode(nullptr)
+    , m_ID(0)
+    , m_Data(0)
+    , m_CategoryNode(false)
+    , m_Hilight(false)    
+{
+}
+
 TreeNode::~TreeNode()
 {
     Safe_Del_Vec(m_vecChildNode);
@@ -24,18 +35,18 @@ void TreeNode::render_update()
     UINT flag = ImGuiTreeNodeFlags_DefaultOpen;
 
     // 자식 노드가 없으면 Lear 플래그를 설정한다(화살표 제거)
-    if (m_vecChildNode.empty())
+    if (m_vecChildNode.empty())    
         flag |= ImGuiTreeNodeFlags_Leaf;
-
+    
     // 클릭 되었거나, 항목 대표 노드인 경우 Selected 플래그로 하이라이트를 준다.
-    if (m_Highlight || m_CategoryNode)
+    if(m_Hilight || m_CategoryNode)
         flag |= ImGuiTreeNodeFlags_Selected;
 
     if (ImGui::TreeNodeEx(strFinalName.c_str(), flag))
     {
         // 해당 노드에 마우스 왼클릭이 발생하면 선택노드로 지정 준다.
         if (ImGui::IsItemHovered() && ImGui::IsMouseDown(ImGuiMouseButton_::ImGuiMouseButton_Left))
-        {
+        {            
             m_Owner->m_LbtDownNode = this;
         }
         else if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_::ImGuiMouseButton_Left))
@@ -94,10 +105,21 @@ void TreeNode::render_update()
 // ================
 //      TreeUI
 // ================
-TreeUI::TreeUI() : UI("##Tree")
-{
+TreeUI::TreeUI()
+    : UI("##Tree")
+    , m_RootNode(nullptr)
+    , g_NextId(0)
+    , m_bShowRoot(true)
+    , m_SelectedNode(nullptr)
+    , m_dwPrevSelected(0)
+    , m_SelectInst(nullptr)
+    , m_SelectFunc(nullptr)    
+    , m_DragDropInst(nullptr)
+    , m_DragDropFunc(nullptr)
+{   
     m_strDragDropID = "PayLoad";
 }
+
 TreeUI::~TreeUI()
 {
     if (nullptr != m_RootNode)
@@ -122,13 +144,13 @@ int TreeUI::render_update()
     }
 
     // Drag Drop 노드 둘다 있는 경우
-    if ((m_DragNode && m_DropNode) || (m_DragNode && ImGui::IsMouseReleased(ImGuiMouseButton_::ImGuiMouseButton_Left)))
+    if ( (m_DragNode && m_DropNode) || (m_DragNode && ImGui::IsMouseReleased(ImGuiMouseButton_::ImGuiMouseButton_Left)))
     {
         if (m_DragDropInst && m_DragDropFunc)
         {
             (m_DragDropInst->*m_DragDropFunc)((DWORD_PTR)m_DragNode, (DWORD_PTR)m_DropNode);
         }
-
+        
         m_DragNode = nullptr;
         m_DropNode = nullptr;
     }
@@ -153,7 +175,7 @@ void TreeUI::Clear()
 }
 
 TreeNode* TreeUI::AddItem(const string& _strNodeName, DWORD_PTR _Data, TreeNode* _pParent)
-{
+{    
     TreeNode* pNewNode = new TreeNode;
 
     pNewNode->m_Owner = this;
@@ -189,7 +211,7 @@ TreeNode* TreeUI::AddItem(const string& _strNodeName, DWORD_PTR _Data, TreeNode*
         {
             // 새로 생성한 노드를 루트노드의 자식으로 연결
             m_RootNode->m_vecChildNode.push_back(pNewNode);
-            pNewNode->m_ParentNode = m_RootNode;
+            pNewNode->m_ParentNode = m_RootNode;            
         }
     }
 
@@ -204,17 +226,17 @@ void TreeUI::SetSelectedNode(TreeNode* _Node)
     {
         m_LbtDownNode = nullptr;
         return;
-    }
+    }        
 
     if (m_SelectedNode)
-        m_SelectedNode->m_Highlight = false;
+        m_SelectedNode->m_Hilight = false;
 
     m_SelectedNode = _Node;
     m_LbtDownNode = nullptr;
 
     if (m_SelectedNode)
     {
-        m_SelectedNode->m_Highlight = true;
+        m_SelectedNode->m_Hilight = true;
 
         if (m_SelectInst && m_SelectFunc)
         {
@@ -256,7 +278,7 @@ bool TreeUI::GetSelectedNode(DWORD_PTR _Data)
         {
             SetSelectedNode(pCurNode);
             return true;
-        }
+        }        
     }
 
     return false;

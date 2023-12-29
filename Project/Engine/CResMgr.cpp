@@ -1,8 +1,16 @@
 #include "pch.h"
 #include "CResMgr.h"
 
-CResMgr::CResMgr() { }
-CResMgr::~CResMgr() { }
+#include "CPathMgr.h"
+
+CResMgr::CResMgr()
+	: m_Changed(false)
+{
+}
+
+CResMgr::~CResMgr()
+{
+}
 
 void CResMgr::init()
 {
@@ -11,7 +19,7 @@ void CResMgr::init()
 	CreateDefaultMesh();
 	CreateDefaultGraphicsShader();
 	CreateDefaultComputeShader();
-	CreateDefaultMaterial();
+	CreateDefaultMaterial();	
 }
 
 
@@ -19,12 +27,12 @@ void CResMgr::init()
 void CResMgr::InitSound()
 {
 	FMOD::System_Create(&CSound::g_pFMOD);
-	
+
 	if (nullptr == CSound::g_pFMOD)
 	{
 		assert(nullptr);
 	}
-	
+
 	// 32개 채널 생성
 	CSound::g_pFMOD->init(32, FMOD_DEFAULT, nullptr);
 }
@@ -32,13 +40,13 @@ void CResMgr::InitSound()
 
 void CResMgr::tick()
 {
-	m_isChanged = false;
+	m_Changed = false;
 }
 
 Ptr<CTexture> CResMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT _Height
 	, DXGI_FORMAT _pixelformat, UINT _BindFlag, D3D11_USAGE _Usage)
 {
-	Ptr<CTexture> pTex = FindRes<CTexture>(_strKey);
+	Ptr<CTexture> pTex =  FindRes<CTexture>(_strKey);
 
 	assert(nullptr == pTex);
 
@@ -77,7 +85,7 @@ void CResMgr::DeleteRes(RES_TYPE _type, const wstring& _strKey)
 
 	assert(!(iter == m_arrRes[(UINT)_type].end()));
 
-	m_arrRes[(UINT)_type].erase(iter);
+	m_arrRes[(UINT)_type].erase(iter);	
 
-	m_isChanged = true;
+	m_Changed = true;
 }

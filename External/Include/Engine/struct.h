@@ -12,7 +12,10 @@ struct tVertex
 	Vec3 vTangent;
 	Vec3 vBinormal;
 };
+
 typedef tVertex Vtx;
+
+
 
 
 // Event
@@ -34,7 +37,9 @@ struct tDebugShapeInfo
 	Vec4		vColor;
 	float		fMaxTime;
 	float		fCurTime;
+	bool		bDepthTest;
 };
+
 
 
 struct tLightColor
@@ -42,7 +47,6 @@ struct tLightColor
 	Vec4 vDiffuse;	// 빛의 색상
 	Vec4 vAmbient;	// 주변 광(환경 광)
 };
-
 
 // LightInfo
 struct tLightInfo
@@ -65,7 +69,6 @@ struct tTile
 	Vec2 vLeftTop;
 	Vec2 vSlice;
 };
-
 
 // Animator2D
 struct tAnim2DFrm
@@ -99,9 +102,8 @@ struct tParticle
 	int     pad;
 };
 
-
 struct tRWParticleBuffer
-{
+{	
 	int		SpawnCount;			// 스폰 시킬 파티클 개수
 	int		padding[3];
 };
@@ -113,8 +115,8 @@ struct tParticleModule
 	Vec4    vSpawnColor;
 	Vec4	vSpawnScaleMin;
 	Vec4	vSpawnScaleMax;
-	Vec3	vBoxShapeScale;
-	float	fSphereShapeRadius;
+	Vec3	vBoxShapeScale;	
+	float	fSphereShapeRadius;	
 	int		SpawnShapeType;		// 0 : BOX, 1 : Sphere
 	int		SpawnRate;			// 초당 생성 개수
 	int		Space;				// 파티클 업데이트 좌표계 ( 0 : World,  1 : Local)
@@ -137,7 +139,7 @@ struct tParticleModule
 	// Add Velocity 모듈
 	Vec4	vVelocityDir;
 	int     AddVelocityType;	// 0 : From Center, 1: To Center, 2 : Fixed Direction	
-	float	OffsetAngle;
+	float	OffsetAngle;		
 	float	Speed;
 	int     addvpad;
 
@@ -161,6 +163,7 @@ struct tParticleModule
 };
 
 
+
 // ===================
 // 상수버퍼 대응 구조체
 // ===================
@@ -176,6 +179,7 @@ struct tTransform
 	Matrix matWV;
 	Matrix matWVP;
 };
+
 extern tTransform g_transform;
 
 
@@ -202,4 +206,8 @@ struct tGlobal
 	UINT  Light3DCount;
 	int	  globalpadding[2];
 };
-extern tGlobal g_globalData;
+
+extern tGlobal GlobalData;
+
+
+

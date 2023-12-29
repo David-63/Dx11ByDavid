@@ -11,7 +11,7 @@
 #include "Collider2DUI.h"
 #include "CameraUI.h"
 #include "Animator2DUI.h"
-#include "TilemapUI.h"
+#include "TileMapUI.h"
 #include "Light2DUI.h"
 
 #include "MeshDataUI.h"
@@ -26,12 +26,16 @@
 
 
 
-InspectorUI::InspectorUI() : UI("##Inspector")
+InspectorUI::InspectorUI()
+	: UI("##Inspector")
+	, m_pTargetObj(nullptr)
+	, m_arrComUI{}	
+	, m_arrResUI{}
 {
 	SetName("Inspector");
 
 	m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM] = new TransformUI;
-	m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM]->SetSize(0.f, 150.f);
+	m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM]->SetSize(0.f, 150.f);	
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM]);
 
 	m_arrComUI[(UINT)COMPONENT_TYPE::MESHRENDER] = new MeshRenderUI;
@@ -54,7 +58,7 @@ InspectorUI::InspectorUI() : UI("##Inspector")
 	m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D]->SetSize(0.f, 150.f);
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::LIGHT2D]);
 
-	m_arrComUI[(UINT)COMPONENT_TYPE::TILEMAP] = new TilemapUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::TILEMAP] = new TileMapUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::TILEMAP]->SetSize(0.f, 150.f);
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::TILEMAP]);
 
@@ -91,7 +95,11 @@ InspectorUI::InspectorUI() : UI("##Inspector")
 	m_arrResUI[(UINT)RES_TYPE::SOUND]->SetSize(0.f, 0.f);
 	AddChildUI(m_arrResUI[(UINT)RES_TYPE::SOUND]);
 }
-InspectorUI::~InspectorUI() { }
+
+InspectorUI::~InspectorUI()
+{
+	
+}
 
 void InspectorUI::init()
 {
@@ -100,11 +108,12 @@ void InspectorUI::init()
 
 void InspectorUI::tick()
 {
-
+	
 }
 
 int InspectorUI::render_update()
 {
+	
 	return TRUE;
 }
 
@@ -131,23 +140,23 @@ void InspectorUI::SetTargetObject(CGameObject* _Target)
 		{
 			m_vecScriptUI[i]->SetActive(false);
 		}
-		return;
+		return ;
 	}
 
 	// 오브젝트의 스크립트 목록을 받아온다.
-	const vector<CScript*>& vecScript = m_pTargetObj->GetScripts();
+	const vector<CScript*> & vecScript = m_pTargetObj->GetScripts();
 
 	// 스크립트UI 가 스크립트 수 보다 적으면 그만큼 추가해준다.
 	if (m_vecScriptUI.size() < vecScript.size())
 	{
-		UINT iDiffer = static_cast<UINT>(vecScript.size() - m_vecScriptUI.size());
+		UINT iDiffer = vecScript.size() - m_vecScriptUI.size();
 		for (UINT i = 0; i < iDiffer; ++i)
 		{
 			ScriptUI* UI = new ScriptUI;
 
 			m_vecScriptUI.push_back(UI);
 			AddChildUI(UI);
-			UI->SetActive(true);
+			UI->SetActive(true);			
 		}
 	}
 
@@ -177,14 +186,14 @@ void InspectorUI::SetTargetResource(Ptr<CRes> _Res)
 	}
 
 	m_pTargetRes = _Res;
-
+		
 	if (nullptr == m_pTargetRes)
 		return;
 
-	RES_TYPE type = _Res->GetResType();
+	RES_TYPE type = _Res->GetType();
 
 	m_arrResUI[(UINT)type]->SetActive(true);
-	m_arrResUI[(UINT)type]->SetTargetRes(_Res);
+	m_arrResUI[(UINT)type]->SetTargetRes(_Res);	
 }
 
 void InspectorUI::ClearTargetObject()
@@ -211,6 +220,6 @@ void InspectorUI::ClearTargetResource()
 		{
 			m_arrResUI[i]->SetTargetRes(nullptr);
 			m_arrResUI[i]->SetActive(false);
-		}
+		}		
 	}
 }

@@ -1,8 +1,10 @@
 #pragma once
-#include "CompUI.h"
+#include "ComponentUI.h"
 
 class CGameObject;
-class TransformUI : public CompUI
+
+class TransformUI :
+    public ComponentUI
 {
 public:
     virtual int render_update() override;

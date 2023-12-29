@@ -1,22 +1,28 @@
 #pragma once
 #include "UI.h"
 
-#include <Engine/ptr.h>
-#include <Engine/CRes.h>
-
 class CGameObject;
-class CompUI;
+class ComponentUI;
 class ResUI;
+
+#include <Engine\ptr.h>
+#include <Engine\CRes.h>
+
 class ScriptUI;
-class InspectorUI : public UI
+
+class InspectorUI :
+    public UI
 {
 private:
-    CGameObject*        m_pTargetObj = nullptr;
-
-    CompUI*        m_arrComUI[(UINT)COMPONENT_TYPE::END] = {};
-    ResUI*              m_arrResUI[(UINT)RES_TYPE::END] = {};
-    Ptr<CRes>           m_pTargetRes;
+    CGameObject*        m_pTargetObj;    
+    ComponentUI*        m_arrComUI[(UINT)COMPONENT_TYPE::END];
     vector<ScriptUI*>   m_vecScriptUI;
+
+
+    Ptr<CRes>           m_pTargetRes;
+    ResUI*              m_arrResUI[(UINT)RES_TYPE::END];
+
+
 
 public:
     virtual void init() override;
@@ -35,3 +41,4 @@ public:
     InspectorUI();
     ~InspectorUI();
 };
+

@@ -10,11 +10,30 @@
 #include "CLevel.h"
 #include "CLayer.h"
 
+#include "CRenderComponent.h"
 
-CGameObject::CGameObject() { }
+CGameObject::CGameObject()
+	: m_arrCom{}
+	, m_RenderCom(nullptr)
+	, m_Parent(nullptr)
+	, m_iLayerIdx(-1)
+	, m_bDead(false)
+	, m_LifeTime(0.f)
+	, m_CurLifeTime(0.f)
+	, m_bLifeSpan(false)
+{
+}
 
 CGameObject::CGameObject(const CGameObject& _Other)
 	: CEntity(_Other)
+	, m_arrCom{}
+	, m_RenderCom(nullptr)
+	, m_Parent(nullptr)
+	, m_iLayerIdx(-1)
+	, m_bDead(false)
+	, m_LifeTime(0.f)
+	, m_CurLifeTime(0.f)
+	, m_bLifeSpan(false)
 {
 	// Component 복사
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
@@ -35,7 +54,7 @@ CGameObject::CGameObject(const CGameObject& _Other)
 	for (size_t i = 0; i < _Other.m_vecChild.size(); ++i)
 	{
 		AddChild(_Other.m_vecChild[i]->Clone());
-	}
+	}	
 }
 
 CGameObject::~CGameObject()
@@ -85,10 +104,10 @@ void CGameObject::tick()
 
 void CGameObject::finaltick()
 {
-	if (m_isLifeSpan)
+	if (m_bLifeSpan)
 	{
-		m_curLifeTime += DT;
-		if (m_lifeTime < m_curLifeTime)
+		m_CurLifeTime += DT;
+		if (m_LifeTime < m_CurLifeTime)
 		{
 			DestroyObject(this);
 		}
@@ -105,24 +124,24 @@ void CGameObject::finaltick()
 	{
 		m_vecChild[i]->finaltick();
 	}
-
+		
 	// 소속 레이어가 없는데 finaltick 이 호출되었다.
-	assert(-1 != m_layerIdx);
+	assert(-1 != m_iLayerIdx); 
 
 	// 레이어 등록
-	CLayer* pCurLayer = CLevelMgr::GetInst()->GetCurLevel()->GetLayer(m_layerIdx);
+	CLayer* pCurLayer = CLevelMgr::GetInst()->GetCurLevel()->GetLayer(m_iLayerIdx);
 	pCurLayer->RegisterObject(this);
 }
 
 void CGameObject::render()
 {
-	if (nullptr != m_renderCom)
-		m_renderCom->render();
+	if (nullptr != m_RenderCom)
+		m_RenderCom->render();
 }
 
 void CGameObject::AddComponent(CComponent* _Component)
 {
-	_Component->m_owner = this;
+	_Component->m_pOwner = this;
 
 	// 컴포넌트가 스크립트인 경우
 	if (COMPONENT_TYPE::SCRIPT == _Component->GetType())
@@ -132,54 +151,54 @@ void CGameObject::AddComponent(CComponent* _Component)
 
 	// 스크립트를 제외한 일반 컴포넌트인 경우
 	else
-	{
+	{		
 		// 이미 보유하고 있는 컴포넌트인 경우
 		assert(!m_arrCom[(UINT)_Component->GetType()]);
 
 		m_arrCom[(UINT)_Component->GetType()] = _Component;
 
 		// RenderComponent 확인
-		if (COMPONENT_TYPE::MESHRENDER <= _Component->GetType()
-			&& _Component->GetType() <= COMPONENT_TYPE::DECAL)
+		CRenderComponent* pRenderCom = dynamic_cast<CRenderComponent*>(_Component);
+		if (pRenderCom)
 		{
-			assert(!m_renderCom);
-			
-			m_renderCom = dynamic_cast<CRenderComp*>(_Component);
+			// 이미 1개 이상의 렌더컴포넌트를 보유하고 있다면 assert
+			assert(!m_RenderCom);
+			m_RenderCom = pRenderCom;
 		}
 	}
 }
 
 void CGameObject::AddChild(CGameObject* _Object)
 {
-	if (_Object->m_parent)
+	if (_Object->m_Parent)
 	{
 		// 기존 부모가 있으면 연결 해제 후 연결
 		_Object->DisconnectFromParent();
 	}
-
+	
 	else
 	{
 		// 기존 부모가 없으면, 소속 레이어에서 최상위부모 목록에서 제거된 후 연결
 		_Object->ChangeToChildType();
 	}
-
+	
 
 	// 부모 자식 연결
-	_Object->m_parent = this;
+	_Object->m_Parent = this;
 	m_vecChild.push_back(_Object);
 }
 
 
 bool CGameObject::IsAncestor(CGameObject* _Target)
 {
-	CGameObject* pParent = m_parent;
+	CGameObject* pParent = m_Parent;
 	while (pParent)
 	{
 		if (pParent == _Target)
 		{
 			return true;
 		}
-		pParent = pParent->m_parent;
+		pParent = pParent->m_Parent;
 	}
 
 	return false;
@@ -187,16 +206,16 @@ bool CGameObject::IsAncestor(CGameObject* _Target)
 
 void CGameObject::DisconnectFromParent()
 {
-	if (!m_parent)
+	if (!m_Parent)
 		return;
 
-	vector<CGameObject*>::iterator iter = m_parent->m_vecChild.begin();
-	for (; iter != m_parent->m_vecChild.end(); ++iter)
+	vector<CGameObject*>::iterator iter = m_Parent->m_vecChild.begin();
+	for (; iter != m_Parent->m_vecChild.end(); ++iter)
 	{
 		if (this == *iter)
 		{
-			m_parent->m_vecChild.erase(iter);
-			m_parent = nullptr;
+			m_Parent->m_vecChild.erase(iter);
+			m_Parent = nullptr;
 			return;
 		}
 	}
@@ -206,17 +225,17 @@ void CGameObject::DisconnectFromParent()
 
 void CGameObject::ChangeToChildType()
 {
-	assert(-1 <= m_layerIdx && m_layerIdx < MAX_LAYER);
+	assert(-1 <= m_iLayerIdx && m_iLayerIdx < MAX_LAYER);
 
-	if (-1 != m_layerIdx)
+	if (-1 != m_iLayerIdx)
 	{
-		CLayer* pLayer = CLevelMgr::GetInst()->GetCurLevel()->GetLayer(m_layerIdx);
+		CLayer* pLayer = CLevelMgr::GetInst()->GetCurLevel()->GetLayer(m_iLayerIdx);
 		pLayer->RemoveFromParentList(this);
 	}
 }
 
 void CGameObject::AddParentList()
 {
-	CLayer* pLayer = CLevelMgr::GetInst()->GetCurLevel()->GetLayer(m_layerIdx);
+	CLayer* pLayer = CLevelMgr::GetInst()->GetCurLevel()->GetLayer(m_iLayerIdx);
 	pLayer->AddParentList(this);
 }

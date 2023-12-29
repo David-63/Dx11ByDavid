@@ -45,13 +45,14 @@ void DestroyObject(CGameObject* _DeletObject)
 
 	evn.Type = EVENT_TYPE::DELETE_OBJECT;
 	evn.wParam = (DWORD_PTR)_DeletObject;
-
+	
 	CEventMgr::GetInst()->AddEvent(evn);
 }
 
 
 
-void DrawDebugRect(Vec3 _vWorldPos, Vec2 _vWorldScale, Vec4 _vColor, Vec3 _vRotation, float _fTime)
+void DrawDebugRect(Vec3 _vWorldPos, Vec2 _vWorldScale, Vec4 _vColor
+	, Vec3 _vRotation, float _fTime, bool DepthTest)
 {
 	tDebugShapeInfo info = {};
 
@@ -62,23 +63,26 @@ void DrawDebugRect(Vec3 _vWorldPos, Vec2 _vWorldScale, Vec4 _vColor, Vec3 _vRota
 	info.vWorldScale = Vec3(_vWorldScale.x, _vWorldScale.y, 1.f);
 	info.vWorldRotation = _vRotation;
 	info.vColor = _vColor;
+	info.bDepthTest = DepthTest;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
-void DrawDebugRect(const Matrix& _matWorld, Vec4 _vColor, float _fTime)
+void DrawDebugRect(const Matrix& _matWorld, Vec4 _vColor, float _fTime, bool DepthTest)
 {
 	tDebugShapeInfo info = {};
 
 	info.matWorld = _matWorld;
 	info.eShape = SHAPE_TYPE::RECT;
-	info.fMaxTime = _fTime;
+	info.fMaxTime = _fTime;	
 	info.vColor = _vColor;
+	info.bDepthTest = DepthTest;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
-void DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor, Vec3 _vRotation, float _fTime)
+void DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor, Vec3 _vRotation
+					, float _fTime, bool DepthTest)
 {
 	tDebugShapeInfo info = {};
 
@@ -89,18 +93,80 @@ void DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor, Vec3 _vRotat
 	info.vWorldScale = Vec3(_fRadius, _fRadius, 1.f);
 	info.vWorldRotation = _vRotation;
 	info.vColor = _vColor;
+	info.bDepthTest = DepthTest;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
 
-void DrawDebugCircle(const Matrix& _matWorld, Vec4 _vColor, float _fTime)
+void DrawDebugCircle(const Matrix& _matWorld, Vec4 _vColor, float _fTime, bool DepthTest)
 {
 	tDebugShapeInfo info = {};
 
 	info.matWorld = _matWorld;
 	info.eShape = SHAPE_TYPE::CIRCLE;
+	info.fMaxTime = _fTime;	
+	info.vColor = _vColor;
+	info.bDepthTest = DepthTest;
+
+	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+void DrawDebugCube(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor
+					, Vec3 _vRotation, float _fTime, bool DepthTest)
+{
+	tDebugShapeInfo info = {};
+
+	info.matWorld = XMMatrixIdentity();
+	info.eShape = SHAPE_TYPE::CUBE;
+	info.fMaxTime = _fTime;
+	info.vWorldPos = _vWorldPos;
+	info.vWorldScale = Vec3(_fRadius, _fRadius, 1.f);
+	info.vWorldRotation = _vRotation;
+	info.vColor = _vColor;
+	info.bDepthTest = DepthTest;
+
+	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+void DrawDebugCube(const Matrix& _matWorld, Vec4 _vColor, float _fTime, bool DepthTest)
+{
+	tDebugShapeInfo info = {};
+
+	info.matWorld = _matWorld;
+	info.eShape = SHAPE_TYPE::CUBE;
 	info.fMaxTime = _fTime;
 	info.vColor = _vColor;
+	info.bDepthTest = DepthTest;
+
+	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor
+	, Vec3 _vRotation, float _fTime, bool DepthTest)
+{
+	tDebugShapeInfo info = {};
+
+	info.matWorld = XMMatrixIdentity();
+	info.eShape = SHAPE_TYPE::SPHERE;
+	info.fMaxTime = _fTime;
+	info.vWorldPos = _vWorldPos;
+	info.vWorldScale = Vec3(_fRadius, _fRadius, 1.f);
+	info.vWorldRotation = _vRotation;
+	info.vColor = _vColor;
+	info.bDepthTest = DepthTest;
+
+	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
+}
+
+void DrawDebugSphere(const Matrix& _matWorld, Vec4 _vColor, float _fTime, bool DepthTest)
+{
+	tDebugShapeInfo info = {};
+
+	info.matWorld = _matWorld;
+	info.eShape = SHAPE_TYPE::SPHERE;
+	info.fMaxTime = _fTime;
+	info.vColor = _vColor;
+	info.bDepthTest = DepthTest;
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
@@ -137,7 +203,7 @@ const char* ToString(COMPONENT_TYPE type)
 }
 
 void SaveWString(const wstring& _str, FILE* _File)
-{
+{	
 	UINT iLen = (UINT)_str.length();
 	fwrite(&iLen, sizeof(UINT), 1, _File);
 	fwrite(_str.c_str(), sizeof(wchar_t), _str.length(), _File);
@@ -149,7 +215,7 @@ void LoadWString(wstring& _str, FILE* _File)
 
 	UINT iLen = 0;
 	fread(&iLen, sizeof(UINT), 1, _File);
-	fread(szBuffer, sizeof(wchar_t), iLen, _File);
+	fread(szBuffer, sizeof(wchar_t), iLen, _File);	
 
 	_str = szBuffer;
 }

@@ -7,7 +7,13 @@
 #include "ptr.h"
 #include "CMaterial.h"
 
-CAnimator2D::CAnimator2D() : CComponent(COMPONENT_TYPE::ANIMATOR2D) { }
+CAnimator2D::CAnimator2D()
+	: CComponent(COMPONENT_TYPE::ANIMATOR2D)
+	, m_pCurAnim(nullptr)
+	, m_bRepeat(false)
+{
+}
+
 CAnimator2D::~CAnimator2D()
 {
 	Safe_Del_Map(m_mapAnim);
@@ -17,13 +23,13 @@ void CAnimator2D::finaltick()
 {
 	if (nullptr != m_pCurAnim)
 	{
-		if (m_isRepeat && m_pCurAnim->IsFinish())
+		if (m_bRepeat && m_pCurAnim->IsFinish())
 		{
 			m_pCurAnim->Reset();
 		}
 
 		m_pCurAnim->finaltick();
-	}
+	}	
 }
 
 void CAnimator2D::UpdateData()
@@ -60,7 +66,7 @@ void CAnimator2D::Play(const wstring& _strName, bool _bRepeat)
 	assert(pAnim);
 
 	m_pCurAnim = pAnim;
-	m_isRepeat = _bRepeat;
+	m_bRepeat = _bRepeat;
 }
 
 CAnim2D* CAnimator2D::FindAnim(const wstring& _strName)
@@ -88,18 +94,18 @@ void CAnimator2D::CreateAnimation(const wstring& _strAnimName
 
 void CAnimator2D::SaveToLevelFile(FILE* _File)
 {
-	fwrite(&m_isRepeat, sizeof(bool), 1, _File);
-
+	fwrite(&m_bRepeat, sizeof(bool), 1, _File);
+	
 	size_t AnimCount = m_mapAnim.size();
 	fwrite(&AnimCount, sizeof(size_t), 1, _File);
 
 	for (const auto& pair : m_mapAnim)
-	{
+	{		
 		pair.second->SaveToLevelFile(_File);
 	}
 
-	wstring strCurAnimName;
-	if (nullptr != m_pCurAnim)
+	wstring strCurAnimName;	
+	if(nullptr != m_pCurAnim)	
 	{
 		strCurAnimName = m_pCurAnim->GetName();
 	}
@@ -108,7 +114,7 @@ void CAnimator2D::SaveToLevelFile(FILE* _File)
 
 void CAnimator2D::LoadFromLevelFile(FILE* _File)
 {
-	fread(&m_isRepeat, sizeof(bool), 1, _File);
+	fread(&m_bRepeat, sizeof(bool), 1, _File);
 
 	size_t AnimCount = 0;
 	fread(&AnimCount, sizeof(size_t), 1, _File);
@@ -117,7 +123,7 @@ void CAnimator2D::LoadFromLevelFile(FILE* _File)
 	{
 		CAnim2D* pNewAnim = new CAnim2D;
 		pNewAnim->LoadFromLevelFile(_File);
-
+		
 		m_mapAnim.insert(make_pair(pNewAnim->GetName(), pNewAnim));
 		pNewAnim->m_pOwner = this;
 	}
@@ -125,5 +131,5 @@ void CAnimator2D::LoadFromLevelFile(FILE* _File)
 	wstring strCurAnimName;
 	LoadWString(strCurAnimName, _File);
 
-	m_pCurAnim = FindAnim(strCurAnimName);
+	m_pCurAnim = FindAnim(strCurAnimName);		
 }

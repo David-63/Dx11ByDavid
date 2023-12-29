@@ -1,8 +1,9 @@
 #pragma once
-#include "CompUI.h"
-
-class CameraUI : public CompUI
+#include "ComponentUI.h"
+class CameraUI :
+    public ComponentUI
 {
+
 public:
     virtual int render_update() override;
 

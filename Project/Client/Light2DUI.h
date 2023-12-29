@@ -1,8 +1,9 @@
 #pragma once
-#include "CompUI.h"
-
-class Light2DUI : public CompUI
+#include "ComponentUI.h"
+class Light2DUI :
+    public ComponentUI
 {
+
 public:
     virtual int render_update() override;
 

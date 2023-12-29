@@ -1,7 +1,9 @@
 #pragma once
 #include "CRes.h"
 
-class CShader : public CRes
+
+class CShader :
+    public CRes
 {
 protected:
     ComPtr<ID3DBlob>    m_ErrBlob;

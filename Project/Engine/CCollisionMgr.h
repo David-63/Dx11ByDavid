@@ -1,4 +1,5 @@
 #pragma once
+#include "CSingleton.h"
 
 class CLayer;
 class CCollider2D;
@@ -15,11 +16,13 @@ union CollisionID
 	UINT_PTR id;
 };
 
-class CCollisionMgr : public CSingleton<CCollisionMgr>
+
+class CCollisionMgr :
+    public CSingleton<CCollisionMgr>
 {
 	SINGLE(CCollisionMgr);
 private:
-	UINT					m_layerMat[MAX_LAYER] = {};
+	UINT					m_matrix[MAX_LAYER];
 	map<UINT_PTR, bool>		m_mapColID;
 
 public:
@@ -28,7 +31,7 @@ public:
 
 	void Clear()
 	{
-		memset(m_layerMat, 0, sizeof(UINT) * MAX_LAYER);
+		memset(m_matrix, 0, sizeof(UINT) * MAX_LAYER);
 	}
 
 public:

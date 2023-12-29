@@ -1,8 +1,9 @@
 #pragma once
-#include "CompUI.h"
-
-class Animator2DUI : public CompUI
+#include "ComponentUI.h"
+class Animator2DUI :
+    public ComponentUI
 {
+
 public:
     virtual int render_update() override;
 
