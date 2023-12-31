@@ -11,7 +11,6 @@ void CResMgr::CreateDefaultMesh()
 	vector<UINT> vecIdx;
 	Vtx v;
 
-
 	Ptr<CMesh> pMesh = nullptr;
 
 	// ==============
@@ -489,6 +488,11 @@ void CResMgr::CreateDefaultGraphicsShader()
 
 	AddRes(pShader->GetKey(), pShader);
 
+
+
+
+
+
 	// =================
 	// DebugShape Shader
 	// Topology : LineStrip
@@ -510,6 +514,40 @@ void CResMgr::CreateDefaultGraphicsShader()
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASK);
 
 	AddRes(pShader->GetKey(), pShader);
+
+
+	// =================
+	// DebugSphereShape Shader
+	// Topology : LineStrip
+	// RS_TYPE  : CULL_NONE
+	// DS_TYPE  : NO_TEST_NO_WRITE
+	// BS_TYPE  : Default
+	// g_vec4_0 : OutColor
+	// ==================
+	pShader = new CGraphicsShader;
+	pShader->SetKey(L"DebugSphereShapeShader");
+	pShader->CreateVertexShader(L"shader\\debugshape.fx", "VS_DebugShape");
+	pShader->CreatePixelShader(L"shader\\debugshape.fx", "PS_DebugSphereShape");
+
+	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASK);
+
+	AddRes(pShader->GetKey(), pShader);
+
+
+
+
+
+
+
+
+
+
+
+
 
 	// ============================
 	// TileMap Shader
@@ -854,6 +892,14 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"DebugShapeShader"));
 	AddRes(L"DebugShapeMtrl", pMtrl);
+
+	// DebugSphereShape Material
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"DebugSphereShapeShader"));
+	AddRes(L"DebugSphereShapeMtrl", pMtrl);
+
+
+
 
 	// TileMap Material
 	pMtrl = new CMaterial(true);
