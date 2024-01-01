@@ -16,7 +16,6 @@
 CEditorObjMgr::CEditorObjMgr()
 	: m_DebugShape{}
 {
-
 }
 
 CEditorObjMgr::~CEditorObjMgr()
@@ -109,44 +108,55 @@ void CEditorObjMgr::render()
 	CGameObjectEx* pShapeObj = nullptr;
 
 	vector<tDebugShapeInfo>::iterator iter = m_DebugShapeInfo.begin();
+			
 	for (; iter != m_DebugShapeInfo.end();)
 	{
-		switch (iter->eShape)
+		// 디버그 객체에 대응하는 모양 찾기
 		{
-		case SHAPE_TYPE::RECT:
-			pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::RECT];
-			break;
-		case SHAPE_TYPE::CIRCLE:
-			pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::CIRCLE];
-			break;
-		case SHAPE_TYPE::CUBE:
-			pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::CUBE];
-			break;
-		case SHAPE_TYPE::SPHERE:
-			pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::SPHERE];
-			break;		
+			switch (iter->eShape)
+			{
+			case SHAPE_TYPE::RECT:
+				pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::RECT];
+				break;
+			case SHAPE_TYPE::CIRCLE:
+				pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::CIRCLE];
+				break;
+			case SHAPE_TYPE::CUBE:
+				pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::CUBE];
+				break;
+			case SHAPE_TYPE::SPHERE:
+				pShapeObj = m_DebugShape[(UINT)SHAPE_TYPE::SPHERE];
+				break;
+			}
 		}
 
-		if (iter->matWorld != XMMatrixIdentity())
+		// 해당 객체의 Transform 정보 업데이트
 		{
-			pShapeObj->Transform()->SetWorldMat(iter->matWorld);
-		}
-		else
-		{
-			pShapeObj->Transform()->SetRelativePos(iter->vWorldPos);
-			pShapeObj->Transform()->SetRelativeScale(iter->vWorldScale);
-			pShapeObj->Transform()->SetRelativeRot(iter->vWorldRotation);
-			pShapeObj->finaltick();
+			if (iter->matWorld != XMMatrixIdentity())
+			{
+				pShapeObj->Transform()->SetWorldMat(iter->matWorld);
+			}
+			else
+			{
+				pShapeObj->Transform()->SetRelativePos(iter->vWorldPos);
+				pShapeObj->Transform()->SetRelativeScale(iter->vWorldScale);
+				pShapeObj->Transform()->SetRelativeRot(iter->vWorldRotation);
+				pShapeObj->finaltick();
+			}
 		}
 		
+		// 색상 등록
 		pShapeObj->MeshRender()->GetMaterial()->SetScalarParam(VEC4_0, &iter->vColor);
 
+		// 물체를 가릴지 세팅
 		if (iter->bDepthTest)
 			pShapeObj->MeshRender()->GetMaterial()->GetShader()->SetDSType(DS_TYPE::LESS);
 		else
 			pShapeObj->MeshRender()->GetMaterial()->GetShader()->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
 
+		// 렌더링 호출
 		pShapeObj->render();
+
 
 		iter->fCurTime += DT;
 		if (iter->fMaxTime < iter->fCurTime)

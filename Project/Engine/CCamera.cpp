@@ -43,6 +43,7 @@ CCamera::CCamera(const CCamera& _Other)
 	, m_Frustum(this)
 	, m_fAspectRatio(_Other.m_fAspectRatio)
 	, m_fScale(_Other.m_fScale)
+	, m_Far(_Other.m_Far)
 	, m_ProjType(_Other.m_ProjType)
 	, m_iLayerMask(_Other.m_iLayerMask)
 	, m_iCamIdx(-1)
@@ -50,7 +51,7 @@ CCamera::CCamera(const CCamera& _Other)
 }
 
 CCamera::~CCamera()
-{	
+{
 }
 
 void CCamera::begin()
@@ -350,9 +351,11 @@ void CCamera::render_ui()
 }
 
 void CCamera::SaveToLevelFile(FILE* _File)
-{
+{	
+	fwrite(&m_Frustum, sizeof(CFrustum), 1, _File);
 	fwrite(&m_fAspectRatio, sizeof(float), 1, _File);
 	fwrite(&m_fScale, sizeof(float), 1, _File);
+	fwrite(&m_Far, sizeof(float), 1, _File);
 	fwrite(&m_ProjType, sizeof(UINT), 1, _File);
 	fwrite(&m_iLayerMask, sizeof(UINT), 1, _File);
 	fwrite(&m_iCamIdx, sizeof(int), 1, _File);
@@ -360,8 +363,12 @@ void CCamera::SaveToLevelFile(FILE* _File)
 
 void CCamera::LoadFromLevelFile(FILE* _File)
 {
+	fread(&m_Frustum, sizeof(CFrustum), 1, _File);
+	m_Frustum.SetCamera(this);
+
 	fread(&m_fAspectRatio, sizeof(float), 1, _File);
 	fread(&m_fScale, sizeof(float), 1, _File);
+	fread(&m_Far, sizeof(float), 1, _File);
 	fread(&m_ProjType, sizeof(UINT), 1, _File);
 	fread(&m_iLayerMask, sizeof(UINT), 1, _File);
 	fread(&m_iCamIdx, sizeof(int), 1, _File);

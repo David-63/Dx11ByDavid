@@ -52,13 +52,15 @@ Ptr<CMaterial> CRenderComponent::GetDynamicMaterial()
 void CRenderComponent::SaveToLevelFile(FILE* _File)
 {
 	SaveResRef(m_pMesh.Get(), _File);
-	SaveResRef(m_pSharedMtrl.Get(), _File);	
+	SaveResRef(m_pSharedMtrl.Get(), _File);
+	fwrite(&m_isFrustumCheck, sizeof(bool), 1, _File);
 }
 
 void CRenderComponent::LoadFromLevelFile(FILE* _File)
 {
 	LoadResRef(m_pMesh, _File);
 	LoadResRef(m_pSharedMtrl, _File);
+	fread(&m_isFrustumCheck, sizeof(bool), 1, _File);
 
 	SetMaterial(m_pSharedMtrl);
 }

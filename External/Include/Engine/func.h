@@ -86,7 +86,10 @@ void Safe_Del_Array(T* (&arr)[Size])
 	for (UINT i = 0; i < Size; ++i)
 	{
 		if (nullptr != arr[i])
+		{
 			delete arr[i];
+			arr[i] = nullptr;
+		}
 	}	
 }
 
@@ -98,6 +101,7 @@ void Safe_Del_Vec(vector<T*>& _vec)
 		if (nullptr != _vec[i])
 		{
 			delete _vec[i];
+			_vec[i] = nullptr;
 		}
 	}
 	_vec.clear();
@@ -109,7 +113,9 @@ void Safe_Del_Map(map<T1, T2>& _map)
 	for (const auto& pair : _map)
 	{
 		if (nullptr != pair.second)
+		{
 			delete pair.second;
+		}
 	}
 
 	_map.clear();

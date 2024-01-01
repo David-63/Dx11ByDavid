@@ -41,6 +41,22 @@ void CDecal::render()
 	GetMesh()->render();	
 }
 
+void CDecal::SaveToLevelFile(FILE* _File)
+{
+	CRenderComponent::SaveToLevelFile(_File);
+	SaveResRef(m_DecalTex.Get(), _File);
+	fwrite(&m_bDeferred, sizeof(bool), 1, _File);
+	fwrite(&m_bEmissive, sizeof(bool), 1, _File);
+}
+
+void CDecal::LoadFromLevelFile(FILE* _File)
+{
+	CRenderComponent::LoadFromLevelFile(_File);
+	LoadResRef(m_DecalTex, _File);
+	fread(&m_bDeferred, sizeof(bool), 1, _File);
+	fread(&m_bEmissive, sizeof(bool), 1, _File);
+}
+
 
 
 void CDecal::SetDeferredDecal(bool _bDeferred)

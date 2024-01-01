@@ -28,9 +28,12 @@ public:
 	bool FrustumCheck(Vec3 _vPos);
 	bool FrustumCheckBound(Vec3 _vPos, float _fRadius);
 
+
 public:
-	CLONE(CFrustum);
-	CFrustum() {}
+	void SetCamera(CCamera* _cam) { m_pCam = _cam; }
+
+public:
+	CLONE(CFrustum);	
 	CFrustum(CCamera* _camera);
 	~CFrustum();
 };
