@@ -84,13 +84,12 @@ void CreateTestLevel()
 
 		pLightObj->Transform()->SetRelativeRot(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
 		pLightObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
-		pLightObj->Light3D()->SetLightColor(Vec3(0.4f, 0.4f, 0.4f));
-		pLightObj->Light3D()->SetLightAmbient(Vec3(0.2f, 0.2f, 0.2f));
+		pLightObj->Light3D()->SetLightColor(Vec3(0.1f, 0.1f, 0.1f));
+		pLightObj->Light3D()->SetLightAmbient(Vec3(0.05f, 0.05f, 0.05f));
 		SpawnGameObject(pLightObj, Vec3(0.f, 0.f, 0.f), 0);
 		
 		pLightObj = new CGameObject;
 		pLightObj->SetName(L"Point Light 1");
-
 		pLightObj->AddComponent(new CTransform);
 		pLightObj->AddComponent(new CLight3D);
 

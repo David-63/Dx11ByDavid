@@ -163,6 +163,7 @@
     <ClInclude Include="CMRT.h">
       <Filter>Source\03. Manager\06. RenderMgr\MRT</Filter>
     </ClInclude>
+    <ClInclude Include="CFrustum.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -315,6 +316,7 @@
     <ClCompile Include="CRenderMgr_init.cpp">
       <Filter>Source\03. Manager\06. RenderMgr</Filter>
     </ClCompile>
+    <ClCompile Include="CFrustum.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -475,6 +477,9 @@
     </Filter>
     <Filter Include="Source\03. Manager\06. RenderMgr\MRT">
       <UniqueIdentifier>{fb1e3652-0419-433e-a994-f0c90d9dc1e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06. Component\3. Camera\Frustum">
+      <UniqueIdentifier>{0a64250a-c7d8-4b6f-b1be-d1ce25dda845}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

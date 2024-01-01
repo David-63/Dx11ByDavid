@@ -16,12 +16,15 @@ private:
     Ptr<CMaterial>          m_pDynamicMtrl; // SharedMaterial 복사본
     Ptr<CMaterial>          m_pCurrentMtrl; // 현재 사용 중인 재질
 
+    bool                    m_isFrustumCheck;
+
 public:
     virtual void render() = 0;
 
 public:
     void SetMesh(Ptr<CMesh> _Mesh) { m_pMesh = _Mesh; }
     void SetMaterial(Ptr<CMaterial> _Mtrl);
+    void SetFrustumCheck(bool _Check) { m_isFrustumCheck = _Check; }
 
     Ptr<CMesh> GetMesh() { return m_pMesh; }
     Ptr<CMaterial> GetMaterial() { return m_pCurrentMtrl; }
@@ -32,7 +35,7 @@ public:
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
 
-
+    bool IsFrustumCheck() { return m_isFrustumCheck; }
 public:
     CRenderComponent(COMPONENT_TYPE _type);
     ~CRenderComponent();

@@ -24,6 +24,7 @@
 
 CCamera::CCamera()
 	: CComponent(COMPONENT_TYPE::CAMERA)
+	, m_Frustum(this)
 	, m_fAspectRatio(1.f)
 	, m_fScale(1.f)
 	, m_Far(10000.f)
@@ -39,6 +40,7 @@ CCamera::CCamera()
 
 CCamera::CCamera(const CCamera& _Other)
 	: CComponent(_Other)
+	, m_Frustum(this)
 	, m_fAspectRatio(_Other.m_fAspectRatio)
 	, m_fScale(_Other.m_fScale)
 	, m_ProjType(_Other.m_ProjType)
@@ -63,7 +65,8 @@ void CCamera::finaltick()
 {
 	CalcViewMat();
 
-	CalcProjMat();	
+	CalcProjMat();
+	m_Frustum.finaltick();
 }
 
 void CCamera::CalcViewMat()
@@ -94,7 +97,6 @@ void CCamera::CalcViewMat()
 	// View 역행렬 구하기
 	m_matViewInv = XMMatrixInverse(nullptr, m_matView);
 }
-
 void CCamera::CalcProjMat()
 {
 	// =============
@@ -118,8 +120,6 @@ void CCamera::CalcProjMat()
 	m_matProjInv = XMMatrixInverse(nullptr, m_matProj);
 }
 
-
-
 void CCamera::SetLayerMask(int _iLayer, bool _Visible)
 {
 	if (_Visible)
@@ -131,7 +131,6 @@ void CCamera::SetLayerMask(int _iLayer, bool _Visible)
 		m_iLayerMask &= ~(1 << _iLayer);
 	}
 }
-
 void CCamera::SetLayerMaskAll(bool _Visible)
 {
 	if (_Visible)
@@ -154,17 +153,17 @@ void CCamera::SortObject()
 	// 현재 레벨 가져와서 분류
 	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
 
-	for (UINT i = 0; i < MAX_LAYER; ++i)
+	for (UINT layerIdx = 0; layerIdx < MAX_LAYER; ++layerIdx)
 	{
 		// 레이어 마스크 확인
-		if (m_iLayerMask & (1 << i))
+		if (m_iLayerMask & (1 << layerIdx))
 		{
-			CLayer* pLayer = pCurLevel->GetLayer(i);
+			CLayer* pLayer = pCurLevel->GetLayer(layerIdx);
 			const vector<CGameObject*>& vecObject = pLayer->GetObjects();
 
-			for (size_t j = 0; j < vecObject.size(); ++j)
+			for (size_t objIdx = 0; objIdx < vecObject.size(); ++objIdx)
 			{
-				CRenderComponent* pRenderCom = vecObject[j]->GetRenderComponent();
+				CRenderComponent* pRenderCom = vecObject[objIdx]->GetRenderComponent();
 
 				// 렌더링 기능이 없는 오브젝트는 제외
 				if (   nullptr == pRenderCom 
@@ -172,35 +171,40 @@ void CCamera::SortObject()
 					|| nullptr == pRenderCom->GetMaterial()->GetShader())
 					continue;
 
+				// Frustum Check
+				if (pRenderCom->IsFrustumCheck() && false == m_Frustum.FrustumCheckBound
+					(vecObject[objIdx]->Transform()->GetWorldPos(), vecObject[objIdx]->Transform()->GetRelativeScale().x / 5.f))
+					continue;
+
 				// 쉐이더 도메인에 따른 분류
 				SHADER_DOMAIN eDomain = pRenderCom->GetMaterial()->GetShader()->GetDomain();
 				switch (eDomain)
 				{
 				case SHADER_DOMAIN::DOMAIN_DEFERRED:
-					m_vecDeferred.push_back(vecObject[j]);
+					m_vecDeferred.push_back(vecObject[objIdx]);
 					break;
 
 				case SHADER_DOMAIN::DOMAIN_DEFERRED_DECAL:
-					m_vecDeferredDecal.push_back(vecObject[j]);
+					m_vecDeferredDecal.push_back(vecObject[objIdx]);
 					break;
 
 				case SHADER_DOMAIN::DOMAIN_OPAQUE:
-					m_vecOpaque.push_back(vecObject[j]);
+					m_vecOpaque.push_back(vecObject[objIdx]);
 					break;
 				case SHADER_DOMAIN::DOMAIN_MASK:
-					m_vecMask.push_back(vecObject[j]);
+					m_vecMask.push_back(vecObject[objIdx]);
 					break;
 				case SHADER_DOMAIN::DOMAIN_DECAL:
-					m_vecDecal.push_back(vecObject[j]);
+					m_vecDecal.push_back(vecObject[objIdx]);
 					break;
 				case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
-					m_vecTransparent.push_back(vecObject[j]);
+					m_vecTransparent.push_back(vecObject[objIdx]);
 					break;
 				case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
-					m_vecPost.push_back(vecObject[j]);
+					m_vecPost.push_back(vecObject[objIdx]);
 					break;
 				case SHADER_DOMAIN::DOMAIN_UI:
-					m_vecUI.push_back(vecObject[j]);
+					m_vecUI.push_back(vecObject[objIdx]);
 					break;				
 				}
 			}

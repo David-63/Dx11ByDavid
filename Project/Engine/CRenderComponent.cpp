@@ -2,7 +2,7 @@
 #include "CRenderComponent.h"
 
 CRenderComponent::CRenderComponent(COMPONENT_TYPE _type)
-	: CComponent(_type)
+	: CComponent(_type), m_isFrustumCheck(true)
 {
 }
 
