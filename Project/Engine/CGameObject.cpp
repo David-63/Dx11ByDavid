@@ -113,7 +113,6 @@ void CGameObject::finaltick()
 		}
 	}
 
-
 	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::SCRIPT; ++i)
 	{
 		if (nullptr != m_arrCom[i])
@@ -133,10 +132,30 @@ void CGameObject::finaltick()
 	pCurLayer->RegisterObject(this);
 }
 
+void CGameObject::finaltick_module()
+{
+	for (UINT i = 0; i < (UINT)COMPONENT_TYPE::SCRIPT; ++i)
+	{
+		if (nullptr != m_arrCom[i])
+			m_arrCom[i]->finaltick();
+	}
+
+	for (size_t i = 0; i < m_vecChild.size(); ++i)
+	{
+		m_vecChild[i]->finaltick_module();
+	}
+}
+
 void CGameObject::render()
 {
 	if (nullptr != m_RenderCom)
 		m_RenderCom->render();
+}
+
+void CGameObject::render_shadowmap()
+{
+	if (nullptr != m_RenderCom)
+		m_RenderCom->render_shadowmap();
 }
 
 void CGameObject::AddComponent(CComponent* _Component)

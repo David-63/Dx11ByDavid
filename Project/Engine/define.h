@@ -161,6 +161,9 @@ enum class DS_TYPE
 	GREATER_EQUAL,
 	NO_WRITE,			// LESS, DepthWrite X
 	NO_TEST_NO_WRITE,	// Test X, DepthWrite X
+
+	// DEFEREED_LIGHT_DS, 어떻게 사용할지 생각좀 해봐야함, BS 에서 데칼 만드는거 응용해보기
+
 	END,
 };
 

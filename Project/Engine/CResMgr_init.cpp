@@ -819,6 +819,27 @@ void CResMgr::CreateDefaultGraphicsShader()
 	AddRes(pShader->GetKey(), pShader);
 
 
+	// =====================================
+	// ShadowMap Shader
+	// MRT              : Shadowmap
+	// Domain           : DOMAIN_LIGHT
+	// Mesh             : RectMesh
+	// Rasterizer       : CULL_BACK
+	// DepthStencil     : LESS
+	// Blend            : Default
+	// =====================================
+
+	pShader = new CGraphicsShader;
+	pShader->SetKey(L"ShadowMapShader");
+	pShader->CreateVertexShader(L"shader\\light.fx", "VS_ShadowMap");
+	pShader->CreatePixelShader(L"shader\\light.fx", "PS_ShadowMap");
+
+	pShader->SetRSType(RS_TYPE::CULL_BACK);
+	pShader->SetDSType(DS_TYPE::LESS);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_LIGHT);
+
+	AddRes(pShader->GetKey(), pShader);
+
 	
 	// =====================================
 	// MergeShader
@@ -962,6 +983,17 @@ void CResMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindRes<CGraphicsShader>(L"PointLightShader"));
 	AddRes(L"PointLightMtrl", pMtrl);
+
+
+	// ShadowMapMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindRes<CGraphicsShader>(L"ShadowMapShader"));
+	AddRes(L"ShadowMapMtrl", pMtrl);
+
+
+
+
+
 
 	// MergeMtrl
 	pMtrl = new CMaterial(true);

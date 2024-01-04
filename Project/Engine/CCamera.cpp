@@ -31,11 +31,17 @@ CCamera::CCamera()
 	, m_ProjType(PROJ_TYPE::ORTHOGRAPHIC)
 	, m_iLayerMask(0)
 	, m_iCamIdx(-1)
+	, m_Fov(XM_PI / 3.f)
+	, m_OrthoWidth(0.f)
+	, m_OrthoHeight(0.f)
 {
 	SetName(L"Camera");
 
 	Vec2 vRenderResol = CDevice::GetInst()->GetRenderResolution();
 	m_fAspectRatio = vRenderResol.x / vRenderResol.y;
+
+	m_OrthoWidth = vRenderResol.x;
+	m_OrthoHeight = vRenderResol.y;
 }
 
 CCamera::CCamera(const CCamera& _Other)
@@ -47,6 +53,9 @@ CCamera::CCamera(const CCamera& _Other)
 	, m_ProjType(_Other.m_ProjType)
 	, m_iLayerMask(_Other.m_iLayerMask)
 	, m_iCamIdx(-1)
+	, m_Fov(_Other.m_Fov)
+	, m_OrthoWidth(_Other.m_OrthoWidth)
+	, m_OrthoHeight(_Other.m_OrthoHeight)
 {
 }
 
@@ -108,13 +117,12 @@ void CCamera::CalcProjMat()
 	if (PROJ_TYPE::ORTHOGRAPHIC == m_ProjType)
 	{
 		// 직교 투영
-		Vec2 vResolution = CDevice::GetInst()->GetRenderResolution();
-		m_matProj =  XMMatrixOrthographicLH(vResolution.x * (1.f / m_fScale), vResolution.y * (1.f / m_fScale), 1.f, 10000.f);
+		m_matProj =  XMMatrixOrthographicLH(m_OrthoWidth * (1.f / m_fScale), m_OrthoHeight * (1.f / m_fScale), 1.f, 10000.f);
 	}
 	else
 	{	
 		// 원근 투영
-		m_matProj = XMMatrixPerspectiveFovLH(XM_PI / 2.f, m_fAspectRatio, 1.f, m_Far);
+		m_matProj = XMMatrixPerspectiveFovLH(m_Fov, m_fAspectRatio, 1.f, m_Far);
 	}
 
 	// 투영행렬 역행렬 구하기
@@ -213,6 +221,38 @@ void CCamera::SortObject()
 	}
 }
 
+void CCamera::SortObject_Shadow()
+{
+	// 이전 프레임 분류정보 제거
+	clear_shadow();
+
+	// 현재 레벨 가져와서 분류
+	CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurLevel();
+
+	for (UINT layerIdx = 0; layerIdx < MAX_LAYER; ++layerIdx)
+	{
+		// 레이어 마스크 확인
+		if (m_iLayerMask & (1 << layerIdx))
+		{
+			CLayer* pLayer = pCurLevel->GetLayer(layerIdx);
+			const vector<CGameObject*>& vecObject = pLayer->GetObjects();
+
+			for (size_t objIdx = 0; objIdx < vecObject.size(); ++objIdx)
+			{
+				CRenderComponent* pRenderCom = vecObject[objIdx]->GetRenderComponent();
+
+				// 렌더링 기능이 없는 오브젝트는 제외
+				if (nullptr == pRenderCom
+					|| nullptr == pRenderCom->GetMaterial()
+					|| nullptr == pRenderCom->GetMaterial()->GetShader())
+					continue;
+
+				m_vecShadow.push_back(vecObject[objIdx]);
+			}
+		}
+	}
+}
+
 void CCamera::render()
 {
 	// 행렬 업데이트
@@ -254,6 +294,7 @@ void CCamera::render()
 		pMtrl->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"DiffuseTargetTex"));
 		pMtrl->SetTexParam(TEX_2, CResMgr::GetInst()->FindRes<CTexture>(L"SpecularTargetTex"));
 		pMtrl->SetTexParam(TEX_3, CResMgr::GetInst()->FindRes<CTexture>(L"EmissiveTargetTex"));
+		pMtrl->SetTexParam(TEX_4, CResMgr::GetInst()->FindRes<CTexture>(L"ShadowTargetTex"));
 	}
 
 	pMtrl->UpdateData();
@@ -272,6 +313,18 @@ void CCamera::render()
 	render_ui();
 }
 
+void CCamera::render_shadowmap()
+{
+	// 행렬 업데이트
+	g_transform.matView = m_matView;
+	g_transform.matProj = m_matProj;
+
+	for (size_t shadowIdx = 0; shadowIdx < m_vecShadow.size(); ++shadowIdx)
+	{
+		m_vecShadow[shadowIdx]->render_shadowmap();
+	}
+}
+
 
 void CCamera::clear()
 {
@@ -284,6 +337,11 @@ void CCamera::clear()
 	m_vecTransparent.clear();
 	m_vecPost.clear();
 	m_vecUI.clear();
+}
+
+void CCamera::clear_shadow()
+{
+	m_vecShadow.clear();
 }
 
 void CCamera::render_deferred()

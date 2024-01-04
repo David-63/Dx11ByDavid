@@ -10,6 +10,10 @@ private:
     float       m_fAspectRatio;
     float       m_fScale;           // Orthograpic 에서 사용하는 카메라 배율
     float       m_Far;
+    float       m_Fov;
+
+    float       m_OrthoWidth;
+    float       m_OrthoHeight;
 
     PROJ_TYPE   m_ProjType;
 
@@ -34,6 +38,7 @@ private:
     vector<CGameObject*>    m_vecUI;
     vector<CGameObject*>    m_vecPost;
 
+    vector<CGameObject*>    m_vecShadow;
 
 
 public:
@@ -51,6 +56,18 @@ public:
 
     void SetCameraIndex(int _idx);
 
+    // 추후에 degree 변환 기능 추가하기
+    void SetFov(float _Radian) { m_Fov = _Radian; }
+    float GetFov() { return m_Fov; }
+
+    void SetOrthoWidth(float _width) { m_OrthoWidth = _width; }
+    void SetOrthoHeight(float _height) { m_OrthoHeight = _height; }
+
+    float GetorthoWidth() { return m_OrthoWidth; }
+    float GetOrthoHeight() { return m_OrthoHeight; }
+
+
+
     const Matrix& GetViewMat() { return m_matView; }
     const Matrix& GetProjMat() { return m_matProj; }
 
@@ -59,7 +76,9 @@ public:
 
 public:
     void SortObject();
+    void SortObject_Shadow();
     void render();
+    void render_shadowmap();
 
 public:
     virtual void begin() override;
@@ -68,6 +87,7 @@ public:
 
 private:
     void clear();
+    void clear_shadow();
 
     void render_deferred();
 

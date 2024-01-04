@@ -25,6 +25,13 @@ void CMRT::Create(Ptr<CTexture>* _arrRTTex, UINT _RTCount, Ptr<CTexture> _DSTex)
 	m_RTCount = _RTCount;
 
 	m_DSTex = _DSTex;
+
+	m_Viewport.TopLeftX = 0;
+	m_Viewport.TopLeftY = 0;
+	m_Viewport.Width = m_arrRT[0]->Width();
+	m_Viewport.Height = m_arrRT[0]->Height();
+	m_Viewport.MinDepth = 0;
+	m_Viewport.MaxDepth = 1;
 }
 
 void CMRT::ClearTarget()
@@ -64,4 +71,5 @@ void CMRT::OMSet(bool _bStay)
 
 		CONTEXT->OMSetRenderTargets(m_RTCount, arrRTV, pDSV.Get());
 	}
+	CONTEXT->RSSetViewports(1, &m_Viewport);
 }

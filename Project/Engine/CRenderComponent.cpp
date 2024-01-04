@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "CRenderComponent.h"
 
+#include "CTransform.h"
+#include "CResMgr.h"
+#include "CMaterial.h"
+
 CRenderComponent::CRenderComponent(COMPONENT_TYPE _type)
 	: CComponent(_type), m_isFrustumCheck(true)
 {
@@ -8,6 +12,14 @@ CRenderComponent::CRenderComponent(COMPONENT_TYPE _type)
 
 CRenderComponent::~CRenderComponent()
 {
+}
+
+void CRenderComponent::render_shadowmap()
+{
+	Ptr<CMaterial> shadowmapMtrl = CResMgr::GetInst()->FindRes<CMaterial>(L"ShadowMapMtrl");
+	Transform()->UpdateData();
+	shadowmapMtrl->UpdateData();
+	GetMesh()->render();
 }
 
 void CRenderComponent::SetMaterial(Ptr<CMaterial> _Mtrl)

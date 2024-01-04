@@ -18,6 +18,7 @@ struct PS_OUT
 {
     float4 vDiffuse : SV_Target0;
     float4 vSpecular : SV_Target1;
+    float4 vShadow : SV_Target2;
 };
 
 // =====================================
@@ -31,7 +32,9 @@ struct PS_OUT
 // Parameter
 #define NormalTargetTex     g_tex_0
 #define PoisitionTargetTex  g_tex_1
+#define ShadowMapTargetTex  g_tex_2
 #define LightIdx            g_int_0
+#define LightVP             g_mat_0
 // =====================================
 
 VS_OUT VS_DirLightShader(VS_IN _in)
@@ -58,9 +61,6 @@ PS_OUT PS_DirLightShader(VS_OUT _in)
     if (vViewPos.x == 0.f && vViewPos.y == 0.f && vViewPos.z == 0.f)
     {
         discard;
-        //output.vDiffuse = float4(0.2f, 1.f, 0.2f, 1.f);
-        //output.vSpecular = float4(0.2f, 1.f, 0.2f, 1.f);
-        //return output;
     }
     
     // 광원 계산 결과를 받을 변수 선언
@@ -71,10 +71,40 @@ PS_OUT PS_DirLightShader(VS_OUT _in)
     // 빛을 넣어줄 물체의 위치값과 노말값을 타겟 텍스쳐에서 가져와서 입력
     CalcLight3D(vViewPos, vViewNormal, LightIdx, LightColor, fSpecPow);
 
+    
+    // 그림자 판정
+    float fShadowPow = 0.f;
+    float3 vWorldPos = mul(float4(vViewPos, 1.f), g_matViewInv).xyz;
+    float4 vLightProj = mul(float4(vWorldPos, 1.f), LightVP);
+    float2 vShadowMapUV = vLightProj.xy / vLightProj.w;
+    vShadowMapUV.x = vShadowMapUV.x / 2.f + 0.5f;
+    vShadowMapUV.y = (1.f - vShadowMapUV.y / 2.f) - 0.5f;
+    
+    if (vShadowMapUV.x < 0.f || 1.f < vShadowMapUV.x ||
+        vShadowMapUV.y < 0.f || 1.f < vShadowMapUV.y)
+    {
+        fShadowPow = 0.f;
+    }
+    else
+    {
+        float fDepth = vLightProj.z / vLightProj.w;
+        float fLightDepth = ShadowMapTargetTex.Sample(g_sam_1, vShadowMapUV);
+    
+        if (fLightDepth + 0.002f <= fDepth)
+        {
+            // 그림자
+            fShadowPow = 0.9f;
+        }
+    }
+    
+    
+    
+    
     // 계산된 최종 광원의 세기를 각 타겟(Diffuse, Specular) 에 출력
     output.vDiffuse = LightColor.vDiffuse + LightColor.vAmbient;    
     output.vSpecular = g_Light3DBuffer[LightIdx].Color.vDiffuse * fSpecPow;
-        
+    output.vShadow = fShadowPow;
+    
     output.vDiffuse.a = 1.f;
     output.vSpecular.a = 1.f;
     
@@ -156,10 +186,37 @@ PS_OUT PS_PointLightShader(VS_OUT _in)
     return output;
 }
 
+// ===================================
+// ShadowMap
+// MRT              : ShadowMap
+// Domain           : DOMAIN_LIGHT
+// Mesh             : RectMesh
+// Rasterizer       : CULL_BACK
+// DepthStencil     : LESS
+// Blend            : Default
 
+struct VS_SHADOW_OUT
+{
+    float4 vPosition : SV_Position;
+    float4 vProjPos : POSITION;
+};
 
+VS_SHADOW_OUT VS_ShadowMap(VS_IN _in)
+{
+    VS_SHADOW_OUT output = (VS_SHADOW_OUT) 0.f;
+    // 화면 전체에 호출되어야함
+    output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
+    output.vProjPos = output.vPosition;
+    output.vProjPos.xyz /= output.vProjPos.w;
+    
+    return output;
+}
 
-
+float4 PS_ShadowMap(VS_SHADOW_OUT _in) : SV_Target
+{
+    // 첫번째 바이트에 깊이값을 담아서 반환
+    return float4(_in.vProjPos.z, 0.f, 0.f, 0.f);
+}
 
 // =====================================
 // MergeShader
@@ -175,6 +232,7 @@ PS_OUT PS_PointLightShader(VS_OUT _in)
 #define DiffuseTargetTex  g_tex_1
 #define SpecularTargetTex g_tex_2
 #define EmissiveTargetTex g_tex_3
+#define ShadowTargetTex   g_tex_4
 // =====================================
 VS_OUT VS_MergeShader(VS_IN _in)
 {
@@ -198,8 +256,11 @@ float4 PS_MergeShader(VS_OUT _in) : SV_Target
     float4 vDiffuse = DiffuseTargetTex.Sample(g_sam_0, vScreenUV);
     float4 vSpecular = SpecularTargetTex.Sample(g_sam_0, vScreenUV);
     float4 vEmissive = EmissiveTargetTex.Sample(g_sam_0, vScreenUV);
+    float fShadowPow = ShadowTargetTex.Sample(g_sam_0, vScreenUV).r;
     
-    vOutColor.xyz = vColor.xyz * vDiffuse.xyz + (vSpecular.xyz * vColor.a) + vEmissive.xyz;
+    vOutColor.xyz = (vColor.xyz * vDiffuse.xyz) * (1.f - fShadowPow)
+    + (vSpecular.xyz * vColor.a) * (1.f - fShadowPow)
+    + vEmissive.xyz;
     vOutColor.a = 1.f;
     
     return vOutColor;

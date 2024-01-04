@@ -7,6 +7,7 @@
 
 #include "CCamera.h"
 #include "CLight2D.h"
+#include "CLight3D.h"
 
 #include "CResMgr.h"
 #include "CMRT.h"
@@ -44,18 +45,32 @@ void CRenderMgr::render()
 {
     // 광원 및 전역 데이터 업데이트 및 바인딩
     UpdateData();
+    // MRT Clear    
+    ClearMRT();
 
-    // 렌더 함수 호출
+    // 그림자 렌더링
+    render_shadowmap();
+
+    // 카메라 렌더 함수 호출
     (this->*RENDER_FUNC)();
     
     // 광원 해제
     Clear();
 }
 
+void CRenderMgr::render_shadowmap()
+{
+    m_MRT[(UINT)MRT_TYPE::SHADOWMAP]->OMSet();
+    for (size_t i = 0; i < m_vecLight3D.size(); ++i)
+    {
+        m_vecLight3D[i]->render_shadowmap();
+    }
+}
+
+
 
 void CRenderMgr::render_play()
 {
-    ClearMRT();
     // 카메라 기준 렌더링
     for (size_t i = 0; i < m_vecCam.size(); ++i)
     {
@@ -69,9 +84,6 @@ void CRenderMgr::render_play()
 
 void CRenderMgr::render_editor()
 {
-    // MRT Clear    
-    ClearMRT();
-
     // 물체 분류
     m_pEditorCam->SortObject(); // <- Frustum Culling 진행부분
 
@@ -138,7 +150,6 @@ void CRenderMgr::UpdateData()
     pGlobalBuffer->UpdateData();
     pGlobalBuffer->UpdateData_CS();
 }
-
 
 void CRenderMgr::Clear()
 {

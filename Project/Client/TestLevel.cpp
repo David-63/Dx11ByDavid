@@ -84,11 +84,13 @@ void CreateTestLevel()
 
 		pLightObj->Transform()->SetRelativeRot(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
 		pLightObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
-		pLightObj->Light3D()->SetLightColor(Vec3(0.1f, 0.1f, 0.1f));
+		pLightObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
 		pLightObj->Light3D()->SetLightAmbient(Vec3(0.05f, 0.05f, 0.05f));
-		SpawnGameObject(pLightObj, Vec3(0.f, 0.f, 0.f), 0);
-		
-		pLightObj = new CGameObject;
+
+
+		SpawnGameObject(pLightObj, Vec3(-2000, 2000.f, -2000.f), 0);
+
+		/*pLightObj = new CGameObject;
 		pLightObj->SetName(L"Point Light 1");
 		pLightObj->AddComponent(new CTransform);
 		pLightObj->AddComponent(new CLight3D);
@@ -98,7 +100,7 @@ void CreateTestLevel()
 		pLightObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
 		pLightObj->Light3D()->SetLightAmbient(Vec3(0.f, 0.f, 0.f));
 
-		SpawnGameObject(pLightObj, Vec3(0.f, -750.f, 0.f), 0);		
+		SpawnGameObject(pLightObj, Vec3(0.f, -750.f, 0.f), 0);	*/	
 	}
 
 	// player
@@ -126,7 +128,7 @@ void CreateTestLevel()
 		pObject->AddComponent(new CTransform);
 		pObject->AddComponent(new CMeshRender);
 
-		pObject->Transform()->SetRelativeScale(Vec3(2000.f, 2000.f, 2000.f));
+		pObject->Transform()->SetRelativeScale(Vec3(8000.f, 8000.f, 8000.f));
 		pObject->Transform()->SetRelativeRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
 
 		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));

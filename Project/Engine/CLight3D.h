@@ -14,11 +14,13 @@ private:
     Ptr<CMaterial>  m_Mtrl;
 
     UINT            m_LightIdx;
+    bool            m_isShowRange;
+    CGameObject*    m_CamObj;
 
 public:
     virtual void finaltick() override;
-    void render();
-
+    void render();              // light render
+    void render_shadowmap();
 
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;
@@ -39,6 +41,7 @@ public:
     CLONE(CLight3D);
 public:
     CLight3D();
+    CLight3D(const CLight3D& _origin);
     ~CLight3D();
 };
 

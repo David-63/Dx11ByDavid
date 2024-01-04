@@ -20,7 +20,8 @@ private:
 
 public:
     virtual void render() = 0;
-
+    virtual void render_shadowmap();
+    
 public:
     void SetMesh(Ptr<CMesh> _Mesh) { m_pMesh = _Mesh; }
     void SetMaterial(Ptr<CMaterial> _Mtrl);
