@@ -73,7 +73,7 @@ void CRenderMgr::render_editor()
     ClearMRT();
 
     // 물체 분류
-    m_pEditorCam->SortObject();
+    m_pEditorCam->SortObject(); // <- Frustum Culling 진행부분
 
     // 출력 타겟 지정    
     m_MRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();

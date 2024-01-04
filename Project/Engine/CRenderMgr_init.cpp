@@ -73,7 +73,7 @@ void CRenderMgr::CreateMRT()
     }
 
     // ====================
-    // Light MRT 만들기
+    // DEFERRED_DECAL MRT 만들기
     // ====================
     {
         m_MRT[(UINT)MRT_TYPE::DEFERRED_DECAL] = new CMRT;       

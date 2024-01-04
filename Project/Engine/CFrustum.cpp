@@ -55,6 +55,7 @@ bool CFrustum::FrustumCheck(Vec3 _vPos)
     for (size_t idx = 0; idx < FT_END; idx++)
     {
         Vec3 vNormal = m_arrFace[idx];
+        // -1 ~ 1
         if (vNormal.Dot(_vPos) + m_arrFace[idx].w > 0)
             return false;
     }
@@ -67,11 +68,10 @@ bool CFrustum::FrustumCheckBound(Vec3 _vPos, float _fRadius)
     for (size_t idx = 0; idx < FT_END; idx++)
     {
         Vec3 vNormal = m_arrFace[idx];
-        if (vNormal.Dot(_vPos) + m_arrFace[idx].w > _fRadius)
+        float result = vNormal.Dot(_vPos);
+        if (result + m_arrFace[idx].w > _fRadius)
             return false;
     }
 
     return true;
 }
-
-
