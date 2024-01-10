@@ -27,6 +27,7 @@ private:
 
     int         m_iCamIdx;          // 카메라 우선순위
 
+    bool        m_isDeferredCamera = true;
 
     vector<CGameObject*>    m_vecDeferred;
     vector<CGameObject*>    m_vecDeferredDecal;
@@ -74,11 +75,17 @@ public:
     const Matrix& GetViewInvMat() { return m_matViewInv; }
     const Matrix& GetProjInvMat() { return m_matProjInv; }
 
+    bool IsDeferredCamera() const { return m_isDeferredCamera; }
+    void TurnDeferredCamera(bool _power) { m_isDeferredCamera = _power; }
 public:
     void SortObject();
     void SortObject_Shadow();
     void render();
     void render_shadowmap();
+
+    void updateMatrix();
+    void deferredRender();
+    void forwardRender();
 
 public:
     virtual void begin() override;
@@ -88,11 +95,11 @@ public:
 private:
     void clear();
     void clear_shadow();
-
     void render_deferred();
 
-    
-
+    void geometryRender();
+    void lightRender();
+    void mergeRender();
 
     void render_opaque();
     void render_mask();
@@ -104,7 +111,6 @@ private:
 
     void CalcViewMat();
     void CalcProjMat();
-
 
     virtual void SaveToLevelFile(FILE* _File) override;
     virtual void LoadFromLevelFile(FILE* _File) override;

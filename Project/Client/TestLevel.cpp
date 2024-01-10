@@ -46,18 +46,18 @@ void CreateTestLevel()
 		pMainCam->Camera()->SetFar(20000.f);
 		SpawnGameObject(pMainCam, Vec3(0.f, 0.f, -3000.f), 0);
 
-		//// UI cameara
-		//CGameObject* pUICam = new CGameObject;
-		//pUICam->SetName(L"UICamera");
+		// UI cameara
+		CGameObject* pUICam = new CGameObject;
+		pUICam->SetName(L"UICamera");
 
-		//pUICam->AddComponent(new CTransform);
-		//pUICam->AddComponent(new CCamera);
+		pUICam->AddComponent(new CTransform);
+		pUICam->AddComponent(new CCamera);
 
-		//pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
-		//pUICam->Camera()->SetCameraIndex(1);		// Sub 카메라로 지정
-		//pUICam->Camera()->SetLayerMask(31, true);	// 31번 레이어만 체크
-
-		//SpawnGameObject(pUICam, Vec3(0.f, 0.f, 0.f), 0);
+		pUICam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+		pUICam->Camera()->SetCameraIndex(1);		// Sub 카메라로 지정
+		pUICam->Camera()->SetLayerMask(31, true);	// 31번 레이어만 체크
+		pUICam->Camera()->TurnDeferredCamera(false);
+		SpawnGameObject(pUICam, Vec3(0.f, 0.f, 0.f), 0);
 	}
 	// SkyBox 추가
 	{
@@ -119,6 +119,23 @@ void CreateTestLevel()
 		pObject->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01_N.tga"));
 
 		SpawnGameObject(pObject, Vec3(0.f, 0.f, 0.f), L"Player");
+	}
+
+	{
+		CGameObject* pObject = new CGameObject;
+		pObject->SetName(L"maskObj");
+		pObject->AddComponent(new CTransform);
+		pObject->AddComponent(new CMeshRender);
+
+		pObject->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1000.f));
+		pObject->Transform()->SetRelativeRot(Vec3(0.f, 0.f, 0.f));
+
+		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
+		pObject->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01.tga"));
+		pObject->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01_N.tga"));
+
+		SpawnGameObject(pObject, Vec3(0.f, -250.f, 0.f), L"ViewPort UI");
 	}
 
 	// Background

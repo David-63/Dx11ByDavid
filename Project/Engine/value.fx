@@ -2,20 +2,18 @@
 #define _VALUE
 
 #include "struct.fx"
+#pragma pack_matrix(row_major)
 
 cbuffer TRANSFORM : register(b0)
 {
-    row_major matrix g_matWorld;
-    row_major matrix g_matWorldInv;
-    
-    row_major matrix g_matView;
-    row_major matrix g_matViewInv;
-    
-    row_major matrix g_matProj;
-    row_major matrix g_matProjInv;
-    
-    row_major matrix g_matWV;
-    row_major matrix g_matWVP;
+    matrix g_matWorld;
+    matrix g_matWorldInv;    
+    matrix g_matView;
+    matrix g_matViewInv;    
+    matrix g_matProj;
+    matrix g_matProjInv;    
+    matrix g_matWV;
+    matrix g_matWVP;
 };
 
 cbuffer MATERIAL : register(b1)
@@ -40,10 +38,10 @@ cbuffer MATERIAL : register(b1)
     float4 g_vec4_2;
     float4 g_vec4_3;
     
-    row_major matrix g_mat_0;
-    row_major matrix g_mat_1;
-    row_major matrix g_mat_2;
-    row_major matrix g_mat_3;
+    matrix g_mat_0;
+    matrix g_mat_1;
+    matrix g_mat_2;
+    matrix g_mat_3;
     
     int g_btex_0;
     int g_btex_1;
