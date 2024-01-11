@@ -22,7 +22,6 @@ void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, int _LayerIdx)
 
 	CEventMgr::GetInst()->AddEvent(evn);
 }
-
 void SpawnGameObject(CGameObject* _NewObject, Vec3 _vWorldPos, const wstring& _LayerName)
 {
 	_NewObject->Transform()->SetRelativePos(_vWorldPos);
@@ -51,6 +50,7 @@ void DestroyObject(CGameObject* _DeletObject)
 
 
 
+
 void DrawDebugRect(Vec3 _vWorldPos, Vec2 _vWorldScale, Vec4 _vColor
 	, Vec3 _vRotation, float _fTime, bool DepthTest)
 {
@@ -67,7 +67,6 @@ void DrawDebugRect(Vec3 _vWorldPos, Vec2 _vWorldScale, Vec4 _vColor
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
-
 void DrawDebugRect(const Matrix& _matWorld, Vec4 _vColor, float _fTime, bool DepthTest)
 {
 	tDebugShapeInfo info = {};
@@ -80,6 +79,7 @@ void DrawDebugRect(const Matrix& _matWorld, Vec4 _vColor, float _fTime, bool Dep
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
+
 
 void DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor, Vec3 _vRotation
 					, float _fTime, bool DepthTest)
@@ -97,7 +97,6 @@ void DrawDebugCircle(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor, Vec3 _vRotat
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
-
 void DrawDebugCircle(const Matrix& _matWorld, Vec4 _vColor, float _fTime, bool DepthTest)
 {
 	tDebugShapeInfo info = {};
@@ -110,6 +109,7 @@ void DrawDebugCircle(const Matrix& _matWorld, Vec4 _vColor, float _fTime, bool D
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
+
 
 void DrawDebugCube(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor
 					, Vec3 _vRotation, float _fTime, bool DepthTest)
@@ -127,7 +127,6 @@ void DrawDebugCube(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
-
 void DrawDebugCube(const Matrix& _matWorld, Vec4 _vColor, float _fTime, bool DepthTest)
 {
 	tDebugShapeInfo info = {};
@@ -140,6 +139,7 @@ void DrawDebugCube(const Matrix& _matWorld, Vec4 _vColor, float _fTime, bool Dep
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
+
 
 void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor
 	, Vec3 _vRotation, float _fTime, bool DepthTest)
@@ -157,7 +157,6 @@ void DrawDebugSphere(Vec3 _vWorldPos, float _fRadius, Vec4 _vColor
 
 	CRenderMgr::GetInst()->AddDebugShapeInfo(info);
 }
-
 void DrawDebugSphere(const Matrix& _matWorld, Vec4 _vColor, float _fTime, bool DepthTest)
 {
 	tDebugShapeInfo info = {};
@@ -186,21 +185,41 @@ bool IsValidObj(CGameObject*& _Target)
 	return true;
 }
 
+
+
 const char* ToString(RES_TYPE type)
 {
 	return RES_TYPE_STR[(UINT)type];
 }
-
 const wchar_t* ToWString(RES_TYPE type)
 {
 	return RES_TYPE_WSTR[(UINT)type];
 }
 
-
 const char* ToString(COMPONENT_TYPE type)
 {
 	return COMPONENT_TYPE_STR[(UINT)type];
 }
+const wchar_t* ToWString(COMPONENT_TYPE type)
+{
+	return COMPONENT_TYPE_WSTR[(UINT)type];
+}
+
+
+wstring GetRelativePath(const wstring& _strBase, const wstring& _strPath)
+{
+	wstring strRelativePath;
+	if (-1 == _strPath.find(_strBase))
+	{
+		return strRelativePath;
+	}
+
+	strRelativePath = _strPath.substr(_strBase.length(), _strPath.length());
+	return strRelativePath;
+
+	return wstring();
+}
+
 
 void SaveWString(const wstring& _str, FILE* _File)
 {	
@@ -208,7 +227,6 @@ void SaveWString(const wstring& _str, FILE* _File)
 	fwrite(&iLen, sizeof(UINT), 1, _File);
 	fwrite(_str.c_str(), sizeof(wchar_t), _str.length(), _File);
 }
-
 void LoadWString(wstring& _str, FILE* _File)
 {
 	wchar_t szBuffer[256] = {};
@@ -219,6 +237,8 @@ void LoadWString(wstring& _str, FILE* _File)
 
 	_str = szBuffer;
 }
+
+
 
 void SaveResRef(Ptr<CRes> _Res, FILE* _File)
 {
@@ -234,9 +254,4 @@ void SaveResRef(Ptr<CRes> _Res, FILE* _File)
 		SaveWString(_Res->GetKey(), _File);
 		SaveWString(_Res->GetRelativePath(), _File);
 	}
-}
-
-const wchar_t* ToWString(COMPONENT_TYPE type)
-{
-	return COMPONENT_TYPE_WSTR[(UINT)type];
 }

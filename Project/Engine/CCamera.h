@@ -84,8 +84,6 @@ public:
     void render_shadowmap();
 
     void updateMatrix();
-    void deferredRender();
-    void forwardRender();
 
 public:
     virtual void begin() override;

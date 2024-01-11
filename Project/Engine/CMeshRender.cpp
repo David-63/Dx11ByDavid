@@ -19,7 +19,7 @@ void CMeshRender::finaltick()
 
 void CMeshRender::render()
 {	
-	if (nullptr == GetMesh() || nullptr == GetMaterial())
+	if (nullptr == GetMesh() || nullptr == GetMaterial(0))
 		return;
 
 	// Transform 에 UpdateData 요청
@@ -31,11 +31,14 @@ void CMeshRender::render()
 		Animator2D()->UpdateData();
 	}
 
-	// 재질 업데이트
-	GetMaterial()->UpdateData();
+	for (size_t idx = 0; idx < GetMtrlCount(); ++idx)
+	{
+		// 재질 업데이트
+		GetMaterial(idx)->UpdateData();
 
-	// 렌더
-	GetMesh()->render();
+		// 렌더
+		GetMesh()->render(idx);
+	}
 
 	// Animation 관련 정보 제거
 	if (Animator2D())

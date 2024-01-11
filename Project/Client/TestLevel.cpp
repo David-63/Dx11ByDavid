@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "TestLevel.h"
+#include "CLevelSaveLoad.h"
 
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
@@ -7,10 +8,8 @@
 #include <Engine\CGameObject.h>
 #include <Engine\components.h>
 
-#include <Engine\CResMgr.h>
-#include <Engine\CCollisionMgr.h>
-#include "CLevelSaveLoad.h"
-
+#include <Engine/CResMgr.h>
+#include <Engine/CCollisionMgr.h>
 
 #include <Engine/CSetColorShader.h>
 #include <Script/CPlanetScript.h>
@@ -85,7 +84,7 @@ void CreateTestLevel()
 		pLightObj->Transform()->SetRelativeRot(Vec3(XM_PI / 4.f, XM_PI / 4.f, 0.f));
 		pLightObj->Light3D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
 		pLightObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
-		pLightObj->Light3D()->SetLightAmbient(Vec3(0.05f, 0.05f, 0.05f));
+		pLightObj->Light3D()->SetLightAmbient(Vec3(0.5f, 0.5f, 0.5f));
 
 
 		SpawnGameObject(pLightObj, Vec3(-2000, 2000.f, -2000.f), 0);
@@ -103,6 +102,21 @@ void CreateTestLevel()
 		SpawnGameObject(pLightObj, Vec3(0.f, -750.f, 0.f), 0);	*/	
 	}
 
+	// ============
+	// FBX Loading
+	// ============	
+	{
+		Ptr<CMeshData> pMeshData = nullptr;
+		CGameObject* pObj = nullptr;
+
+		pMeshData = CResMgr::GetInst()->LoadFBX(L"fbx\\house.fbx");
+		pMeshData = CResMgr::GetInst()->FindRes<CMeshData>(L"meshdata\\house.mdat");
+		pObj = pMeshData->Instantiate();
+		pObj->SetName(L"House");
+
+		SpawnGameObject(pObj, Vec3(0.f, 0.f, 100.f), L"Default");
+	}
+
 	// player
 	{
 		CGameObject* pObject = new CGameObject;
@@ -114,13 +128,15 @@ void CreateTestLevel()
 		pObject->Transform()->SetRelativeRot(Vec3(0.f, 0.f, 0.f));
 
 		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"SphereMesh"));
-		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3D_DeferredMtrl"));
-		pObject->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01.tga"));
-		pObject->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01_N.tga"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3D_DeferredMtrl"), 0);
+		pObject->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01.tga"));
+		pObject->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01_N.tga"));
 
-		SpawnGameObject(pObject, Vec3(0.f, 0.f, 0.f), L"Player");
+		SpawnGameObject(pObject, Vec3(550.f, 0.f, 0.f), L"Player");
 	}
 
+
+	// mask obj
 	{
 		CGameObject* pObject = new CGameObject;
 		pObject->SetName(L"maskObj");
@@ -128,14 +144,14 @@ void CreateTestLevel()
 		pObject->AddComponent(new CMeshRender);
 
 		pObject->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1000.f));
-		pObject->Transform()->SetRelativeRot(Vec3(0.f, 0.f, 0.f));
+		pObject->Transform()->SetRelativeRot(Vec3(0.f, XM_PI / 2.f, 0.f));
 
 		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"));
-		pObject->MeshRender()->GetMaterial()->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01.tga"));
-		pObject->MeshRender()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01_N.tga"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"), 0);
+		pObject->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01.tga"));
+		pObject->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01_N.tga"));
 
-		SpawnGameObject(pObject, Vec3(0.f, -250.f, 0.f), L"ViewPort UI");
+		SpawnGameObject(pObject, Vec3(550.f, -250.f, 0.f), L"ViewPort UI");
 	}
 
 	// Background
@@ -149,7 +165,7 @@ void CreateTestLevel()
 		pObject->Transform()->SetRelativeRot(Vec3(XM_PI / 2.f, 0.f, 0.f));
 
 		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3D_DeferredMtrl"));
+		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3D_DeferredMtrl"), 0);
 
 		SpawnGameObject(pObject, Vec3(0.f, -1000.f, 0.f), L"Background");
 
@@ -163,7 +179,7 @@ void CreateTestLevel()
 
 		pObject->Decal()->SetDeferredDecal(true);
 		pObject->Decal()->ActivateEmissive(false);
-		pObject->Decal()->GetMaterial()->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\MagicCircle.png"));
+		pObject->Decal()->GetMaterial(0)->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\MagicCircle.png"));
 
 		SpawnGameObject(pObject, Vec3(0.f, -1000.f, 0.f), L"Background");
 	}

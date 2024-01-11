@@ -18,6 +18,13 @@ cbuffer TRANSFORM : register(b0)
 
 cbuffer MATERIAL : register(b1)
 {
+    // 재질 계수
+    float4 g_vDiff;
+    float4 g_vSpec;
+    float4 g_vAmb;
+    float4 g_vEmv;
+
+    // 재질 상수
     int g_int_0;
     int g_int_1;
     int g_int_2;

@@ -77,9 +77,8 @@ void CRenderMgr::render_play()
         if (nullptr == m_vecCam[i])
             continue;
         m_vecCam[i]->SortObject();
-        m_pEditorCam->updateMatrix();
         m_MRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
-        render();
+        m_vecCam[i]->render();
     }
 }
 
@@ -87,11 +86,10 @@ void CRenderMgr::render_editor()
 {
     // 물체 분류
     m_pEditorCam->SortObject(); // <- Frustum Culling 진행부분
-    m_pEditorCam->updateMatrix();
 
     // 출력 타겟 지정    
     m_MRT[(UINT)MRT_TYPE::SWAPCHAIN]->OMSet();
-    render();
+    m_pEditorCam->render();
 }
 
 

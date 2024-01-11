@@ -185,17 +185,17 @@ void CCamera::SortObject()
 
 				// 렌더링 기능이 없는 오브젝트는 제외
 				if (   nullptr == pRenderCom 
-					|| nullptr == pRenderCom->GetMaterial()
-					|| nullptr == pRenderCom->GetMaterial()->GetShader())
+					|| nullptr == pRenderCom->GetMaterial(0)
+					|| nullptr == pRenderCom->GetMaterial(0)->GetShader())
 					continue;
 
 				// Frustum Check
-				if (pRenderCom->IsFrustumCheck() && false == m_Frustum.FrustumCheckBound
+				if (pRenderCom->IsUseFrustumCheck() && false == m_Frustum.FrustumCheckBound
 					(vecObject[objIdx]->Transform()->GetWorldPos(), vecObject[objIdx]->Transform()->GetRelativeScale().x / 5.f))
 					continue;
 
 				// 쉐이더 도메인에 따른 분류
-				SHADER_DOMAIN eDomain = pRenderCom->GetMaterial()->GetShader()->GetDomain();
+				SHADER_DOMAIN eDomain = pRenderCom->GetMaterial(0)->GetShader()->GetDomain();
 				switch (eDomain)
 				{
 				case SHADER_DOMAIN::DOMAIN_DEFERRED:
@@ -252,8 +252,11 @@ void CCamera::SortObject_Shadow()
 
 				// 렌더링 기능이 없는 오브젝트는 제외
 				if (nullptr == pRenderCom
-					|| nullptr == pRenderCom->GetMaterial()
-					|| nullptr == pRenderCom->GetMaterial()->GetShader())
+					|| nullptr == pRenderCom->GetMaterial(0)
+					|| nullptr == pRenderCom->GetMaterial(0)->GetShader())
+					continue;
+
+				if (!pRenderCom->IsDynamicShadow())
 					continue;
 
 				m_vecShadow.push_back(vecObject[objIdx]);
@@ -294,29 +297,6 @@ void CCamera::render_shadowmap()
 		m_vecShadow[shadowIdx]->render_shadowmap();
 	}
 }
-
-void CCamera::deferredRender()
-{
-	geometryRender();
-	lightRender();
-	mergeRender();
-}
-
-void CCamera::forwardRender()
-{
-	// Forward Rendering
-	render_opaque();
-	render_mask();				// skybox
-	render_decal();
-	render_transparent();
-
-	// PostProcess - 후처리
-	render_postprocess();
-
-	// UI
-	render_ui();
-}
-
 
 void CCamera::clear()
 {
@@ -390,7 +370,7 @@ void CCamera::mergeRender()
 	pMtrl->SetTexParam(TEX_4, CResMgr::GetInst()->FindRes<CTexture>(L"ShadowTargetTex"));
 	
 	pMtrl->UpdateData();
-	pRectMesh->render();
+	pRectMesh->render(0);
 }
 
 void CCamera::render_opaque()

@@ -38,11 +38,16 @@ void DrawDebugSphere(const Matrix& _matWorld, Vec4 _vColor, float _fTime = 0.f, 
 bool IsValidObj(CGameObject*& _Target);
 
 
+// string
 const char* ToString(RES_TYPE);
 const wchar_t* ToWSTring(RES_TYPE);
 
 const char* ToString(COMPONENT_TYPE);
 const wchar_t* ToWSTring(COMPONENT_TYPE);
+
+
+// Relative Path 가져오기
+wstring GetRelativePath(const wstring& _strBase, const wstring& _strPath);
 
 
 // Save / Load
@@ -52,9 +57,7 @@ void LoadWString(wstring& _str, FILE* _File);
 class CRes;
 template<typename T>
 class Ptr;
-
 void SaveResRef(Ptr<CRes> _Res, FILE* _File);
-
 class CResMgr;
 template<typename T>
 void LoadResRef(Ptr<T>& _Res, FILE* _File)
@@ -73,13 +76,7 @@ void LoadResRef(Ptr<T>& _Res, FILE* _File)
 }
 
 
-
-
-
-
-
-
-
+// delete
 template<typename T, UINT Size>
 void Safe_Del_Array(T* (&arr)[Size])
 {
@@ -92,7 +89,6 @@ void Safe_Del_Array(T* (&arr)[Size])
 		}
 	}	
 }
-
 template<typename T>
 void Safe_Del_Vec(vector<T*>& _vec)
 {
@@ -106,7 +102,6 @@ void Safe_Del_Vec(vector<T*>& _vec)
 	}
 	_vec.clear();
 }
-
 template<typename T1, typename T2>
 void Safe_Del_Map(map<T1, T2>& _map)
 {
@@ -120,6 +115,3 @@ void Safe_Del_Map(map<T1, T2>& _map)
 
 	_map.clear();
 }
-
-
-
