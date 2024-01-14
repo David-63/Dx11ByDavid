@@ -172,6 +172,12 @@
     <ClInclude Include="CFBXLoader.h">
       <Filter>Source\09. Module\FBXLoader</Filter>
     </ClInclude>
+    <ClInclude Include="CAnimator3D.h">
+      <Filter>Source\06. Component\7. Animator3D</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation3DShader.h">
+      <Filter>Source\08. ShaderCode\Compute\AnimationUpdate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -332,6 +338,12 @@
     </ClCompile>
     <ClCompile Include="CFBXLoader.cpp">
       <Filter>Source\09. Module\FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimator3D.cpp">
+      <Filter>Source\06. Component\7. Animator3D</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation3DShader.cpp">
+      <Filter>Source\08. ShaderCode\Compute\AnimationUpdate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -503,6 +515,12 @@
     <Filter Include="Source\09. Module\FBXLoader">
       <UniqueIdentifier>{3b37b40d-602f-49f7-b379-363a2b827a49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\06. Component\7. Animator3D">
+      <UniqueIdentifier>{9864b1ce-0944-4fe2-8bb7-a9e39ee062b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\08. ShaderCode\Compute\AnimationUpdate">
+      <UniqueIdentifier>{cb9fd783-1c55-40ad-80c9-0fb6a74b9347}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -558,6 +576,9 @@
     </FxCompile>
     <FxCompile Include="light.fx">
       <Filter>Source\08. ShaderCode\Render</Filter>
+    </FxCompile>
+    <FxCompile Include="animation3d.fx">
+      <Filter>Source\08. ShaderCode\Compute\AnimationUpdate</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

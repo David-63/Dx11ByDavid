@@ -86,20 +86,7 @@ void CreateTestLevel()
 		pLightObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
 		pLightObj->Light3D()->SetLightAmbient(Vec3(0.5f, 0.5f, 0.5f));
 
-
 		SpawnGameObject(pLightObj, Vec3(-2000, 2000.f, -2000.f), 0);
-
-		/*pLightObj = new CGameObject;
-		pLightObj->SetName(L"Point Light 1");
-		pLightObj->AddComponent(new CTransform);
-		pLightObj->AddComponent(new CLight3D);
-
-		pLightObj->Light3D()->SetLightType(LIGHT_TYPE::POINT);
-		pLightObj->Light3D()->SetRadius(500.f);
-		pLightObj->Light3D()->SetLightColor(Vec3(1.f, 1.f, 1.f));
-		pLightObj->Light3D()->SetLightAmbient(Vec3(0.f, 0.f, 0.f));
-
-		SpawnGameObject(pLightObj, Vec3(0.f, -750.f, 0.f), 0);	*/	
 	}
 
 	// ============
@@ -109,10 +96,17 @@ void CreateTestLevel()
 		Ptr<CMeshData> pMeshData = nullptr;
 		CGameObject* pObj = nullptr;
 
-		pMeshData = CResMgr::GetInst()->LoadFBX(L"fbx\\house.fbx");
-		pMeshData = CResMgr::GetInst()->FindRes<CMeshData>(L"meshdata\\house.mdat");
+		//pMeshData = CResMgr::GetInst()->LoadFBX(L"fbx\\house.fbx");
+		//pMeshData = CResMgr::GetInst()->FindRes<CMeshData>(L"meshdata\\house.mdat");
+		//pObj = pMeshData->Instantiate();
+		//pObj->SetName(L"House");
+
+		//pMeshData = CResMgr::GetInst()->LoadFBX(L"fbx\\monster.fbx");
+		//pMeshData = CResMgr::GetInst()->Load<CMeshData>(L"meshdata\\monster.mdat", L"meshdata\\monster.mdat");
+		pMeshData = CResMgr::GetInst()->FindRes<CMeshData>(L"meshdata\\monster.mdat");
 		pObj = pMeshData->Instantiate();
-		pObj->SetName(L"House");
+		pObj->SetName(L"Monster");
+		pObj->Transform()->SetRelativeScale(Vec3(50.f, 50.f, 50.f));
 
 		SpawnGameObject(pObj, Vec3(0.f, 0.f, 100.f), L"Default");
 	}
@@ -132,26 +126,7 @@ void CreateTestLevel()
 		pObject->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01.tga"));
 		pObject->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01_N.tga"));
 
-		SpawnGameObject(pObject, Vec3(550.f, 0.f, 0.f), L"Player");
-	}
-
-
-	// mask obj
-	{
-		CGameObject* pObject = new CGameObject;
-		pObject->SetName(L"maskObj");
-		pObject->AddComponent(new CTransform);
-		pObject->AddComponent(new CMeshRender);
-
-		pObject->Transform()->SetRelativeScale(Vec3(1000.f, 1000.f, 1000.f));
-		pObject->Transform()->SetRelativeRot(Vec3(0.f, XM_PI / 2.f, 0.f));
-
-		pObject->MeshRender()->SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"RectMesh"));
-		pObject->MeshRender()->SetMaterial(CResMgr::GetInst()->FindRes<CMaterial>(L"Std3DMtrl"), 0);
-		pObject->MeshRender()->GetMaterial(0)->SetTexParam(TEX_0, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01.tga"));
-		pObject->MeshRender()->GetMaterial(0)->SetTexParam(TEX_1, CResMgr::GetInst()->FindRes<CTexture>(L"texture\\tile\\TILE_01_N.tga"));
-
-		SpawnGameObject(pObject, Vec3(550.f, -250.f, 0.f), L"ViewPort UI");
+		SpawnGameObject(pObject, Vec3(550.f, -750.f, 0.f), L"Player");
 	}
 
 	// Background

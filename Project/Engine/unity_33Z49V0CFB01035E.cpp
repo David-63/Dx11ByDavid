@@ -3,7 +3,13 @@
 #include "C:\ello\Dx11ByDavid\Project\Engine\CAnim2D.cpp"
 
 
+#include "C:\ello\Dx11ByDavid\Project\Engine\CAnimation3DShader.cpp"
+
+
 #include "C:\ello\Dx11ByDavid\Project\Engine\CAnimator2D.cpp"
+
+
+#include "C:\ello\Dx11ByDavid\Project\Engine\CAnimator3D.cpp"
 
 
 #include "C:\ello\Dx11ByDavid\Project\Engine\CCamera.cpp"
@@ -46,7 +52,4 @@
 
 
 #include "C:\ello\Dx11ByDavid\Project\Engine\CGameObject.cpp"
-
-
-#include "C:\ello\Dx11ByDavid\Project\Engine\CGraphicsShader.cpp"
 

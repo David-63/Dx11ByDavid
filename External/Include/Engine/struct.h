@@ -11,6 +11,10 @@ struct tVertex
 	Vec3 vNormal;
 	Vec3 vTangent;
 	Vec3 vBinormal;
+
+	// Animation 가중치 및 인덱스
+	Vec4 vWeights;
+	Vec4 vIndices;
 };
 
 typedef tVertex Vtx;
@@ -79,6 +83,49 @@ struct tAnim2DFrm
 	float	fDuration;
 };
 
+// Animation 3D
+struct tFrameTrans
+{
+	Vec4	vTranslate;
+	Vec4	vScale;
+	Vec4	vRot;
+};
+
+struct tMTKeyFrame
+{
+	double	dTime;
+	int		iFrame;
+	Vec3	vTranslate;
+	Vec3	vScale;
+	Vec4	qRot;
+};
+
+struct tMTBone
+{
+	wstring				strBoneName;
+	int					iDepth;
+	int					iParentIndx;
+	Matrix				matOffset;
+	Matrix				matBone;
+	vector<tMTKeyFrame>	vecKeyFrame;
+
+	FbxTime::EMode		eMode;
+};
+
+struct tMTAnimClip
+{
+	wstring			strAnimName;
+	int				iStartFrame;
+	int				iEndFrame;
+	int				iFrameLength;
+	
+	double			dStartTime;
+	double			dEndTime;
+	double			dTimeLength;
+	float			fUpdateTime;
+
+	FbxTime::EMode	eMode;
+};
 
 // Particle
 struct tParticle
@@ -203,6 +250,9 @@ struct tMtrlConst
 
 	// 텍스쳐 세팅 true / false 용도
 	int arrTex[(UINT)TEX_PARAM::TEX_END];
+
+	// 3D Animation 정보
+	int	arrAnimData[4];
 };
 
 

@@ -12,7 +12,7 @@ private:
 
 
 public:
-    // Decal 렌더링에 광원이 적용 될 것인지 아닌지
+    // 지연렌더링 설정에 다라 Mtrl 변경
     void SetDeferredDecal(bool _bDeferred);
 
     // 데칼을 광원으로 취급할것인지 아닌지

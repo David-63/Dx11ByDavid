@@ -1,8 +1,7 @@
 #pragma once
 #include "CEntity.h"
 
-class CStructuredBuffer :
-    public CEntity
+class CStructuredBuffer : public CEntity
 {
 private:
     ComPtr<ID3D11Buffer>                m_SB;   // register binding

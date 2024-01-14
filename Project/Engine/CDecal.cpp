@@ -14,6 +14,7 @@ CDecal::CDecal()
 {
 	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));		
 	SetDeferredDecal(m_bDeferred);	
+	SetDynamicShadow(false);
 }
 
 CDecal::~CDecal()

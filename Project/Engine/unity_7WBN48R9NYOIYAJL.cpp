@@ -50,3 +50,6 @@
 
 #include "C:\ello\Dx11ByDavid\Project\Engine\func.cpp"
 
+
+#include "C:\ello\Dx11ByDavid\Project\Engine\CEngine.cpp"
+

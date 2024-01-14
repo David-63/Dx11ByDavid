@@ -1,5 +1,8 @@
 #include "pch.h"
 
+#include "C:\ello\Dx11ByDavid\Project\Engine\CGraphicsShader.cpp"
+
+
 #include "C:\ello\Dx11ByDavid\Project\Engine\CKeyMgr.cpp"
 
 
