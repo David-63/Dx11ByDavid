@@ -35,9 +35,6 @@
     <Filter Include="UI\InspectorUI\ComponentUI\01. TransformUI">
       <UniqueIdentifier>{845b1d5c-be2e-4db5-b8e5-2f57f7265f5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\InspectorUI\ComponentUI\02. MeshRenderUI">
-      <UniqueIdentifier>{638439d2-548a-47d7-b2fc-769d9a7a787b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="UI\InspectorUI\ComponentUI\03. Collider2DUI">
       <UniqueIdentifier>{fea9eec1-6d0a-4370-865e-d7872a2047a1}</UniqueIdentifier>
     </Filter>
@@ -46,15 +43,6 @@
     </Filter>
     <Filter Include="UI\InspectorUI\ComponentUI\05. Animator2DUI">
       <UniqueIdentifier>{8d808225-a3ae-4312-950b-da81db4ebec4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\InspectorUI\ComponentUI\06. Light2DUI">
-      <UniqueIdentifier>{583b0be2-1553-4dd0-8f1b-69412f08018c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\InspectorUI\ComponentUI\07. TileMapUI">
-      <UniqueIdentifier>{caed5036-51a6-436d-8160-b418bbf2856c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\InspectorUI\ComponentUI\08. ParticleSystemUI">
-      <UniqueIdentifier>{26ea688e-f2d8-4f3f-85e5-e9909a31dacf}</UniqueIdentifier>
     </Filter>
     <Filter Include="UI\ContentUI">
       <UniqueIdentifier>{6ff1df0b-768c-4425-88dd-d62587ca58fd}</UniqueIdentifier>
@@ -104,11 +92,38 @@
     <Filter Include="UI\MenuUI">
       <UniqueIdentifier>{47afa2ee-3e6f-4c48-b177-46a3b2927bde}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\InspectorUI\ComponentUI\09. ScriptUI">
-      <UniqueIdentifier>{662a78f7-bbf9-46d2-a9e0-cd5e1ed84873}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager\LevelSaveLoad">
       <UniqueIdentifier>{bd45bcb0-5b2d-4b83-a548-af8817de8f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ComponentUI\RenderCompUI">
+      <UniqueIdentifier>{5ef6fb1b-ebbf-4709-b809-f87a606ab0d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ComponentUI\RenderCompUI\1. MeshRenderUI">
+      <UniqueIdentifier>{638439d2-548a-47d7-b2fc-769d9a7a787b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ComponentUI\RenderCompUI\2. TileMapUI">
+      <UniqueIdentifier>{caed5036-51a6-436d-8160-b418bbf2856c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ComponentUI\07. Light2DUI">
+      <UniqueIdentifier>{583b0be2-1553-4dd0-8f1b-69412f08018c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ComponentUI\00. ScriptUI">
+      <UniqueIdentifier>{662a78f7-bbf9-46d2-a9e0-cd5e1ed84873}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ComponentUI\06. Animator3DUI">
+      <UniqueIdentifier>{ab071584-6691-47ba-8cfa-a4c8d96a3e75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ComponentUI\08. Light3D">
+      <UniqueIdentifier>{92272743-9935-413d-a80a-5fd7a9674bc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ComponentUI\RenderCompUI\3. ParticleSystemUI">
+      <UniqueIdentifier>{e8376552-4b03-428e-b0e6-31865f9a9182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ComponentUI\RenderCompUI\5. DecalUI">
+      <UniqueIdentifier>{05841b63-cb00-4175-ab7d-f36eb43934c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\InspectorUI\ComponentUI\RenderCompUI\4. SkyBoxUI">
+      <UniqueIdentifier>{1a3de20e-045e-44ea-ac2c-2121042bcd7b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -161,7 +176,7 @@
       <Filter>UI\InspectorUI\ComponentUI\01. TransformUI</Filter>
     </ClInclude>
     <ClInclude Include="MeshRenderUI.h">
-      <Filter>UI\InspectorUI\ComponentUI\02. MeshRenderUI</Filter>
+      <Filter>UI\InspectorUI\ComponentUI\RenderCompUI\1. MeshRenderUI</Filter>
     </ClInclude>
     <ClInclude Include="ComponentUI.h">
       <Filter>UI\InspectorUI\ComponentUI</Filter>
@@ -176,10 +191,10 @@
       <Filter>UI\InspectorUI\ComponentUI\05. Animator2DUI</Filter>
     </ClInclude>
     <ClInclude Include="Light2DUI.h">
-      <Filter>UI\InspectorUI\ComponentUI\06. Light2DUI</Filter>
+      <Filter>UI\InspectorUI\ComponentUI\07. Light2DUI</Filter>
     </ClInclude>
     <ClInclude Include="TileMapUI.h">
-      <Filter>UI\InspectorUI\ComponentUI\07. TileMapUI</Filter>
+      <Filter>UI\InspectorUI\ComponentUI\RenderCompUI\2. TileMapUI</Filter>
     </ClInclude>
     <ClInclude Include="ListUI.h">
       <Filter>UI\Module\ListUI</Filter>
@@ -228,10 +243,25 @@
       <Filter>UI\MenuUI</Filter>
     </ClInclude>
     <ClInclude Include="ScriptUI.h">
-      <Filter>UI\InspectorUI\ComponentUI\09. ScriptUI</Filter>
+      <Filter>UI\InspectorUI\ComponentUI\00. ScriptUI</Filter>
     </ClInclude>
     <ClInclude Include="CLevelSaveLoad.h">
       <Filter>Manager\LevelSaveLoad</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator3DUI.h">
+      <Filter>UI\InspectorUI\ComponentUI\06. Animator3DUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Light3DUI.h">
+      <Filter>UI\InspectorUI\ComponentUI\08. Light3D</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystemUI.h">
+      <Filter>UI\InspectorUI\ComponentUI\RenderCompUI\3. ParticleSystemUI</Filter>
+    </ClInclude>
+    <ClInclude Include="DecalUI.h">
+      <Filter>UI\InspectorUI\ComponentUI\RenderCompUI\5. DecalUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBoxUI.h">
+      <Filter>UI\InspectorUI\ComponentUI\RenderCompUI\4. SkyBoxUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -291,7 +321,7 @@
       <Filter>UI\InspectorUI\ComponentUI\01. TransformUI</Filter>
     </ClCompile>
     <ClCompile Include="MeshRenderUI.cpp">
-      <Filter>UI\InspectorUI\ComponentUI\02. MeshRenderUI</Filter>
+      <Filter>UI\InspectorUI\ComponentUI\RenderCompUI\1. MeshRenderUI</Filter>
     </ClCompile>
     <ClCompile Include="ComponentUI.cpp">
       <Filter>UI\InspectorUI\ComponentUI</Filter>
@@ -306,10 +336,10 @@
       <Filter>UI\InspectorUI\ComponentUI\05. Animator2DUI</Filter>
     </ClCompile>
     <ClCompile Include="Light2DUI.cpp">
-      <Filter>UI\InspectorUI\ComponentUI\06. Light2DUI</Filter>
+      <Filter>UI\InspectorUI\ComponentUI\07. Light2DUI</Filter>
     </ClCompile>
     <ClCompile Include="TileMapUI.cpp">
-      <Filter>UI\InspectorUI\ComponentUI\07. TileMapUI</Filter>
+      <Filter>UI\InspectorUI\ComponentUI\RenderCompUI\2. TileMapUI</Filter>
     </ClCompile>
     <ClCompile Include="ListUI.cpp">
       <Filter>UI\Module\ListUI</Filter>
@@ -359,10 +389,25 @@
       <Filter>UI\MenuUI</Filter>
     </ClCompile>
     <ClCompile Include="ScriptUI.cpp">
-      <Filter>UI\InspectorUI\ComponentUI\09. ScriptUI</Filter>
+      <Filter>UI\InspectorUI\ComponentUI\00. ScriptUI</Filter>
     </ClCompile>
     <ClCompile Include="CLevelSaveLoad.cpp">
       <Filter>Manager\LevelSaveLoad</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator3DUI.cpp">
+      <Filter>UI\InspectorUI\ComponentUI\06. Animator3DUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Light3DUI.cpp">
+      <Filter>UI\InspectorUI\ComponentUI\08. Light3D</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystemUI.cpp">
+      <Filter>UI\InspectorUI\ComponentUI\RenderCompUI\3. ParticleSystemUI</Filter>
+    </ClCompile>
+    <ClCompile Include="DecalUI.cpp">
+      <Filter>UI\InspectorUI\ComponentUI\RenderCompUI\5. DecalUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBoxUI.cpp">
+      <Filter>UI\InspectorUI\ComponentUI\RenderCompUI\4. SkyBoxUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

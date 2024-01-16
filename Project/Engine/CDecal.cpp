@@ -11,6 +11,8 @@ CDecal::CDecal()
 	: CRenderComponent(COMPONENT_TYPE::DECAL)
 	, m_bDeferred(false)
 	, m_bEmissive(false)
+	, m_bShow(false)
+
 {
 	SetMesh(CResMgr::GetInst()->FindRes<CMesh>(L"CubeMesh"));		
 	SetDeferredDecal(m_bDeferred);	
@@ -24,8 +26,9 @@ CDecal::~CDecal()
 
 
 void CDecal::finaltick()
-{	
-	DrawDebugCube(Transform()->GetWorldMat(), Vec4(0.f, 1.f, 0.f, 1.f), 0.f, true);
+{
+	if (m_bShow)
+		DrawDebugCube(Transform()->GetWorldMat(), Vec4(0.f, 1.f, 0.f, 1.f), 0.f, true);
 }
 
 void CDecal::render()

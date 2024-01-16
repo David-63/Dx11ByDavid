@@ -155,10 +155,10 @@
       <Filter>Source\06. Component\5. Light3D</Filter>
     </ClInclude>
     <ClInclude Include="CSkyBox.h">
-      <Filter>Source\06. Component\RenderComponent\6. SkyBox</Filter>
+      <Filter>Source\06. Component\RenderComponent\4. SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="CDecal.h">
-      <Filter>Source\06. Component\RenderComponent\4. Decal</Filter>
+      <Filter>Source\06. Component\RenderComponent\5. Decal</Filter>
     </ClInclude>
     <ClInclude Include="CMRT.h">
       <Filter>Source\03. Manager\06. RenderMgr\MRT</Filter>
@@ -319,10 +319,10 @@
       <Filter>Source\06. Component\5. Light3D</Filter>
     </ClCompile>
     <ClCompile Include="CSkyBox.cpp">
-      <Filter>Source\06. Component\RenderComponent\6. SkyBox</Filter>
+      <Filter>Source\06. Component\RenderComponent\4. SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="CDecal.cpp">
-      <Filter>Source\06. Component\RenderComponent\4. Decal</Filter>
+      <Filter>Source\06. Component\RenderComponent\5. Decal</Filter>
     </ClCompile>
     <ClCompile Include="CMRT.cpp">
       <Filter>Source\03. Manager\06. RenderMgr\MRT</Filter>
@@ -446,12 +446,6 @@
     <Filter Include="Source\06. Component\RenderComponent\3. TileMap">
       <UniqueIdentifier>{a31ec3b6-9833-48c1-95cf-2ec5f761508b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\06. Component\RenderComponent\4. Decal">
-      <UniqueIdentifier>{77837a5b-9428-40ac-b78f-5ecbda8d05d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\06. Component\RenderComponent\5. Landscape">
-      <UniqueIdentifier>{f136de34-cd33-45d6-be6a-5fb4de15646b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\03. Manager\09. EventMgr">
       <UniqueIdentifier>{0a343449-42c4-40a1-847b-895444053100}</UniqueIdentifier>
     </Filter>
@@ -491,9 +485,6 @@
     <Filter Include="Source\06. Component\6. Animator2D">
       <UniqueIdentifier>{7d787944-7b75-432b-91a9-8452604ba075}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\06. Component\RenderComponent\6. SkyBox">
-      <UniqueIdentifier>{cdaf2dfe-96ef-4fd7-a1c9-a117acce104d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\08. ShaderCode\Render">
       <UniqueIdentifier>{31f4c0ab-b897-4a96-a254-ee69d6140c88}</UniqueIdentifier>
     </Filter>
@@ -520,6 +511,15 @@
     </Filter>
     <Filter Include="Source\08. ShaderCode\Compute\AnimationUpdate">
       <UniqueIdentifier>{cb9fd783-1c55-40ad-80c9-0fb6a74b9347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06. Component\RenderComponent\5. Decal">
+      <UniqueIdentifier>{77837a5b-9428-40ac-b78f-5ecbda8d05d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06. Component\RenderComponent\6. Landscape">
+      <UniqueIdentifier>{f136de34-cd33-45d6-be6a-5fb4de15646b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\06. Component\RenderComponent\4. SkyBox">
+      <UniqueIdentifier>{cdaf2dfe-96ef-4fd7-a1c9-a117acce104d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

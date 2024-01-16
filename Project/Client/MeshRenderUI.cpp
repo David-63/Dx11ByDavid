@@ -12,7 +12,7 @@
 
 
 MeshRenderUI::MeshRenderUI()
-	: ComponentUI("##MeshRender", COMPONENT_TYPE::MESHRENDER)	
+	: ComponentUI("##MeshRender", COMPONENT_TYPE::MESHRENDER)
 {
 	SetName("MeshRender");
 }
@@ -20,7 +20,6 @@ MeshRenderUI::MeshRenderUI()
 MeshRenderUI::~MeshRenderUI()
 {
 }
-
 
 int MeshRenderUI::render_update()
 {
@@ -31,9 +30,31 @@ int MeshRenderUI::render_update()
 
 	Ptr<CMesh> pMesh = GetTarget()->MeshRender()->GetMesh();
 	Ptr<CMaterial> pMtrl = GetTarget()->MeshRender()->GetMaterial(0);
-		
+
+
+	bool isFrustum = GetTarget()->MeshRender()->IsUseFrustumCheck();
+	bool isDynamic = GetTarget()->MeshRender()->IsDynamicShadow();
+	float fBounding = GetTarget()->MeshRender()->GetBounding();
+
+	ImGui::Text("Frustum");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Check Frustum", &isFrustum);
+
+	ImGui::Text("DynamicShadow");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Check DynamicShadow", &isDynamic);
+
+	ImGui::Text("BoundingSize");
+	ImGui::SameLine();
+	ImGui::DragFloat("##Mesh BoundingSize", &fBounding);
+
+	GetTarget()->MeshRender()->SetFrustumCheck(isFrustum);
+	GetTarget()->MeshRender()->SetDynamicShadow(isDynamic);
+	GetTarget()->MeshRender()->SetBounding(fBounding);
+
+
 	ImGui::Text("Mesh    ");
-	ImGui::SameLine();	
+	ImGui::SameLine();
 	GetResKey(pMesh.Get(), szBuff, 50);
 	ImGui::InputText("##MeshName", szBuff, 50, ImGuiInputTextFlags_ReadOnly);
 
@@ -57,7 +78,7 @@ int MeshRenderUI::render_update()
 
 
 	ImGui::SameLine();
-	
+
 
 	if (ImGui::Button("##MeshSelectBtn", ImVec2(18, 18)))
 	{
@@ -73,7 +94,7 @@ int MeshRenderUI::render_update()
 		// 항목 선택시 호출받을 델리게이트 등록
 		pListUI->AddDynamic_Select(this, (UI_DELEGATE_1)&MeshRenderUI::SelectMesh);
 	}
-		
+
 	ImGui::Text("Material");
 	ImGui::SameLine();
 	GetResKey(pMtrl.Get(), szBuff, 50);

@@ -17,7 +17,9 @@ private:
 
 
 public:
+    SKYBOX_TYPE GetSkyBoxType() { return m_Type; }
     void SetSkyBoxType(SKYBOX_TYPE _Type);
+    Ptr<CTexture> GetSkyBoxTexture() { return m_SkyBoxTex; }
     void SetSkyBoxTexture(Ptr<CTexture> _Tex);
 
 

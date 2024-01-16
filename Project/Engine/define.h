@@ -248,6 +248,7 @@ enum class LIGHT_TYPE
 	DIRECTIONAL,
 	POINT,
 	SPOT,
+	End,
 };
 
 enum class LEVEL_STATE
