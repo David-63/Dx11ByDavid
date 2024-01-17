@@ -5,8 +5,8 @@
 #include "CTexture.h"
 #include "CMaterial.h"
 #include "CMesh.h"
+#include "CAnim3D.h"
 
-class CAnim3D;
 class CStructuredBuffer;
 class CAnimator3D : public CComponent
 {
@@ -18,49 +18,50 @@ private:
 	CAnim3D*					m_pCurAnim; // 현재 재생중인 Animation
 	bool						m_bRepeat;  // 반복
 
-private:
-	
-
-	vector<float>				m_vecClipUpdateTime;
-	vector<Matrix>				m_vecFinalBoneMat;
-	int							m_iFrameCount;
-	double						m_dCurTime;
-	int							m_iCurClip;
-
-	int							m_iFrameIdx;
-	int							m_iNextFrameIdx;
-	float						m_fRatio;
-
-	CStructuredBuffer*			m_pBoneFinalMatBuffer;
-	bool						m_bFinalMatUpdate;
-
 public:
 	virtual void finaltick() override;
 	void UpdateData();
 	void ClearData();
 
+public:
+	void CreateAnimation3D(const wstring& _strAnimName, int _clipIdx, float _startTime, float _endTime);
+	void Play(const wstring& _strName, bool _bRepeat);
+	CAnim3D* FindAnim(const wstring& _strName);
 
 
 public:
-	void CreateAnimation3D(const wstring& _strAnimName, const vector<tMTBone>* _bones, const vector<tMTAnimClip>* _clip,
-		// 클립 인덱스, 시작 타임라인, 종료 타임라인
-		int _clipIdx, float _startTime, float _endTime);
+	void SetBones(const vector<tMTBone>* _vecBones) { m_pVecBones = _vecBones; }
+	const vector<tMTBone>* GetBones() { return m_pVecBones; }
+	void SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip) { m_pVecClip = _vecAnimClip; }
+	const vector<tMTAnimClip>* GetAnimClip() { return m_pVecClip; }
+
+	CAnim3D* GetCurAnim() { return m_pCurAnim; }
 
 
-public:
-	void SetBones(const vector<tMTBone>* _vecBones) { m_pVecBones = _vecBones; m_vecFinalBoneMat.resize(m_pVecBones->size()); }
-	void SetAnimClip(const vector<tMTAnimClip>* _vecAnimClip);
+	// 이거 아마 안쓰는듯?
+	CStructuredBuffer* GetFinalBoneMat()
+	{
+		if (nullptr != m_pCurAnim)
+			return m_pCurAnim->GetFinalBoneMat();
+	}
 
-	// 사용 안하고 있음
-	void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
-
-	CStructuredBuffer* GetFinalBoneMat() { return m_pBoneFinalMatBuffer; }
+	// Anim3D에 전달하는 함수
 	UINT GetBoneCount() { return (UINT)m_pVecBones->size(); }
 
-private:
-	void check_mesh(Ptr<CMesh> _pMesh);
+	// GUI에 전달하는 함수
+	tMTAnimClip GetCurClip()
+	{
+		if (nullptr != m_pCurAnim)
+			return m_pVecClip->at(m_pCurAnim->GetAnimClipIdx());
+	}
+
+	float GetCurTime() { return m_pCurAnim->GetCurTime(); }
+	int GetCurFrame() { return m_pCurAnim->GetCurFrame(); }
 
 public:
+	// 사용 안하고 있음
+	//void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
+
 	virtual void SaveToLevelFile(FILE* _pFile) override;
 	virtual void LoadFromLevelFile(FILE* _pFile) override;
 	CLONE(CAnimator3D);
@@ -68,5 +69,7 @@ public:
 	CAnimator3D();
 	CAnimator3D(const CAnimator3D& _origin);
 	~CAnimator3D();
+
+	friend class CAnim3D;
 };
 

@@ -1,46 +1,53 @@
-#include "pch.h"
 #include "CAnim3D.h"
 
 #include "CTimeMgr.h"
-#include "CAnimation3DShader.h"
-#include "CMeshRender.h"
+#include "CGameObject.h"
 #include "CAnimator3D.h"
+#include "CAnimation3DShader.h"
 #include "CResMgr.h"
-#include "CStructuredBuffer.h"
+#include "CMeshRender.h"
+
+CAnim3D::CAnim3D()
+: m_Owner(nullptr), m_strAnimName()
+, m_AnimClipIdx(0), m_iFrameCount(30)
+, m_StartTime(0.f), m_EndTime(0.f), m_AnimUpdateTime()
+, m_CurFrameIdx(0), m_NextFrameIdx(0), m_Ratio(0.f)
+, m_pBoneFinalMatBuffer(nullptr)
+, m_bFinalMatUpdate(false), m_Finish(false)
+{
+	m_pBoneFinalMatBuffer = new CStructuredBuffer;
+}
+
+CAnim3D::~CAnim3D()
+{
+	if (nullptr != m_pBoneFinalMatBuffer)
+		delete m_pBoneFinalMatBuffer;
+}
 
 void CAnim3D::finaltick()
 {
-	if (m_Finish)
+	if (nullptr == m_Owner)
 		return;
 
-	// 시작시간으로 초기화
-	m_AccTime = m_StartTime;
-	// 현재 재생중인 Clip 의 시간을 진행한다.
-	m_AnimUpdateTime += DT;
+	// m_AnimUpdateTime[m_AnimClipIdx] 이 변수는 CreateAnim 단계에서 StartTime 값으로 초기화 되어야함
 
-	if (m_AnimUpdateTime >= m_EndTime)
+	m_AnimUpdateTime[m_AnimClipIdx] += DT;	
+	if (m_AnimUpdateTime[m_AnimClipIdx] >= m_EndTime)
 	{
-		m_AnimUpdateTime = m_StartTime;
-		m_Finish = true;
+		m_AnimUpdateTime[m_AnimClipIdx] = m_StartTime;
 	}
 
-	// 시작시간에 업데이트 시간 적용
-	m_AccTime = m_AnimUpdateTime;
-
-	// 현재 프레임 인덱스 구하기
-	double dFrameIdx = m_AccTime * (double)m_iFrameCount;
+	
+	double dFrameIdx = m_AnimUpdateTime[m_AnimClipIdx] * (double)m_iFrameCount;
 	m_CurFrameIdx = (int)(dFrameIdx);
 
-	// 다음 프레임 인덱스
-	if (m_CurFrameIdx >= m_pVecClip->at(0).iFrameLength - 1)
-		m_NextFrameIdx = m_CurFrameIdx;	// 끝이면 현재 인덱스를 유지
+	if (m_CurFrameIdx >= m_Owner->GetAnimClip()->at(m_AnimClipIdx).iFrameLength - 1)
+		m_NextFrameIdx = m_CurFrameIdx;
 	else
 		m_NextFrameIdx = m_CurFrameIdx + 1;
 
-	// 프레임간의 시간에 따른 비율을 구해준다.
-	m_Ratio = (float)(m_NextFrameIdx - (double)m_CurFrameIdx);
+	m_Ratio = (float)(dFrameIdx - (double)m_NextFrameIdx);
 
-	// 컴퓨트 쉐이더 연산여부
 	m_bFinalMatUpdate = false;
 }
 
@@ -59,7 +66,8 @@ void CAnim3D::UpdateData()
 		pUpdateShader->SetOffsetMatBuffer(pMesh->GetBoneOffsetBuffer());
 		pUpdateShader->SetOutputBuffer(m_pBoneFinalMatBuffer);
 
-		UINT iBoneCount = (UINT)m_pVecBones->size();
+		
+		UINT iBoneCount = m_Owner->GetBoneCount();
 		pUpdateShader->SetBoneCount(iBoneCount);
 		pUpdateShader->SetFrameIndex(m_CurFrameIdx);
 		pUpdateShader->SetNextFrameIdx(m_NextFrameIdx);
@@ -92,16 +100,34 @@ void CAnim3D::ClearData()
 	}
 }
 
-void CAnim3D::CreateAnimation3D(const wstring& _strAnimName, const vector<tMTBone>* _bones, const vector<tMTAnimClip>* _clip
-	, int _clipIdx, float _startTime, float _endTime)
+void CAnim3D::check_mesh(Ptr<CMesh> _pMesh)
 {
-	m_pVecBones = _bones;
-	m_vecFinalBoneMat.resize(m_pVecBones->size());
-	m_pVecClip = _clip;
+	UINT iBoneCount = _pMesh->GetBoneCount();
+	if (m_pBoneFinalMatBuffer->GetElementCount() != iBoneCount)
+	{
+		m_pBoneFinalMatBuffer->Create(sizeof(Matrix), iBoneCount, SB_TYPE::READ_WRITE, false, nullptr);
+	}
+}
 
+void CAnim3D::CreateAnimation3D(const wstring& _strAnimName, int _clipIdx, float _startTime, float _endTime)
+{
+	m_strAnimName = _strAnimName;
 	m_AnimClipIdx = _clipIdx;
-
-	//m_pVecClip->at(m_AnimClipIdx).dStartTime;
 	m_StartTime = _startTime;
 	m_EndTime = _endTime;
+	m_AnimUpdateTime.resize(m_Owner->GetAnimClip()[m_AnimClipIdx].size());
+	m_AnimUpdateTime[m_AnimClipIdx] = m_StartTime;
+}
+
+void CAnim3D::CreateAnimation3D(const wstring& _strAnimName, int _clipIdx, int _startFrame, int _endFrame)
+{
+	// 안쓸듯?
+}
+
+void CAnim3D::SaveToLevelFile(FILE* _File)
+{
+}
+
+void CAnim3D::LoadFromLevelFile(FILE* _File)
+{
 }

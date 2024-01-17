@@ -32,7 +32,7 @@ void CMeshRender::render()
 		Animator2D()->UpdateData();
 	}
 	
-	if (Animator3D())
+	if (Animator3D() && nullptr != Animator3D()->GetCurAnim())
 	{
 		Animator3D()->UpdateData();
 
