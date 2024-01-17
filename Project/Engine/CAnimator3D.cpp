@@ -2,6 +2,8 @@
 
 #include "CAnimator3D.h"
 
+#include "CAnim3D.h"
+
 #include "CTimeMgr.h"
 #include "CMeshRender.h"
 #include "CStructuredBuffer.h"
@@ -16,7 +18,7 @@ CAnimator3D::CAnimator3D()
 	: m_pVecBones(nullptr)
 	, m_pVecClip(nullptr)
 	, m_iCurClip(0)
-	, m_dCurTime(0.)
+	, m_dCurTime(0.f)
 	, m_iFrameCount(30)
 	, m_pBoneFinalMatBuffer(nullptr)
 	, m_bFinalMatUpdate(false)
@@ -46,13 +48,28 @@ CAnimator3D::CAnimator3D(const CAnimator3D& _origin)
 
 CAnimator3D::~CAnimator3D()
 {
+	Safe_Del_Map(m_mapAnim);
+
 	if (nullptr != m_pBoneFinalMatBuffer)
 		delete m_pBoneFinalMatBuffer;
+
 }
 
 
 void CAnimator3D::finaltick()
 {
+	if (nullptr != m_pCurAnim)
+	{
+		if (m_bRepeat && m_pCurAnim->IsFinish())
+		{
+			m_pCurAnim->Reset();
+		}
+
+		m_pCurAnim->finaltick();
+	}
+
+	/////////////////////////////////////////////
+
 	m_dCurTime = 0.f;
 	// 현재 재생중인 Clip 의 시간을 진행한다.
 	m_vecClipUpdateTime[m_iCurClip] += DT;
@@ -139,6 +156,15 @@ void CAnimator3D::ClearData()
 		pMtrl->SetAnim3D(false); // Animation Mesh 알리기
 		pMtrl->SetBoneCount(0);
 	}
+}
+
+void CAnimator3D::CreateAnimation3D(const wstring& _strAnimName, const vector<tMTBone>* _bones, const vector<tMTAnimClip>* _clip, int _clipIdx, float _startTime, float _endTime)
+{
+	CAnim3D* pAnim = new CAnim3D;
+	pAnim->CreateAnimation3D(_strAnimName, _bones, _clip, _clipIdx, _startTime, _endTime);
+
+	pAnim->m_Owner = this;
+	m_mapAnim.insert(make_pair(_strAnimName, pAnim));
 }
 
 void CAnimator3D::check_mesh(Ptr<CMesh> _pMesh)

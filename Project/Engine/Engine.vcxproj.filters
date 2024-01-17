@@ -178,6 +178,9 @@
     <ClInclude Include="CAnimation3DShader.h">
       <Filter>Source\08. ShaderCode\Compute\AnimationUpdate</Filter>
     </ClInclude>
+    <ClInclude Include="CAnim3D.h">
+      <Filter>Source\06. Component\7. Animator3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -344,6 +347,9 @@
     </ClCompile>
     <ClCompile Include="CAnimation3DShader.cpp">
       <Filter>Source\08. ShaderCode\Compute\AnimationUpdate</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnim3D.cpp">
+      <Filter>Source\06. Component\7. Animator3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

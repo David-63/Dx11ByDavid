@@ -323,7 +323,7 @@ int CMesh::Save(const wstring& _strRelativePath)
 			, 1, pFile);
 	}
 
-	// Animation3D 정보 
+	// Animation3D 정보
 	UINT iCount = (UINT)m_vecAnimClip.size();
 	fwrite(&iCount, sizeof(int), 1, pFile);
 	for (UINT i = 0; i < iCount; ++i)

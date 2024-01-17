@@ -37,6 +37,8 @@ CGameObject* CMeshData::Instantiate()
 	CAnimator3D* pAnimator = new CAnimator3D;
 	pNewObj->AddComponent(pAnimator);
 
+	// 애니메이터를 추가한 다음에 UI에서 애니메이션 제작을 할지
+	//
 	pAnimator->SetBones(m_pMesh->GetBones());
 	pAnimator->SetAnimClip(m_pMesh->GetAnimClip());
 
