@@ -13,7 +13,7 @@ class CAnim3D : public CEntity
 {
 private:    
     CAnimator3D*                m_Owner;                // Owner를 알아야 컴포넌트에 접근 가능함
-    wstring                     m_strAnimName;          // 애니메이션 Key Name
+    string                     m_strAnimName;          // 애니메이션 Key Name
 
 
     int							m_iFrameCount;          // 현재 프레임 (30 기준)
@@ -43,22 +43,21 @@ public:
 
 
 public:
-    void CreateAnimation3D(const wstring& _strAnimName, int _clipIdx, float _startTime, float _endTime);
-    void CreateAnimation3D(const wstring& _strAnimName, int _clipIdx, int _startFrame, int _endFrame); // 안씀
+    void CreateAnimation3D(const string& _strAnimName, int _clipIdx, float _startTime, float _endTime);
+    void CreateAnimation3D(const string& _strAnimName, int _clipIdx, int _startFrame, int _endFrame); // 안씀
 
-public:
-    const wstring& GetAnimName() { return m_strAnimName; }
+public: // GUI에 노출시키는 함수
+    const string& GetAnimName() { return m_strAnimName; }
     int GetAnimClipIdx() { return m_AnimClipIdx; }    
     CStructuredBuffer* GetFinalBoneMat() { return m_pBoneFinalMatBuffer; }
-    const int& GetCurFrame() { return m_CurFrameIdx; }
+    const float& GetStartTime() { return m_StartTime; }
+    const float& GetEndTime() { return m_EndTime; }
     const int& GetCurTime() { return m_AnimUpdateTime[m_AnimClipIdx]; }
+    const int& GetCurFrame() { return m_CurFrameIdx; }
+
+public: // 애니메이터에서 사용하는 함수
     bool IsFinish() { return m_Finish; }
-    void Reset()
-    {
-        m_CurFrameIdx = 0; // 이런 방식으로 초기화되면 안됨 (시작위치가 0이 아닐 수 있음)
-        m_AnimUpdateTime[m_CurFrameIdx] = m_StartTime;
-        m_Finish = false;
-    }
+    void Reset() { m_AnimUpdateTime[m_AnimClipIdx] = m_StartTime; m_Finish = false; }
 
 public:
 

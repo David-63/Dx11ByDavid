@@ -64,7 +64,7 @@ void CAnimator3D::ClearData()
 }
 
 
-void CAnimator3D::CreateAnimation3D(const wstring& _strAnimName, int _clipIdx, float _startTime, float _endTime)
+void CAnimator3D::CreateAnimation3D(const string& _strAnimName, int _clipIdx, float _startTime, float _endTime)
 {
 	CAnim3D* pAnim = new CAnim3D();
 	pAnim->m_Owner = this;
@@ -73,18 +73,18 @@ void CAnimator3D::CreateAnimation3D(const wstring& _strAnimName, int _clipIdx, f
 	m_pCurAnim = pAnim;
 }
 
-void CAnimator3D::Play(const wstring& _strName, bool _bRepeat)
+void CAnimator3D::Play(const string& _strName, bool _bRepeat)
 {
 	CAnim3D* pAnim = FindAnim(_strName);
 	assert(pAnim);
-
+	m_pCurAnim->Reset();	// 초기화 한 다음에 변경해주기
 	m_pCurAnim = pAnim;
 	m_bRepeat = _bRepeat;
 }
 
-CAnim3D* CAnimator3D::FindAnim(const wstring& _strName)
+CAnim3D* CAnimator3D::FindAnim(const string& _strName)
 {
-	map<wstring, CAnim3D*>::iterator iter = m_mapAnim.find(_strName);
+	map<string, CAnim3D*>::iterator iter = m_mapAnim.find(_strName);
 
 	if (iter == m_mapAnim.end())
 	{

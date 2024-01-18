@@ -29,14 +29,17 @@ void CAnim3D::finaltick()
 	if (nullptr == m_Owner)
 		return;
 
+	if (m_Finish)
+		return;
+
 	// m_AnimUpdateTime[m_AnimClipIdx] 이 변수는 CreateAnim 단계에서 StartTime 값으로 초기화 되어야함
 
 	m_AnimUpdateTime[m_AnimClipIdx] += DT;	
 	if (m_AnimUpdateTime[m_AnimClipIdx] >= m_EndTime)
 	{
-		m_AnimUpdateTime[m_AnimClipIdx] = m_StartTime;
+		// 시간은 여기서 초기화 하는게 아니라 애니메이터에서 초기화함수를 호출하는 방식으로 구현		
+		m_Finish = true;
 	}
-
 	
 	double dFrameIdx = m_AnimUpdateTime[m_AnimClipIdx] * (double)m_iFrameCount;
 	m_CurFrameIdx = (int)(dFrameIdx);
@@ -109,7 +112,7 @@ void CAnim3D::check_mesh(Ptr<CMesh> _pMesh)
 	}
 }
 
-void CAnim3D::CreateAnimation3D(const wstring& _strAnimName, int _clipIdx, float _startTime, float _endTime)
+void CAnim3D::CreateAnimation3D(const string& _strAnimName, int _clipIdx, float _startTime, float _endTime)
 {
 	m_strAnimName = _strAnimName;
 	m_AnimClipIdx = _clipIdx;
@@ -119,7 +122,7 @@ void CAnim3D::CreateAnimation3D(const wstring& _strAnimName, int _clipIdx, float
 	m_AnimUpdateTime[m_AnimClipIdx] = m_StartTime;
 }
 
-void CAnim3D::CreateAnimation3D(const wstring& _strAnimName, int _clipIdx, int _startFrame, int _endFrame)
+void CAnim3D::CreateAnimation3D(const string& _strAnimName, int _clipIdx, int _startFrame, int _endFrame)
 {
 	// 안쓸듯?
 }

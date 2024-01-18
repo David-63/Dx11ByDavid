@@ -19,21 +19,63 @@ int Animator3DUI::render_update()
 	if (FALSE == ComponentUI::render_update())
 		return FALSE;
 
-	int iClipCount = GetTarget()->Animator3D()->GetAnimClip()->size();
+	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Select Anims");
+	AnimList();
+
 	tMTAnimClip  iClip = GetTarget()->Animator3D()->GetCurClip();
+
+
+	int iClipCount = GetTarget()->Animator3D()->GetAnimClip()->size();
+	float fStartTime = GetTarget()->Animator3D()->GetStartTime();
+	float fEndTime = GetTarget()->Animator3D()->GetEndTime();
 	float fCurTime = GetTarget()->Animator3D()->GetCurTime();
 	int curFrame = GetTarget()->Animator3D()->GetCurFrame();
 
-	ImGui::Text("AnimClipCount %i", iClipCount);
-	ImGui::Text("TimeLength %f", static_cast<float>(iClip.dTimeLength));
-	ImGui::Text("StartTime %f", static_cast<float>(iClip.dStartTime));
-	ImGui::Text("EndTime %f", static_cast<float>(iClip.dEndTime));
-	ImGui::Text("UpdateTime %f", static_cast<float>(fCurTime));
-		
-	ImGui::Text("FrameLenght %i", iClip.iFrameLength);
-	ImGui::Text("StratFrame %i", iClip.iStartFrame);
-	ImGui::Text("EndFrame %i", iClip.iEndFrame);
-	ImGui::Text("UpdateFrame %i", curFrame);
+	if (ImGui::TreeNode("Animation Info"))
+	{
+		ImGui::Text("Start : %.1f | End : %.1f", fStartTime, fEndTime);
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "UpdateTime	%.1f", fCurTime);
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "UpdateFrame % i", curFrame);
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Clip Info"))
+	{
+		ImGui::Text("AnimClipCount %i", iClipCount);
+		ImGui::Text("Clip TimeLength %.1f", static_cast<float>(iClip.dTimeLength));
+		ImGui::Text("Clip FrameLenght %i", iClip.iFrameLength);
+		ImGui::TreePop();
+	}
 
 	return TRUE;
+}
+
+void Animator3DUI::AnimList()
+{
+	map<string, CAnim3D*> anims = GetTarget()->Animator3D()->GetAnims();
+	for (const auto& anim : anims)
+	{
+		m_Anims.push_back(anim.second->GetAnimName().c_str());
+	}
+
+	static int item_current_idx = 0; // Here we store our selection data as an index.
+	const char* combo_preview_value = m_Anims[item_current_idx];  // Pass in the preview value visible before opening the combo (it could be anything)
+	if (ImGui::BeginCombo("Anim Key List", combo_preview_value))
+	{
+		for (int idx = 0; idx < m_Anims.size(); idx++)
+		{
+			const bool is_selected = (item_current_idx == idx);
+			if (ImGui::Selectable(m_Anims[idx], is_selected))
+			{
+				item_current_idx = idx;
+				GetTarget()->Animator3D()->Play(m_Anims[idx], true);
+			}
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+	m_Anims.clear();
 }
