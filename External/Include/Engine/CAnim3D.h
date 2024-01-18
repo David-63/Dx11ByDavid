@@ -50,15 +50,26 @@ public: // GUI에 노출시키는 함수
     const string& GetAnimName() { return m_strAnimName; }
     int GetAnimClipIdx() { return m_AnimClipIdx; }    
     CStructuredBuffer* GetFinalBoneMat() { return m_pBoneFinalMatBuffer; }
-    const float& GetStartTime() { return m_StartTime; }
-    const float& GetEndTime() { return m_EndTime; }
+    float* GetStartTime() { return &m_StartTime; }
+    float* GetEndTime() { return &m_EndTime; }
     const int& GetCurTime() { return m_AnimUpdateTime[m_AnimClipIdx]; }
     const int& GetCurFrame() { return m_CurFrameIdx; }
 
 public: // 애니메이터에서 사용하는 함수
     bool IsFinish() { return m_Finish; }
-    void Reset() { m_AnimUpdateTime[m_AnimClipIdx] = m_StartTime; m_Finish = false; }
 
+    // 리셋은 애니메이션을 초기상태로 돌리지만, 실행시키진 않음
+    void Reset() { m_AnimUpdateTime[m_AnimClipIdx] = m_StartTime; m_Finish = false; }    
+    void Stop() { m_Finish = true; }
+    void Continue()
+    {
+        if (m_AnimUpdateTime[m_AnimClipIdx] >= m_EndTime)
+        {
+            m_AnimUpdateTime[m_AnimClipIdx] = m_StartTime;
+            m_Finish = true;
+        }
+        m_Finish = false;
+    }
 public:
 
     void SaveToLevelFile(FILE* _File);

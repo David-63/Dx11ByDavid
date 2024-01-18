@@ -18,7 +18,7 @@ CAnimator3D::CAnimator3D()
 	: m_pVecBones(nullptr)
 	, m_pVecClip(nullptr)
 	, m_pCurAnim(nullptr)
-	, m_bRepeat(true)
+	, m_bRepeat(false)
 	, CComponent(COMPONENT_TYPE::ANIMATOR3D)
 {	
 }
@@ -71,6 +71,7 @@ void CAnimator3D::CreateAnimation3D(const string& _strAnimName, int _clipIdx, fl
 	pAnim->CreateAnimation3D(_strAnimName, _clipIdx, _startTime, _endTime);
 	m_mapAnim.insert(make_pair(_strAnimName, pAnim));
 	m_pCurAnim = pAnim;
+	m_pCurAnim->Stop();
 }
 
 void CAnimator3D::Play(const string& _strName, bool _bRepeat)
@@ -79,7 +80,18 @@ void CAnimator3D::Play(const string& _strName, bool _bRepeat)
 	assert(pAnim);
 	m_pCurAnim->Reset();	// 초기화 한 다음에 변경해주기
 	m_pCurAnim = pAnim;
+	m_pCurAnim->Reset();	// 변경한 애니메이션을 초기화 해줌	
 	m_bRepeat = _bRepeat;
+}
+
+void CAnimator3D::Change(const string& _strName)
+{
+	CAnim3D* pAnim = FindAnim(_strName);
+	assert(pAnim);
+	m_pCurAnim->Reset();	// 초기화 한 다음에 변경해주기
+	m_pCurAnim = pAnim;
+	m_pCurAnim->Reset();	// 변경한 애니메이션을 초기화 해줌	
+	m_bRepeat = false;
 }
 
 CAnim3D* CAnimator3D::FindAnim(const string& _strName)
