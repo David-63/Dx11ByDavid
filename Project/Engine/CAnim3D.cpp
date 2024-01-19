@@ -9,14 +9,23 @@
 
 CAnim3D::CAnim3D()
 : m_Owner(nullptr), m_strAnimName()
-, m_AnimClipIdx(0), m_iFrameCount(30)
-, m_StartTime(0.f), m_EndTime(0.f), m_AnimUpdateTime()
+, m_iFrameCount(30), m_AnimUpdateTime()
 , m_CurFrameIdx(0), m_NextFrameIdx(0), m_Ratio(0.f)
 , m_pBoneFinalMatBuffer(nullptr)
 , m_bFinalMatUpdate(false), m_Finish(false)
 {
 	m_pBoneFinalMatBuffer = new CStructuredBuffer;
 }
+//CAnim3D::CAnim3D(bool _bEngine)
+//: CRes(RES_TYPE::ANIMCLIP, _bEngine)
+//	, m_Owner(nullptr), m_strAnimName()
+//, m_iFrameCount(30), m_AnimUpdateTime()
+//, m_CurFrameIdx(0), m_NextFrameIdx(0), m_Ratio(0.f)
+//, m_pBoneFinalMatBuffer(nullptr)
+//, m_bFinalMatUpdate(false), m_Finish(false)
+//{
+//	m_pBoneFinalMatBuffer = new CStructuredBuffer;
+//}
 
 CAnim3D::~CAnim3D()
 {
@@ -34,17 +43,17 @@ void CAnim3D::finaltick()
 
 	// m_AnimUpdateTime[m_AnimClipIdx] 이 변수는 CreateAnim 단계에서 StartTime 값으로 초기화 되어야함
 
-	m_AnimUpdateTime[m_AnimClipIdx] += DT;	
-	if (m_AnimUpdateTime[m_AnimClipIdx] >= m_EndTime)
+	m_AnimUpdateTime[m_AnimData.AnimClipIdx] += ScaleDT;
+	if (m_AnimUpdateTime[m_AnimData.AnimClipIdx] >= m_AnimData.EndTime)
 	{
 		// 시간은 여기서 초기화 하는게 아니라 애니메이터에서 초기화함수를 호출하는 방식으로 구현		
 		m_Finish = true;
 	}
 	
-	double dFrameIdx = m_AnimUpdateTime[m_AnimClipIdx] * (double)m_iFrameCount;
+	double dFrameIdx = m_AnimUpdateTime[m_AnimData.AnimClipIdx] * (double)m_iFrameCount;
 	m_CurFrameIdx = (int)(dFrameIdx);
 
-	if (m_CurFrameIdx >= m_Owner->GetAnimClip()->at(m_AnimClipIdx).iFrameLength - 1)
+	if (m_CurFrameIdx >= m_Owner->GetAnimClip()->at(m_AnimData.AnimClipIdx).iFrameLength - 1)
 		m_NextFrameIdx = m_CurFrameIdx;
 	else
 		m_NextFrameIdx = m_CurFrameIdx + 1;
@@ -115,16 +124,61 @@ void CAnim3D::check_mesh(Ptr<CMesh> _pMesh)
 void CAnim3D::CreateAnimation3D(const string& _strAnimName, int _clipIdx, float _startTime, float _endTime)
 {
 	m_strAnimName = _strAnimName;
-	m_AnimClipIdx = _clipIdx;
-	m_StartTime = _startTime;
-	m_EndTime = _endTime;
-	m_AnimUpdateTime.resize(m_Owner->GetAnimClip()[m_AnimClipIdx].size());
-	m_AnimUpdateTime[m_AnimClipIdx] = m_StartTime;
+	m_AnimData.AnimClipIdx = _clipIdx;
+	m_AnimData.StartTime = _startTime;
+	m_AnimData.EndTime = _endTime;
+	m_AnimUpdateTime.resize(m_Owner->GetAnimClip()[m_AnimData.AnimClipIdx].size());
+	m_AnimUpdateTime[m_AnimData.AnimClipIdx] = m_AnimData.StartTime;
 }
 
-void CAnim3D::CreateAnimation3D(const string& _strAnimName, int _clipIdx, int _startFrame, int _endFrame)
+//void CAnim3D::CreateAnimation3D(const string& _strAnimName, int _clipIdx, int _startFrame, int _endFrame)
+//{
+//	// 안쓸듯?
+//}
+
+int CAnim3D::Save(const wstring& _strFilePath)
 {
-	// 안쓸듯?
+	//SetRelativePath(_strRelativePath);
+
+	//wstring strFilePath = CPathMgr::GetInst()->GetContentPath() + _strRelativePath;
+
+	//FILE* pFile = nullptr;
+	//errno_t err = _wfopen_s(&pFile, strFilePath.c_str(), L"wb");
+	//assert(pFile);
+
+	//// Mesh Key 저장	
+	//// Mesh Data 저장
+	//SaveResRef(m_pMesh.Get(), pFile);
+
+	//// material 정보 저장
+	//UINT iMtrlCount = (UINT)m_vecMtrl.size();
+	//fwrite(&iMtrlCount, sizeof(UINT), 1, pFile);
+
+	//UINT i = 0;
+	//wstring strMtrlPath = CPathMgr::GetInst()->GetContentPath();
+	//strMtrlPath += L"material\\";
+
+	//for (; i < iMtrlCount; ++i)
+	//{
+	//	if (nullptr == m_vecMtrl[i])
+	//		continue;
+
+	//	// Material 인덱스, Key, Path 저장
+	//	fwrite(&i, sizeof(UINT), 1, pFile);
+	//	SaveResRef(m_vecMtrl[i].Get(), pFile);
+	//}
+
+	//i = -1; // 마감 값
+	//fwrite(&i, sizeof(UINT), 1, pFile);
+
+	//fclose(pFile);
+	//return S_OK;
+	return S_OK;
+}
+
+int CAnim3D::Load(const wstring& _strFilePath)
+{
+	return S_OK;
 }
 
 void CAnim3D::SaveToLevelFile(FILE* _File)

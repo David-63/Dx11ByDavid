@@ -11,7 +11,9 @@ CTimeMgr::CTimeMgr()
 	, m_llFrequency{}
 	, m_iCallCount(0)
 	, m_fDeltaTime(0.f)
+	, m_fDeltaTime_Scaled(0.f)
 	, m_fTime(0.f)
+	, m_fTimeScale(1.f)
 {
 
 }
@@ -38,7 +40,7 @@ void CTimeMgr::tick()
 
 	// tick 간격 시간
 	m_fDeltaTime = (float)(m_llCurCount.QuadPart - m_llPrevCount.QuadPart) / (float)m_llFrequency.QuadPart;
-
+	m_fDeltaTime_Scaled = m_fDeltaTime * m_fTimeScale;
 	// 누적 시간
 	m_fTime += m_fDeltaTime;
 

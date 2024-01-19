@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Animator3DUI.h"
 
-
-#include <Engine\CGameObject.h>
+#include <Engine/CGameObject.h>
 #include <Engine/CAnimator3D.h>
+#include <Engine/CTimeMgr.h>
 
 Animator3DUI::Animator3DUI() : ComponentUI("##Animator3D", COMPONENT_TYPE::ANIMATOR3D)
 {
@@ -19,17 +19,56 @@ int Animator3DUI::render_update()
 	if (FALSE == ComponentUI::render_update())
 		return FALSE;
 
+	/*if (ImGui::Button("Play"))
+	{
+		GetTarget()->Animator3D()->Continue(repeat);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop"))
+	{
+		GetTarget()->Animator3D()->Stop();
+	}*/
+
+
+	// 속도 조절
+	float fTimeScale = CTimeMgr::GetInst()->GetTimeScale();
+
+	ImGui::SliderFloat("TimeScale :	", &fTimeScale, 0.01f, 5.49f, "ratio = %.2f");
+	CTimeMgr::GetInst()->SetTimeScale(fTimeScale);
+
 	// 애니메이터 정보
 	const vector<tMTAnimClip>* AnimClips = GetTarget()->Animator3D()->GetAnimClip();
 	int curClipIdx = GetTarget()->Animator3D()->GetClipIdx();
 	int iClipCount = AnimClips->size();
 
 	float fTimeLength = static_cast<float>(AnimClips->at(curClipIdx).dTimeLength);
+	
 	if (ImGui::TreeNode("Clip Info"))
 	{
 		ImGui::Text("AnimClipCount %i", iClipCount);
 		ImGui::Text("Clip TimeLength %.1f", fTimeLength);
 		ImGui::Text("Clip FrameLenght %i", AnimClips->at(curClipIdx).iFrameLength);
+		ImGui::TreePop();
+	}
+
+	// 애니메이션 생성
+	static char inputAnimName[128] = "Hello, world!";
+	static float inputStartTime = 0.001f;
+	static float inputEndTime = 0.001f;
+
+	if (ImGui::TreeNode("New Create Anim"))
+	{
+		// 입력 인자
+		ImGui::InputText("input text", inputAnimName, IM_ARRAYSIZE(inputAnimName));
+
+		ImGui::InputFloat("input StartTime	", &inputStartTime, 0.0f, fTimeLength, "%.2f");
+		ImGui::InputFloat("input EndTime	", &inputEndTime, inputStartTime, fTimeLength, "%.2f");
+
+		if (ImGui::Button("Create!"))
+		{
+			GetTarget()->Animator3D()->CreateAnimation3D(inputAnimName, curClipIdx, inputStartTime, inputEndTime);
+		}
+
 		ImGui::TreePop();
 	}
 
@@ -51,26 +90,7 @@ int Animator3DUI::render_update()
 	{
 		GetTarget()->Animator3D()->Stop();
 	}
-	// 애니메이션 생성
-	static char inputAnimName[128] = "Hello, world!";
-	static float inputStartTime = 0.001f;
-	static float inputEndTime = 0.001f;
-
-	if (ImGui::TreeNode("New Create Anim"))
-	{
-		// 입력 인자
-		ImGui::InputText("input text", inputAnimName, IM_ARRAYSIZE(inputAnimName));
-
-		ImGui::InputFloat("input StartTime	", &inputStartTime, 0.0f, fTimeLength, "%.2f");
-		ImGui::InputFloat("input EndTime	", &inputEndTime, inputStartTime, fTimeLength, "%.2f");
-
-		if (ImGui::Button("Create!"))
-		{
-			GetTarget()->Animator3D()->CreateAnimation3D(inputAnimName, curClipIdx, inputStartTime, inputEndTime);
-		}
-
-		ImGui::TreePop();
-	}
+	
 
 	// 애니메이션 정보
 	float* fStartTime = GetTarget()->Animator3D()->GetStartTime();

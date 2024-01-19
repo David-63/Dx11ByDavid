@@ -107,6 +107,15 @@ CAnim3D* CAnimator3D::FindAnim(const string& _strName)
 }
 
 
+void CAnimator3D::SaveAnimClip()
+{
+	//m_pCurAnim->Save();
+}
+
+void CAnimator3D::LoadAnimClip()
+{
+}
+
 void CAnimator3D::SaveToLevelFile(FILE* _pFile)
 {
 }

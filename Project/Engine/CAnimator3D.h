@@ -72,6 +72,9 @@ public:
 	// 사용 안하고 있음
 	//void SetClipTime(int _iClipIdx, float _fTime) { m_vecClipUpdateTime[_iClipIdx] = _fTime; }
 
+	void SaveAnimClip();
+	void LoadAnimClip();
+
 	virtual void SaveToLevelFile(FILE* _pFile) override;
 	virtual void LoadFromLevelFile(FILE* _pFile) override;
 	CLONE(CAnimator3D);

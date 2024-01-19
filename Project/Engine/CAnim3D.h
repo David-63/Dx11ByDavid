@@ -2,10 +2,18 @@
 #include "CEntity.h"
 
 #include "ptr.h"
-#include "CTexture.h"
 #include "CMaterial.h"
 #include "CMesh.h"
 #include "CStructuredBuffer.h"
+
+struct tAnim3DData
+{
+    int                         AnimClipIdx;          // 이 애니메이션의 클립 인덱스 (직접 만들어서 사용)
+    float                       StartTime;            // 애니메이션 클립의 시작시간
+    float                       EndTime;              // 애니메이션 클립의 종료시간
+    tAnim3DData() : AnimClipIdx(0), StartTime(0.f), EndTime(0.f) {}
+    ~tAnim3DData() {}
+};
 
 class CAnimator3D;
 class CStructuredBuffer;
@@ -13,15 +21,18 @@ class CAnim3D : public CEntity
 {
 private:    
     CAnimator3D*                m_Owner;                // Owner를 알아야 컴포넌트에 접근 가능함
-    string                     m_strAnimName;          // 애니메이션 Key Name
+    string                      m_strAnimName;           // 애니메이션 Key Name
 
 
     int							m_iFrameCount;          // 현재 프레임 (30 기준)
 
     // 애니메이션 정보
-    int                         m_AnimClipIdx;          // 이 애니메이션의 클립 인덱스 (직접 만들어서 사용)
-    float                       m_StartTime;            // 애니메이션 클립의 시작시간
-    float                       m_EndTime;              // 애니메이션 클립의 종료시간
+    tAnim3DData                 m_AnimData;
+
+    //int                         m_AnimClipIdx;          // 이 애니메이션의 클립 인덱스 (직접 만들어서 사용)
+    //float                       m_StartTime;            // 애니메이션 클립의 시작시간
+    //float                       m_EndTime;              // 애니메이션 클립의 종료시간
+
     vector<float>				m_AnimUpdateTime;       // 애니메이션 진행 누적시간
 
     int							m_CurFrameIdx;          // 현재 진행중인 프레임
@@ -44,33 +55,35 @@ public:
 
 public:
     void CreateAnimation3D(const string& _strAnimName, int _clipIdx, float _startTime, float _endTime);
-    void CreateAnimation3D(const string& _strAnimName, int _clipIdx, int _startFrame, int _endFrame); // 안씀
+    //void CreateAnimation3D(const string& _strAnimName, int _clipIdx, int _startFrame, int _endFrame); // 안씀
 
 public: // GUI에 노출시키는 함수
     const string& GetAnimName() { return m_strAnimName; }
-    int GetAnimClipIdx() { return m_AnimClipIdx; }    
+    int GetAnimClipIdx() { return m_AnimData.AnimClipIdx; }
     CStructuredBuffer* GetFinalBoneMat() { return m_pBoneFinalMatBuffer; }
-    float* GetStartTime() { return &m_StartTime; }
-    float* GetEndTime() { return &m_EndTime; }
-    const int& GetCurTime() { return m_AnimUpdateTime[m_AnimClipIdx]; }
+    float* GetStartTime() { return &m_AnimData.StartTime; }
+    float* GetEndTime() { return &m_AnimData.EndTime; }
+    const float& GetCurTime() { return m_AnimUpdateTime[m_AnimData.AnimClipIdx]; }
     const int& GetCurFrame() { return m_CurFrameIdx; }
 
 public: // 애니메이터에서 사용하는 함수
     bool IsFinish() { return m_Finish; }
 
     // 리셋은 애니메이션을 초기상태로 돌리지만, 실행시키진 않음
-    void Reset() { m_AnimUpdateTime[m_AnimClipIdx] = m_StartTime; m_Finish = false; }    
+    void Reset() { m_AnimUpdateTime[m_AnimData.AnimClipIdx] = m_AnimData.StartTime; m_Finish = false; }
     void Stop() { m_Finish = true; }
     void Continue()
     {
-        if (m_AnimUpdateTime[m_AnimClipIdx] >= m_EndTime)
+        if (m_AnimUpdateTime[m_AnimData.AnimClipIdx] >= m_AnimData.EndTime)
         {
-            m_AnimUpdateTime[m_AnimClipIdx] = m_StartTime;
+            m_AnimUpdateTime[m_AnimData.AnimClipIdx] = m_AnimData.StartTime;
             m_Finish = true;
         }
         m_Finish = false;
     }
 public:
+    int Save(const wstring& _strFilePath);
+    int Load(const wstring& _strFilePath);
 
     void SaveToLevelFile(FILE* _File);
     void LoadFromLevelFile(FILE* _File);
@@ -79,6 +92,7 @@ public:
     CLONE(CAnim3D);
 public:
     CAnim3D();
+    //CAnim3D(bool _bEngine);
     ~CAnim3D();
 
     friend class CAnimator3D;

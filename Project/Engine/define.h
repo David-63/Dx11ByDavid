@@ -12,6 +12,7 @@
 #define KEY_PRESSED(Key) CKeyMgr::GetInst()->GetKeyState(Key) == KEY_STATE::PRESSED
 
 #define DT CTimeMgr::GetInst()->GetDeltaTime()
+#define ScaleDT CTimeMgr::GetInst()->GetScaledDeltaTime()
 
 #define MAX_LAYER 32
 
@@ -62,6 +63,7 @@ enum class RES_TYPE
 
 	MESH,			// 형태
 	TEXTURE,		// 이미지
+	//ANIMCLIP,		// 애니메이션 클립
 	SOUND,
 
 	GRAPHICS_SHADER,
