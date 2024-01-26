@@ -20,10 +20,6 @@
 
 
 
-
-
-
-
 enum class COMPONENT_TYPE
 {
 	// update
