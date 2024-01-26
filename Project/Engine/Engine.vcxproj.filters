@@ -43,9 +43,6 @@
     <ClInclude Include="CGameObject.h">
       <Filter>Source\05. GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="CComponent.h">
-      <Filter>Source\06. Component</Filter>
-    </ClInclude>
     <ClInclude Include="CEntity.h">
       <Filter>Source</Filter>
     </ClInclude>
@@ -180,6 +177,12 @@
     </ClInclude>
     <ClInclude Include="CAnim3D.h">
       <Filter>Source\06. Component\7. Animator3D</Filter>
+    </ClInclude>
+    <ClInclude Include="CComponent.h">
+      <Filter>Source\06. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation.h">
+      <Filter>Source\07. Resource\8. Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -350,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="CAnim3D.cpp">
       <Filter>Source\06. Component\7. Animator3D</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation.cpp">
+      <Filter>Source\07. Resource\8. Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -526,6 +532,9 @@
     </Filter>
     <Filter Include="Source\06. Component\RenderComponent\4. SkyBox">
       <UniqueIdentifier>{cdaf2dfe-96ef-4fd7-a1c9-a117acce104d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\07. Resource\8. Animation">
+      <UniqueIdentifier>{31f1874e-bc67-4112-a438-a1ec4cc0945d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
